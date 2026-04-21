@@ -5,6 +5,15 @@ import { round, score } from './score.js';
  */
 const dir = 'data';
 
+/**
+ * Youtube thumbnail function etc:
+ */
+
+export async function getYouTubeId(url) {
+    const match = url?.match(/(?:v=|embed\/)([^&?/]+)/);
+    return match ? match[1] : null;
+}
+
 export async function fetchList() {
     const listResult = await fetch(`${dir}/_list.json`);
     try {
@@ -14,6 +23,7 @@ export async function fetchList() {
                 const levelResult = await fetch(`${dir}/${path}.json`);
                 try {
                     const level = await levelResult.json();
+                    const youtubeId = getYouTubeId(level.verification);
                     return [
                         {
                             ...level,
