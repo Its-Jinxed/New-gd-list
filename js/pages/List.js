@@ -33,9 +33,9 @@ export default {
                                 <img
                                     v-if="level?.youtubeId"
                                     class="thumb"
-                                    :src="`https://img.youtube.com/vi/${level.youtubeId}/mqdefault.jpg`"
+                                    :src="'https://img.youtube.com/vi/' + level.youtubeId + '/mqdefault.jpg'"
                                     alt="thumbnail"
-                                >
+                                />
                                 <span class="type-label-lg">
                                     {{ level?.name || 'Error (' + err + '.json)' }}
                                 </span>
