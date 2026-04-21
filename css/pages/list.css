@@ -2,8 +2,20 @@
 .page-list .level-container,
 
 .page-list .level-container .level {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
     align-items: center;
     text-align: center;
+}
+
+.video {
+    display: block;
+    margin: 0 auto;
+}
+
+.records {
+    margin: 0 auto;
 }
 
 .page-list .list-container {
