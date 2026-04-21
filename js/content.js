@@ -24,6 +24,9 @@ export async function fetchList() {
                 try {
                     const level = await levelResult.json();
                     console.log(level.verification, getYouTubeId(level.verification));
+                    level.creators = Array.isArray(level.creators)
+                    ? level.creators
+                    : [level.creators];
                     return [
                         {
                             ...level,
