@@ -33,6 +33,9 @@
     word-break: normal;
     overflow-wrap: anywhere;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 .page-list .list .level.error button {
     color: var(--color-error);
@@ -64,7 +67,6 @@
     aspect-ratio: 16/9;
     width: 100%;
     aspect-ratio: 16 / 9;
-    margin-bottom: 1rem;
 }
 .page-list .level-container .level .stats {
     display: flex;
