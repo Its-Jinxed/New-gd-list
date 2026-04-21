@@ -10,6 +10,10 @@
     text-align: center;
 }
 
+.page-list .level-container {
+    padding-top: 2rem;
+}
+
 .page-list .list-container {
     padding-inline: 2rem;
 }
