@@ -102,7 +102,14 @@
     table-layout: fixed;
     margin: 0 auto;
 }
+.page-list .level-container .level .victors {
+    table-layout: fixed;
+    margin: 0 auto;
+}
 .page-list .level-container .level .records tr td:not(:last-child) {
+    padding-right: 1rem;
+}
+.page-list .level-container .level .victors tr td:not(:last-child) {
     padding-right: 1rem;
 }
 .page-list .level-container .level .records .percent,
@@ -111,6 +118,9 @@
     padding-block: 1rem;
 }
 .page-list .level-container .level .records .user {
+    width: 100%;
+}
+.page-list .level-container .level .victors {
     width: 100%;
 }
 .page-list .level-container .level .records .percent,
