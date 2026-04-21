@@ -21,7 +21,7 @@ export default {
                     <span>{{ author }}</span>
                 </p>
             </template>
-            <template v-else-if="creators.length === 0">
+            <template v-else-if="creators.length === 1">
                 <div class="type-title-sm">Creator</div>
                 <p class="type-body">
                     <span>{{ author }}</span>
