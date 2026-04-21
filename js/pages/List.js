@@ -36,7 +36,9 @@ export default {
                                     :src="`https://img.youtube.com/vi/${level.youtubeId}/mqdefault.jpg`"
                                     alt="thumbnail"
                                 >
-                                <span class="type-label-lg">{{ level?.name || \`Error (\${err}.json)\` }}</span>
+                                <span class="type-label-lg">
+                                    {{ level?.name || 'Error (' + err + '.json)' }}
+                                </span>
                             </button>
                         </td>
                     </tr>
