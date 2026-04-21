@@ -64,7 +64,6 @@
     flex-direction: column;
     gap: 2rem;
     padding-right: 2rem;
-    max-width: 48rem;
 }
 .page-list .level-container .level .level-authors {
     display: grid;
