@@ -29,6 +29,7 @@
     color: var(--color-on-background);
     border: none;
     border-radius: 0.5rem;
+    overflow: hidden;
     padding: 1rem;
     text-align: start;
     word-break: normal;
@@ -40,6 +41,12 @@
     text-align: center;
     gap: 0.5rem;
 }
+
+.page-list .list .level button img {
+    width: 100%;
+    display: block;
+}
+
 .page-list .list .level.error button {
     color: var(--color-error);
     cursor: not-allowed;
