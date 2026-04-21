@@ -42,8 +42,6 @@
 .page-list .level-container .level {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
     gap: 2rem;
     padding-right: 2rem;
     max-width: 48rem;
