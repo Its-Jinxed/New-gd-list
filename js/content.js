@@ -9,7 +9,7 @@ const dir = 'data';
  * Youtube thumbnail function etc:
  */
 
-export async function getYouTubeId(url) {
+function getYouTubeId(url) {
     const match = url?.match(/(?:v=|embed\/)([^&?/]+)/);
     return match ? match[1] : null;
 }
