@@ -64,6 +64,7 @@
     aspect-ratio: 16/9;
     width: 100%;
     aspect-ratio: 16 / 9;
+    margin-bottom: 1rem;
 }
 .page-list .level-container .level .stats {
     display: flex;
