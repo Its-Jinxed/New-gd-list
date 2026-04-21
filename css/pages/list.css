@@ -45,6 +45,7 @@
 .page-list .list .level button img {
     width: 100%;
     display: block;
+    border-radius: 0.5rem;
 }
 
 .page-list .list .level.error button {
