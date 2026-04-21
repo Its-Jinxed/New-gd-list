@@ -127,6 +127,9 @@
 .page-list .level-container .level .records .hz {
     text-align: end;
 }
+.page-list .level-container .level .victors td {
+    padding-block: 0.75rem;
+}
 .page-list .level-container .level .records a:hover {
     text-decoration: underline;
 }
