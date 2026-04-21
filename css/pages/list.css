@@ -105,6 +105,7 @@
 .page-list .level-container .level .victors {
     table-layout: fixed;
     margin: 0 auto;
+    padding-top: 10rem;
 }
 .page-list .level-container .level .records tr td:not(:last-child) {
     padding-right: 1rem;
