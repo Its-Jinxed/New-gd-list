@@ -43,7 +43,7 @@ main {
     background-color: var(--color-background);
     color: var(--color-on-background);
     display: grid;
-    grid-template-columns: minmax(32rem, 1fr) minmax(16rem, 3fr);
+    grid-template-columns: minmax(26rem, 1fr) minmax(16rem, 3fr);
     column-gap: 2rem;
 }
 
