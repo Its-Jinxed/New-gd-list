@@ -63,6 +63,7 @@ header .logo {
     display: flex;
     align-items: flex-end;
     gap: 1rem;
+    padding-right: 3rem;
 }
 header .nav {
     flex: 1;
