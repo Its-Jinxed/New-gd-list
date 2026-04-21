@@ -1,15 +1,15 @@
 {
-    "id": 57436521,
-    "name": "SampleLevel1",
-    "creators": ["Creator1", "Creator2", "Creator3"],
-    "verifier": "Verifier",
-    "verification": "https://www.youtube.com/watch?v=ISTl28wKSXc",
+    "id": 138587480,
+    "name": "Wobble Wobble",
+    "creators": ["ItsJinxed"],
+    "verifier": "ItsJinxed",
+    "verification": "https://www.youtube.com/watch?v=ZcSvb42vCFo",
     "percentToQualify": 56,
     "rating": "Standard",
     "records": [
         {
             "user": "Sample_Victor_1",
-            "link": "https://www.youtube.com/watch?v=MgJeijBGKHU",
+            "link": "https://www.youtube.com/watch?v=ZcSvb42vCFo",
             "percent": 100,
             "hz": 360
         }
