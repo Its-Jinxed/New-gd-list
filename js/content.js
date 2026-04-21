@@ -28,7 +28,7 @@ export async function fetchList() {
                         {
                             ...level,
                             path,
-                            youtubeId,
+                            youtubeId: getYouTubeId(level.verification),
                             records: level.records.sort(
                                 (a, b) => b.percent - a.percent,
                             ),
