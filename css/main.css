@@ -57,7 +57,7 @@ header {
 @media screen and (min-width: 1366px) {
     header {
         display: grid;
-        padding-inline: 0;
+        padding-inline: 10rem;
     }
 }
 header .logo {
