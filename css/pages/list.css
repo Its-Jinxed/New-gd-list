@@ -1,13 +1,8 @@
 .page-list .list-container,
 .page-list .level-container,
-.page-list .meta-container {
-    padding-block: 2rem;
-}
+
 .page-list .list-container {
     padding-inline: 1rem;
-}
-.page-list .meta-container {
-    padding-right: 2rem;
 }
 
 .page-list .list {
@@ -47,6 +42,8 @@
 .page-list .level-container .level {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 2rem;
     padding-right: 2rem;
     max-width: 48rem;
@@ -90,39 +87,6 @@
 .page-list .level-container .level .records .hz {
     text-align: end;
 }
-.page-list .meta-container .og a:hover,
 .page-list .level-container .level .records a:hover {
-    text-decoration: underline;
-}
-.page-list .meta {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-.page-list .meta .errors {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-.page-list .meta .errors .error {
-    padding: 1rem;
-    background-color: var(--color-error);
-    color: var(--color-on-error);
-    border-radius: 0.5rem;
-}
-.page-list .meta .editors {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-.page-list .meta .editors li {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.page-list .meta .editors li img {
-    height: 1.25rem;
-}
-.page-list .meta .editors li a:hover {
     text-decoration: underline;
 }
