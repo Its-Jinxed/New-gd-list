@@ -30,6 +30,12 @@ export default {
                         </td>
                         <td class="level" :class="{ 'active': selected == i, 'error': !level }">
                             <button @click="selected = i">
+                                <img
+                                    v-if="level?.youtubeId"
+                                    class="thumb"
+                                    :src="`https://img.youtube.com/vi/${level.youtubeId}/mqdefault.jpg`"
+                                    alt="thumbnail"
+                                >
                                 <span class="type-label-lg">{{ level?.name || \`Error (\${err}.json)\` }}</span>
                             </button>
                         </td>
