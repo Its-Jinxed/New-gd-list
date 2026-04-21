@@ -56,10 +56,9 @@
 }
 .page-list .level-container .level .level-authors {
     display: grid;
-    grid-template-columns: auto;
-    justify-content: center;
-    justify-items: center;
-    text-align: center;
+    grid-template-columns: 8rem 1fr;
+    gap: 1rem;
+    align-items: start;
 }
 .page-list .level-container .level .video {
     aspect-ratio: 16/9;
