@@ -1,6 +1,11 @@
 .page-list .list-container,
 .page-list .level-container,
 
+.page-list .level-container .level {
+    align-items: center;
+    text-align: center;
+}
+
 .page-list .list-container {
     padding-inline: 1rem;
 }
