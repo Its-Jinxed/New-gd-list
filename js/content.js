@@ -70,7 +70,7 @@ export async function fetchLeaderboard() {
             return;
         }
 
-        const levelScore = score(rank + 1, 100, level.percentToQualify);
+        const levelScore = score(rank + 1);
 
         // Combine verifier + victors
         const victors = new Set([
