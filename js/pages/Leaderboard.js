@@ -77,6 +77,29 @@ export default {
                             </span>
                         </div>
 
+                        <!-- VERIFIED (NOW FIRST) -->
+                        <h2 v-if="entry.verified && entry.verified.length > 0">
+                            Verified ({{ entry.verified.length }})
+                        </h2>
+
+                        <table class="table" v-if="entry.verified && entry.verified.length > 0">
+                            <tr v-for="score in entry.verified">
+                                <td class="rank">
+                                    <p>#{{ score.rank }}</p>
+                                </td>
+                                <td class="level">
+                                    <a class="type-label-lg" target="_blank" :href="score.link">
+                                        {{ score.level }}
+                                    </a>
+                                </td>
+                                <td class="score">
+                                    <p>+{{ localize(score.score) }}</p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p v-else>No verified levels.</p>
+
                         <!-- COMPLETED -->
                         <h2 v-if="entry.victories && entry.victories.length > 0">
                             Completed ({{ entry.victories.length }})
@@ -98,28 +121,7 @@ export default {
                             </tr>
                         </table>
 
-                        <p v-else>No victories yet.</p>
-
-                        <!-- VERIFIED -->
-                        <h2 v-if="entry.verified && entry.verified.length > 0">
-                            Verified ({{ entry.verified.length }})
-                        </h2>
-
-                        <table class="table" v-if="entry.verified && entry.verified.length > 0">
-                            <tr v-for="score in entry.verified">
-                                <td class="rank">
-                                    <p>#{{ score.rank }}</p>
-                                </td>
-                                <td class="level">
-                                    <a class="type-label-lg" target="_blank" :href="score.link">
-                                        {{ score.level }}
-                                    </a>
-                                </td>
-                                <td class="score">
-                                    <p>+{{ localize(score.score) }}</p>
-                                </td>
-                            </tr>
-                        </table>
+                        <p v-else>No completed levels yet.</p>
 
                     </div>
                 </div>
