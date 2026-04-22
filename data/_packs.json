@@ -3,7 +3,7 @@
     "id": "pack1blah",
     "name": "Starter Pack",
     "color": "#2ecc71",
-    "levels": ["level1", "level2", "level3"]
+    "levels": ["Wobble Wobble"]
   },
   {
     "id": "hard-pack",
