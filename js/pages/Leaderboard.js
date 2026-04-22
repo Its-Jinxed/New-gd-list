@@ -32,12 +32,11 @@ export default {
                             <td class="rank">
                                 <p class="type-label-lg">#{{ i + 1 }}</p>
                             </td>
-                            <td class="total">
-                                <p class="type-label-lg">{{ localize(ientry.total) }}</p>
-                            </td>
                             <td class="user" :class="{ 'active': selected == i }">
                                 <button @click="selected = i">
-                                    <span class="type-label-lg">{{ ientry.user }}</span>
+                                    <span class="type-label-lg">
+                                        #{{ i + 1 }} {{ ientry.user }} — {{ localize(ientry.total) }} pts
+                                    </span>
 
                                     <!-- PACK BADGES -->
                                     <span class="pack-badges">
