@@ -37,6 +37,7 @@ export default {
                     <div class="pack-card__meta">
                         {{ pack.levels.length }} levels
                     </div>
+
                 </div>
 
             </aside>
@@ -65,6 +66,18 @@ export default {
                         :key="levelPath"
                         class="level-row"
                     >
+
+                        <!-- THUMBNAIL -->
+                        <div class="level-thumb">
+                            <img
+                                v-if="getLevel(levelPath)?.youtubeId"
+                                :src="`https://img.youtube.com/vi/${getLevel(levelPath).youtubeId}/mqdefault.jpg`"
+                                alt="thumbnail"
+                            />
+                            <div v-else class="thumb-placeholder"></div>
+                        </div>
+
+                        <!-- NAME -->
                         <div class="level-name">
 
                             <a
@@ -81,6 +94,7 @@ export default {
 
                         </div>
 
+                        <!-- STATUS -->
                         <div class="level-status">
                             <span v-if="getLevel(levelPath)">Available</span>
                             <span v-else>Missing</span>
