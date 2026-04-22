@@ -44,6 +44,7 @@ export default {
                                         <span
                                             v-for="pack in ientry.packs.filter(p => p.complete)"
                                             class="pack-badge"
+                                            :style="{ background: pack.color || 'gold' }"
                                         >
                                             {{ pack.name }}
                                         </span>
