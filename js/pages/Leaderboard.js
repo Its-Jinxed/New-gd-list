@@ -51,7 +51,7 @@ export default {
 
                         <!-- VICTORIES -->
                         <h2 v-if="entry.victories && entry.victories.length > 0">
-                            Victories ({{ entry.victories.length }})
+                            Completed ({{ entry.victories.length }})
                         </h2>
 
                         <table class="table" v-if="entry.victories && entry.victories.length > 0">
