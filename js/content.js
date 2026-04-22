@@ -32,7 +32,7 @@ export async function fetchList() {
                             ...level,
                             path,
                             youtubeId: getYouTubeId(level.verification),
-                            records: (level.records ?? []).sort((a, b) => b.percent - a.percent),
+                            victors: level.victors ?? [],
                         },
                         null,
                     ];
