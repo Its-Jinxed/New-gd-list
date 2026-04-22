@@ -13,6 +13,7 @@ export default {
         selected: 0,
         err: [],
     }),
+
     template: `
         <main v-if="loading">
             <Spinner></Spinner>
@@ -20,40 +21,45 @@ export default {
 
         <main v-else class="page-leaderboard-container">
             <div class="page-leaderboard">
+
                 <div class="error-container">
                     <p class="error" v-if="err.length > 0">
                         Leaderboard may be incorrect, as the following levels could not be loaded: {{ err.join(', ') }}
                     </p>
                 </div>
 
+                <!-- LEADERBOARD TABLE -->
                 <div class="board-container">
                     <table class="board">
                         <tr v-for="(ientry, i) in leaderboard">
+                            
                             <td class="rank">
                                 <p class="type-label-lg">#{{ i + 1 }}</p>
                             </td>
+
                             <td class="user" :class="{ 'active': selected == i }">
                                 <button @click="selected = i">
                                     <span class="type-label-lg">
                                         #{{ i + 1 }} {{ ientry.user }} — {{ localize(ientry.total) }} pts
                                     </span>
-
-                                    <!-- PACK BADGES -->
-                                    <span class="pack-badges">
-                                    </span>
                                 </button>
                             </td>
+
                         </tr>
                     </table>
                 </div>
 
+                <!-- PLAYER PANEL -->
                 <div class="player-container">
                     <div class="player">
+
+                        <!-- HEADER -->
                         <h1>
                             #{{ selected + 1 }} {{ entry.user }} —
                             {{ localize(entry.total) }} pts
                         </h1>
 
+                        <!-- PACK BADGES -->
                         <div class="pack-badges" v-if="entry.packs && entry.packs.length">
                             <span
                                 v-for="pack in entry.packs.filter(p => p.complete)"
@@ -63,16 +69,8 @@ export default {
                                 {{ pack.name }}
                             </span>
                         </div>
-                            <span
-                                v-for="pack in entry.packs.filter(p => p.complete)"
-                                class="pack-badge"
-                                :style="{ background: pack.color || 'gold' }"
-                            >
-                                {{ pack.name }}
-                              </span>
-                         </div>
 
-                        <!-- VICTORIES -->
+                        <!-- COMPLETED -->
                         <h2 v-if="entry.victories && entry.victories.length > 0">
                             Completed ({{ entry.victories.length }})
                         </h2>
@@ -118,9 +116,11 @@ export default {
 
                     </div>
                 </div>
+
             </div>
         </main>
     `,
+
     computed: {
         entry() {
             return this.leaderboard[this.selected] || {
@@ -128,15 +128,18 @@ export default {
                 total: 0,
                 victories: [],
                 verified: [],
+                packs: [],
             };
         },
     },
+
     async mounted() {
         const [leaderboard, err] = await fetchLeaderboard();
         this.leaderboard = leaderboard;
         this.err = err;
         this.loading = false;
     },
+
     methods: {
         localize,
     },
