@@ -94,55 +94,116 @@ input[type="checkbox"] {
     margin: 0;
 }
 
-.packs-layout {
+.packs-page {
     display: grid;
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 280px 1fr;
     gap: 2rem;
-    height: 100%;
+    padding: 1.5rem;
 }
 
-/* LEFT SIDE */
+/* LEFT SIDEBAR */
 .packs-sidebar {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
 }
 
-.pack-item {
-    padding: 0.75rem;
-    border-left: 4px solid transparent;
-    background: rgba(0,0,0,0.03);
+.packs-title h2 {
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+}
+
+/* PACK CARDS */
+.pack-card {
+    padding: 0.9rem 1rem;
+    border-radius: 0.75rem;
+    background: rgba(0,0,0,0.04);
     cursor: pointer;
-    transition: 0.15s;
+    border-left: 4px solid var(--pack-color);
+    transition: 0.15s ease;
 }
 
-.pack-item:hover {
-    background: rgba(0,0,0,0.06);
+.pack-card:hover {
+    background: rgba(0,0,0,0.07);
+    transform: translateX(2px);
 }
 
-.pack-item.active {
-    background: rgba(0,0,0,0.1);
+.pack-card.active {
+    background: rgba(0,0,0,0.12);
 }
 
-.pack-name {
+.pack-card__name {
     font-weight: 700;
 }
 
-.pack-sub {
+.pack-card__meta {
     font-size: 0.85rem;
     opacity: 0.6;
 }
 
 /* RIGHT SIDE */
-.pack-content {
-    padding: 0.5rem;
+.packs-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.pack-title {
+/* HEADER */
+.pack-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pack-header__bar {
+    width: 6px;
+    height: 40px;
+    border-radius: 4px;
+}
+
+.pack-header__text h1 {
     margin: 0;
 }
 
-.pack-meta {
+.pack-header__text p {
+    margin: 0;
     opacity: 0.6;
-    margin-bottom: 1rem;
+}
+
+/* LEVEL LIST */
+.levels-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.level-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: rgba(0,0,0,0.03);
+    border-radius: 0.5rem;
+    transition: 0.15s;
+}
+
+.level-row:hover {
+    background: rgba(0,0,0,0.06);
+}
+
+.level-name a {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.level-name a:hover {
+    text-decoration: underline;
+}
+
+.level-status {
+    opacity: 0.6;
+    font-size: 0.9rem;
+}
+
+.missing {
+    opacity: 0.5;
 }
