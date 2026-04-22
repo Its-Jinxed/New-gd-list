@@ -8,12 +8,5 @@
     "rating": "Standard",
     "victors": [
         "ItsJinxed","Fatty"
-        ],
-    "records": [
-        {
-            "user": "Sample_Victor_1",
-            "percent": 100,
-            "hz": 360
-        }
-    ]
+        ]
 }
