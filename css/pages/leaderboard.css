@@ -12,110 +12,102 @@
     margin: 0 auto;
 }
 
-/* PANELS */
-.page-leaderboard .board-container,
-.page-leaderboard .player-container {
-    padding: 2rem 1rem;
+.page-leaderboard > div {
+    overflow-y: auto;
 }
 
-/* ERROR */
 .page-leaderboard .error-container {
+    grid-row: 1;
     grid-column: 1 / span 2;
 }
 
-.page-leaderboard .error {
+.page-leaderboard .error-container .error {
     padding: 1rem;
-    background: var(--color-error);
+    background-color: var(--color-error);
     color: var(--color-on-error);
-    border-radius: 0.75rem;
 }
 
-/* =========================
-   LEFT TABLE (BOARD)
-========================= */
+.page-leaderboard .board-container,
+.page-leaderboard .player-container {
+    grid-row: 2;
+    padding-block: 2rem;
+}
+
+.page-leaderboard .board-container {
+    padding-inline: 1rem;
+}
 
 .page-leaderboard .board {
+    table-layout: auto;
+    display: block;
     width: 100%;
-    border-spacing: 0 0.5rem;
 }
 
 .page-leaderboard .board .rank {
-    text-align: right;
-    padding-right: 1rem;
-    opacity: 0.7;
+    padding-block: 1rem;
+    text-align: end;
+}
+
+.page-leaderboard .board .total {
+    padding: 1rem;
+    text-align: end;
+}
+
+.page-leaderboard .board .user {
+    width: 100%;
 }
 
 .page-leaderboard .board .user button {
-    width: 100%;
-    border: none;
-    border-radius: 0.75rem;
-
-    padding: 1rem;
-
-    background: var(--color-surface);
+    background-color: var(--color-background);
     color: var(--color-on-background);
-
-    cursor: pointer;
-
-    transition: 0.15s ease;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    text-align: start;
+    word-break: normal;
+    overflow-wrap: anywhere;
 }
 
 .page-leaderboard .board .user button:hover {
-    background: var(--color-surface-hover);
-    transform: translateY(-2px);
+    background-color: var(--color-background-hover);
+    color: var(--color-on-background-hover);
+    cursor: pointer;
 }
 
 .page-leaderboard .board .user.active button {
-    background: var(--color-primary);
+    background-color: var(--color-primary);
     color: var(--color-on-primary);
 }
-
-/* =========================
-   RIGHT PANEL
-========================= */
 
 .page-leaderboard .player {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    padding-right: 2rem;
 }
 
-/* TABLES */
-.page-leaderboard .table {
+.page-leaderboard .player .table {
+    table-layout: fixed;
+}
+
+.page-leaderboard .player .table tr td:not(:last-child) {
+    padding-right: 2rem;
+}
+
+.page-leaderboard .player .table p,
+.page-leaderboard .player .table a {
+    padding-block: 1rem;
+}
+
+.page-leaderboard .player .table .rank p,
+.page-leaderboard .player .table .score p {
+    text-align: end;
+}
+
+.page-leaderboard .player .table .level {
     width: 100%;
-    border-spacing: 0 0.75rem;
 }
 
-.page-leaderboard .table td {
-    padding-block: 0.75rem;
-}
-
-.page-leaderboard .table .rank p,
-.page-leaderboard .table .score p {
-    text-align: right;
-}
-
-/* LINKS */
-.page-leaderboard .table a:hover {
+.page-leaderboard .player .table a:hover {
     text-decoration: underline;
-}
-
-/* =========================
-   PACK BADGES (GLOBAL FIX)
-========================= */
-
-.pack-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-    margin-top: 0.5rem;
-}
-
-.pack-badge {
-    display: inline-block;
-    color: white;
-    padding: 2px 6px;
-    border-radius: 6px;
-    font-size: 10px;
-    font-weight: bold;
 }
