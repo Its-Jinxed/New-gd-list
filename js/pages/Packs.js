@@ -69,11 +69,15 @@ export default {
 
                         <!-- THUMBNAIL -->
                         <div class="level-thumb">
-                            <img
-                                v-if="getLevel(levelPath)?.youtubeId"
-                                :src="`https://img.youtube.com/vi/${getLevel(levelPath).youtubeId}/mqdefault.jpg`"
-                                alt="thumbnail"
-                            />
+                            <div
+                                v-if="getLevel(levelPath) && getLevel(levelPath).youtubeId"
+                            >
+                                <img
+                                    :src="'https://img.youtube.com/vi/' + getLevel(levelPath).youtubeId + '/mqdefault.jpg'"
+                                    alt="thumbnail"
+                                />
+                            </div>
+
                             <div v-else class="thumb-placeholder"></div>
                         </div>
 
