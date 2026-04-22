@@ -101,6 +101,18 @@ input[type="checkbox"] {
     padding: 1.5rem;
 }
 
+/* =========================
+   PACKS PAGE (MODERN CLEAN)
+========================= */
+
+.packs-page {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    padding: 1.5rem;
+    height: 100%;
+}
+
 /* LEFT SIDEBAR */
 .packs-sidebar {
     display: flex;
@@ -109,7 +121,7 @@ input[type="checkbox"] {
 }
 
 .packs-title h2 {
-    margin-bottom: 0.5rem;
+    margin: 0 0 0.5rem 0;
     opacity: 0.8;
 }
 
@@ -148,7 +160,7 @@ input[type="checkbox"] {
     gap: 1.5rem;
 }
 
-/* HEADER */
+/* PACK HEADER */
 .pack-header {
     display: flex;
     align-items: center;
@@ -177,9 +189,13 @@ input[type="checkbox"] {
     gap: 0.5rem;
 }
 
+/* LEVEL ROW (UPDATED FOR THUMBNAILS) */
 .level-row {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 90px 1fr 100px;
+    gap: 1rem;
+    align-items: center;
+
     padding: 0.75rem 1rem;
     background: rgba(0,0,0,0.03);
     border-radius: 0.5rem;
@@ -190,6 +206,22 @@ input[type="checkbox"] {
     background: rgba(0,0,0,0.06);
 }
 
+/* THUMBNAILS */
+.level-thumb img {
+    width: 90px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.thumb-placeholder {
+    width: 90px;
+    height: 50px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.1);
+}
+
+/* LEVEL NAME */
 .level-name a {
     font-weight: 600;
     text-decoration: none;
@@ -199,11 +231,14 @@ input[type="checkbox"] {
     text-decoration: underline;
 }
 
+/* STATUS */
 .level-status {
+    text-align: right;
     opacity: 0.6;
     font-size: 0.9rem;
 }
 
+/* MISSING LEVEL */
 .missing {
     opacity: 0.5;
 }
