@@ -1,140 +1,97 @@
 .page-list .list-container,
 .page-list .level-container,
-
 .page-list .level-container .level {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    width: 100%;
-    align-items: stretch;
-    text-align: center;
 }
 
-.page-list .level-container {
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-}
-
+/* LEFT LIST */
 .page-list .list-container {
-    padding-inline: 2rem;
-    padding-top: 2rem;
+    padding: 2rem;
 }
 
+/* TABLE */
 .page-list .list {
-    table-layout: auto;
-}
-.page-list .list .rank {
-    text-align: end;
-    padding-right: 1rem;
-}
-.page-list .list .level {
     width: 100%;
+    border-spacing: 0 0.5rem;
 }
+
+.page-list .list .rank {
+    text-align: right;
+    padding-right: 1rem;
+    opacity: 0.7;
+}
+
 .page-list .list .level button {
-    background-color: var(--color-background);
-    color: var(--color-on-background);
+    width: 100%;
     border: none;
-    border-radius: 0.5rem;
-    overflow: hidden;
+    border-radius: 0.75rem;
+
     padding: 1rem;
-    text-align: start;
-    word-break: normal;
-    overflow-wrap: anywhere;
+
+    background: var(--color-surface);
+    color: var(--color-on-background);
+
     cursor: pointer;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
     gap: 0.5rem;
+
+    transition: 0.15s ease;
 }
 
-.page-list .list .level button img {
-    width: 100%;
-    display: block;
-    border-radius: 0.5rem;
+.page-list .list .level button:hover {
+    background: var(--color-surface-hover);
+    transform: translateY(-2px);
+}
+
+.page-list .list .level.active button {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
 }
 
 .page-list .list .level.error button {
     color: var(--color-error);
-    cursor: not-allowed;
     text-decoration: line-through;
 }
-.page-list .list .level button:hover {
-    background-color: var(--color-background-hover);
-    color: var(--color-on-background-hover);
-}
-.page-list .list .level.active button {
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
-}
-.page-list .level-container .level {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding-left: clamp(0rem, 2vw, 2rem);
-    padding-right: clamp(1rem, 3vw, 3rem);
-}
-.page-list .level-container .level .level-authors {
-    display: grid;
-    grid-template-columns: max-content max-content;
-    justify-content: center;
-    column-gap: 1rem;
-    row-gap: 1rem;
-}
-.page-list .level-container .level .video {
-    aspect-ratio: 16/9;
+
+/* IMAGE */
+.page-list .list .level button img {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    border-radius: 0.5rem;
 }
-.page-list .level-container .level .stats {
+
+/* RIGHT PANEL */
+.page-list .level-container {
+    padding: 2rem;
+}
+
+.page-list .level-container .level {
+    gap: 2rem;
+}
+
+/* STATS */
+.page-list .level-container .stats {
     display: flex;
     justify-content: space-evenly;
-    text-align: center;
     gap: 2rem;
 }
-.page-list .level-container .level .stats li {
+
+.page-list .level-container .stats li {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
 }
-.page-list .level-container .level .records {
-    table-layout: fixed;
-    margin: 0 auto;
-}
-.page-list .level-container .level .victors {
-    table-layout: fixed;
-    margin: 0 auto;
-}
-.page-list .level-container .level .records tr td:not(:last-child) {
-    padding-right: 1rem;
-}
-.page-list .level-container .level .victors tr td:not(:last-child) {
-    padding-right: 1rem;
-}
-.page-list .level-container .level .records .percent,
-.page-list .level-container .level .records .user,
-.page-list .level-container .level .records .hz {
-    padding-block: 1rem;
-}
-.page-list .level-container .level .records .user {
+
+/* TABLES */
+.page-list .level-container table {
+    border-spacing: 0 0.75rem;
     width: 100%;
 }
-.page-list .level-container .level .victors {
-    width: 100%;
-}
-.page-list .level-container .level .records .percent,
-.page-list .level-container .level .records .hz {
-    text-align: end;
-}
-.page-list .level-container .level .victors td {
+
+.page-list .level-container table td {
     padding-block: 0.75rem;
-}
-.page-list .level-container .level .victors {
-    border-collapse: separate;
-    border-spacing: 0 0.75rem; /* vertical gap */
-}
-.page-list .level-container .level .records a:hover {
-    text-decoration: underline;
 }
