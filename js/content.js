@@ -142,3 +142,12 @@ export async function fetchLeaderboard() {
 
     return [res.sort((a, b) => b.total - a.total), errs];
 }
+
+export async function fetchPacks() {
+    try {
+        const res = await fetch(`${dir}/_packs.json`);
+        return await res.json();
+    } catch {
+        return [];
+    }
+}
