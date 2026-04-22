@@ -38,6 +38,16 @@ export default {
                             <td class="user" :class="{ 'active': selected == i }">
                                 <button @click="selected = i">
                                     <span class="type-label-lg">{{ ientry.user }}</span>
+
+                                    <!-- PACK BADGES -->
+                                    <span class="pack-badges">
+                                        <span
+                                            v-for="pack in ientry.packs.filter(p => p.complete)"
+                                            class="pack-badge"
+                                        >
+                                            {{ pack.name }}
+                                        </span>
+                                    </span>
                                 </button>
                             </td>
                         </tr>
