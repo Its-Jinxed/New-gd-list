@@ -4,11 +4,11 @@
  * @returns {Number}
  */
 export function score(rank) {
-    if (rank > 150) {
+    // Only top 30 levels give points
+    if (rank > 30) {
         return 0;
     }
 
-    // Rank-based scoring formula (victor system)
     let score = (-24.9975 * Math.pow(rank - 1, 0.4) + 200);
 
     return Math.round(Math.max(score, 0));
