@@ -49,8 +49,20 @@ export default {
 
                 <div class="player-container">
                     <div class="player">
-                        <h1>#{{ selected + 1 }} {{ entry.user }}</h1>
+                        <h1>
+                            #{{ selected + 1 }} {{ entry.user }} —
+                            {{ localize(entry.total) }} pts
+                        </h1>
+
                         <div class="pack-badges" v-if="entry.packs && entry.packs.length">
+                            <span
+                                v-for="pack in entry.packs.filter(p => p.complete)"
+                                class="pack-badge"
+                                :style="{ background: pack.color || 'gold' }"
+                            >
+                                {{ pack.name }}
+                            </span>
+                        </div>
                             <span
                                 v-for="pack in entry.packs.filter(p => p.complete)"
                                 class="pack-badge"
@@ -59,7 +71,6 @@ export default {
                                 {{ pack.name }}
                               </span>
                          </div>
-                        <h3>{{ localize(entry.total) }}</h3>
 
                         <!-- VICTORIES -->
                         <h2 v-if="entry.victories && entry.victories.length > 0">
