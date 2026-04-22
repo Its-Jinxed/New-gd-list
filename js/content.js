@@ -8,7 +8,6 @@ const dir = 'data';
 /**
  * Youtube thumbnail function etc:
  */
-
 function getYouTubeId(url) {
     const match = url?.match(/(?:v=|embed\/)([^&?/]+)/);
     return match ? match[1] : null;
@@ -16,17 +15,23 @@ function getYouTubeId(url) {
 
 export async function fetchList() {
     const listResult = await fetch(`${dir}/_list.json`);
+
     try {
         const list = await listResult.json();
+
         return await Promise.all(
             list.map(async (path, rank) => {
                 const levelResult = await fetch(`${dir}/${path}.json`);
+
                 try {
                     const level = await levelResult.json();
+
                     console.log(level.verification, getYouTubeId(level.verification));
+
                     level.creators = Array.isArray(level.creators)
-                    ? level.creators
-                    : [level.creators];
+                        ? level.creators
+                        : [level.creators];
+
                     return [
                         {
                             ...level,
@@ -76,7 +81,7 @@ export async function fetchLeaderboard() {
         const victors = new Set(level.victors ?? []);
 
         // =========================
-        // VERIFIED (creator clears)
+        // VERIFIED (creator)
         // =========================
         const verifiedUser =
             Object.keys(scoreMap).find(
@@ -99,6 +104,11 @@ export async function fetchLeaderboard() {
         // VICTORS (beaten level)
         // =========================
         victors.forEach((name) => {
+            // 🚫 Prevent verifier from also being counted as a victor
+            if (name.toLowerCase() === verifier.toLowerCase()) {
+                return;
+            }
+
             const user =
                 Object.keys(scoreMap).find(
                     (u) => u.toLowerCase() === name.toLowerCase(),
