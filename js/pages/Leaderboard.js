@@ -7,6 +7,7 @@ export default {
     components: {
         Spinner,
     },
+
     data: () => ({
         leaderboard: [],
         loading: true,
@@ -33,6 +34,12 @@ export default {
                     <table class="board">
                         <tr v-for="(ientry, i) in leaderboard">
 
+                            <!-- RANK COLUMN -->
+                            <td class="rank">
+                                <p class="type-label-lg">#{{ i + 1 }}</p>
+                            </td>
+
+                            <!-- USER + SCORE -->
                             <td class="user" :class="{ 'active': selected == i }">
                                 <button @click="selected = i">
                                     <span class="type-label-lg">
