@@ -41,13 +41,6 @@ export default {
 
                                     <!-- PACK BADGES -->
                                     <span class="pack-badges">
-                                        <span
-                                            v-for="pack in ientry.packs.filter(p => p.complete)"
-                                            class="pack-badge"
-                                            :style="{ background: pack.color || 'gold' }"
-                                        >
-                                            {{ pack.name }}
-                                        </span>
                                     </span>
                                 </button>
                             </td>
