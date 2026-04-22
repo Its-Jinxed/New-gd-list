@@ -65,6 +65,7 @@ export async function fetchEditors() {
 
 export async function fetchLeaderboard() {
     const list = await fetchList();
+    const packs = await fetchPacks();
 
     const scoreMap = {};
     const errs = [];
@@ -96,6 +97,7 @@ export async function fetchLeaderboard() {
         scoreMap[verifiedUser].verified.push({
             rank: rank + 1,
             level: level.name,
+            path: level.path,
             score: levelScore,
             link: level.verification,
         });
@@ -122,6 +124,7 @@ export async function fetchLeaderboard() {
             scoreMap[user].victories.push({
                 rank: rank + 1,
                 level: level.name,
+                path: level.path,
                 score: levelScore,
                 link: level.verification,
             });
