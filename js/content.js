@@ -72,12 +72,32 @@ export async function fetchLeaderboard() {
 
         const levelScore = score(rank + 1);
 
-        // Combine verifier + victors
-        const victors = new Set([
-            level.verifier,
-            ...(level.victors ?? [])
-        ]);
+        const verifier = level.verifier;
+        const victors = new Set(level.victors ?? []);
 
+        // =========================
+        // VERIFIED (creator clears)
+        // =========================
+        const verifiedUser =
+            Object.keys(scoreMap).find(
+                (u) => u.toLowerCase() === verifier.toLowerCase(),
+            ) || verifier;
+
+        scoreMap[verifiedUser] ??= {
+            verified: [],
+            victories: [],
+        };
+
+        scoreMap[verifiedUser].verified.push({
+            rank: rank + 1,
+            level: level.name,
+            score: levelScore,
+            link: level.verification,
+        });
+
+        // =========================
+        // VICTORS (beaten level)
+        // =========================
         victors.forEach((name) => {
             const user =
                 Object.keys(scoreMap).find(
@@ -85,13 +105,13 @@ export async function fetchLeaderboard() {
                 ) || name;
 
             scoreMap[user] ??= {
+                verified: [],
                 victories: [],
             };
 
             scoreMap[user].victories.push({
                 rank: rank + 1,
                 level: level.name,
-                path: level.path, // (useful later for packs)
                 score: levelScore,
                 link: level.verification,
             });
@@ -99,11 +119,13 @@ export async function fetchLeaderboard() {
     });
 
     const res = Object.entries(scoreMap).map(([user, scores]) => {
-        const total = scores.victories.reduce((sum, s) => sum + s.score, 0);
+        const total = [...scores.verified, ...scores.victories]
+            .reduce((sum, s) => sum + s.score, 0);
 
         return {
             user,
             total: Math.round(total),
+            verified: scores.verified,
             victories: scores.victories,
         };
     });
