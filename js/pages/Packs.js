@@ -4,6 +4,7 @@ export default {
     data: () => ({
         packs: [],
         levels: [],
+        selectedPack: 0,
         loading: true,
     }),
 
@@ -12,58 +13,85 @@ export default {
             <p>Loading packs...</p>
         </main>
 
-        <main v-else class="page-packs">
+        <main v-else class="packs-layout">
 
-            <div v-for="pack in packs" class="pack">
-
-                <!-- PACK HEADER -->
+            <!-- LEFT SIDEBAR -->
+            <aside class="packs-sidebar">
                 <div
-                    class="pack-header"
-                    :style="{ borderColor: pack.color || '#999' }"
+                    v-for="(pack, i) in packs"
+                    :key="pack.id"
+                    class="pack-item"
+                    :class="{ active: selectedPack === i }"
+                    @click="selectedPack = i"
+                    :style="{ borderLeftColor: pack.color || '#999' }"
                 >
-                    <h2>
+                    <div class="pack-name">
                         {{ pack.name }}
-                    </h2>
+                    </div>
 
-                    <span class="pack-count">
+                    <div class="pack-sub">
                         {{ pack.levels.length }} levels
-                    </span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- RIGHT CONTENT -->
+            <section class="pack-content">
+
+                <div v-if="currentPack">
+
+                    <h1
+                        class="pack-title"
+                        :style="{ color: currentPack.color || 'black' }"
+                    >
+                        {{ currentPack.name }}
+                    </h1>
+
+                    <p class="pack-meta">
+                        {{ currentPack.levels.length }} levels
+                    </p>
+
+                    <table class="table">
+                        <tr v-for="levelPath in currentPack.levels">
+
+                            <td class="level-name">
+                                <a
+                                    v-if="getLevel(levelPath)"
+                                    :href="getLevel(levelPath).verification"
+                                    target="_blank"
+                                >
+                                    {{ getLevel(levelPath).name }}
+                                </a>
+
+                                <span v-else>
+                                    {{ levelPath }}
+                                </span>
+                            </td>
+
+                            <td class="level-status">
+                                <span v-if="getLevel(levelPath)">
+                                    Available
+                                </span>
+                                <span v-else>
+                                    Missing
+                                </span>
+                            </td>
+
+                        </tr>
+                    </table>
+
                 </div>
 
-                <!-- LEVEL LIST -->
-                <table class="table">
-                    <tr v-for="levelPath in pack.levels">
-
-                        <td class="level-name">
-                            <a
-                                :href="getLevel(levelPath)?.verification"
-                                target="_blank"
-                                v-if="getLevel(levelPath)"
-                            >
-                                {{ getLevel(levelPath).name }}
-                            </a>
-
-                            <span v-else>
-                                {{ levelPath }}
-                            </span>
-                        </td>
-
-                        <td class="level-status">
-                            <span v-if="getLevel(levelPath)">
-                                Available
-                            </span>
-                            <span v-else>
-                                Missing
-                            </span>
-                        </td>
-
-                    </tr>
-                </table>
-
-            </div>
+            </section>
 
         </main>
     `,
+
+    computed: {
+        currentPack() {
+            return this.packs[this.selectedPack] || null;
+        }
+    },
 
     methods: {
         getLevel(path) {
