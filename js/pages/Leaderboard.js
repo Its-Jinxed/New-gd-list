@@ -44,6 +44,10 @@ export default {
                                 <button @click="selected = i">
                                     <span class="type-label-lg">
                                         {{ ientry.user }} — {{ localize(ientry.total) }} pts
+
+                                        <span v-if="i === 0"> 🥇</span>
+                                        <span v-else-if="i === 1"> 🥈</span>
+                                        <span v-else-if="i === 2"> 🥉</span>
                                     </span>
                                 </button>
                             </td>
