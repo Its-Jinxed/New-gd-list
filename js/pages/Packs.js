@@ -13,19 +13,55 @@ export default {
         </main>
 
         <main v-else class="page-packs">
-            <div v-for="pack in packs" class="pack">
-                <h2>{{ pack.name }}</h2>
 
+            <div v-for="pack in packs" class="pack">
+
+                <!-- PACK HEADER -->
+                <div
+                    class="pack-header"
+                    :style="{ borderColor: pack.color || '#999' }"
+                >
+                    <h2>
+                        {{ pack.name }}
+                    </h2>
+
+                    <span class="pack-count">
+                        {{ pack.levels.length }} levels
+                    </span>
+                </div>
+
+                <!-- LEVEL LIST -->
                 <table class="table">
                     <tr v-for="levelPath in pack.levels">
-                        <td>
-                            <a :href="getLevel(levelPath)?.verification" target="_blank">
-                                {{ getLevel(levelPath)?.name || levelPath }}
+
+                        <td class="level-name">
+                            <a
+                                :href="getLevel(levelPath)?.verification"
+                                target="_blank"
+                                v-if="getLevel(levelPath)"
+                            >
+                                {{ getLevel(levelPath).name }}
                             </a>
+
+                            <span v-else>
+                                {{ levelPath }}
+                            </span>
                         </td>
+
+                        <td class="level-status">
+                            <span v-if="getLevel(levelPath)">
+                                Available
+                            </span>
+                            <span v-else>
+                                Missing
+                            </span>
+                        </td>
+
                     </tr>
                 </table>
+
             </div>
+
         </main>
     `,
 
