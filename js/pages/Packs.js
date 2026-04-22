@@ -62,28 +62,18 @@ export default {
                 <div v-if="currentPack" class="levels-list">
 
                     <div
-                        v-for="levelPath in currentPack.levels"
+                        v-for="(levelPath, index) in currentPack.levels"
                         :key="levelPath"
                         class="level-row"
                     >
 
-                        <!-- THUMBNAIL -->
-                        <div class="level-thumb">
-                            <div
-                                v-if="getLevel(levelPath) && getLevel(levelPath).youtubeId"
-                            >
-                                <img
-                                    :src="'https://img.youtube.com/vi/' + getLevel(levelPath).youtubeId + '/mqdefault.jpg'"
-                                    alt="thumbnail"
-                                />
-                            </div>
-
-                            <div v-else class="thumb-placeholder"></div>
+                        <!-- POSITION -->
+                        <div class="level-position">
+                            #{{ index + 1 }}
                         </div>
 
                         <!-- NAME -->
                         <div class="level-name">
-
                             <a
                                 v-if="getLevel(levelPath)"
                                 :href="getLevel(levelPath).verification"
@@ -95,13 +85,16 @@ export default {
                             <span v-else class="missing">
                                 {{ levelPath }}
                             </span>
-
                         </div>
 
-                        <!-- STATUS -->
-                        <div class="level-status">
-                            <span v-if="getLevel(levelPath)">Available</span>
-                            <span v-else>Missing</span>
+                        <!-- THUMBNAIL -->
+                        <div class="level-thumb">
+                            <img
+                                v-if="getLevel(levelPath)?.youtubeId"
+                                :src="'https://img.youtube.com/vi/' + getLevel(levelPath).youtubeId + '/mqdefault.jpg'"
+                                alt="thumbnail"
+                            />
+                            <div v-else class="thumb-placeholder"></div>
                         </div>
 
                     </div>
