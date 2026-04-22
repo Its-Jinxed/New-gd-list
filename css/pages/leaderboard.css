@@ -16,6 +16,10 @@
     overflow-y: auto;
 }
 
+/* =========================
+   ERROR BAR
+========================= */
+
 .page-leaderboard .error-container {
     grid-row: 1;
     grid-column: 1 / span 2;
@@ -25,7 +29,12 @@
     padding: 1rem;
     background-color: var(--color-error);
     color: var(--color-on-error);
+    border-radius: 0.5rem;
 }
+
+/* =========================
+   LEFT / RIGHT PANELS
+========================= */
 
 .page-leaderboard .board-container,
 .page-leaderboard .player-container {
@@ -36,6 +45,10 @@
 .page-leaderboard .board-container {
     padding-inline: 1rem;
 }
+
+/* =========================
+   BOARD LIST
+========================= */
 
 .page-leaderboard .board {
     table-layout: auto;
@@ -63,9 +76,15 @@
     border: none;
     border-radius: 0.5rem;
     padding: 1rem;
+
     text-align: start;
     word-break: normal;
     overflow-wrap: anywhere;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
 }
 
 .page-leaderboard .board .user button:hover {
@@ -78,6 +97,40 @@
     background-color: var(--color-primary);
     color: var(--color-on-primary);
 }
+
+/* =========================
+   PACK BADGES (FIXED + CLEAN)
+========================= */
+
+.pack-badges {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    align-items: center;
+    margin-left: 0.75rem;
+}
+
+.pack-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.35rem;
+
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: white;
+
+    white-space: nowrap;
+    line-height: 1;
+
+    opacity: 0.95;
+}
+
+/* =========================
+   PLAYER PANEL
+========================= */
 
 .page-leaderboard .player {
     display: flex;
