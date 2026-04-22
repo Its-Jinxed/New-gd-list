@@ -1,0 +1,12 @@
+[
+  {
+    "id": "pack1blah",
+    "name": "Starter Pack",
+    "levels": ["level1", "level2", "level3"]
+  },
+  {
+    "id": "hard-pack",
+    "name": "Hard Pack",
+    "levels": ["level7", "level9"]
+  }
+]
