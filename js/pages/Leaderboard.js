@@ -36,7 +36,7 @@ export default {
                             <td class="user" :class="{ 'active': selected == i }">
                                 <button @click="selected = i">
                                     <span class="type-label-lg">
-                                        #{{ i + 1 }} {{ ientry.user }} — {{ localize(ientry.total) }} pts
+                                        {{ ientry.user }} — {{ localize(ientry.total) }} pts
                                     </span>
                                 </button>
                             </td>
