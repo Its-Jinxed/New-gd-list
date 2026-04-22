@@ -132,16 +132,35 @@ export async function fetchLeaderboard() {
     });
 
     const res = Object.entries(scoreMap).map(([user, scores]) => {
-        const total = [...scores.verified, ...scores.victories]
-            .reduce((sum, s) => sum + s.score, 0);
+    const total = [...scores.verified, ...scores.victories]
+        .reduce((sum, s) => sum + s.score, 0);
+
+    // Build set of beaten levels
+    const beaten = new Set([
+        ...scores.verified.map(v => v.path),
+        ...scores.victories.map(v => v.path),
+    ]);
+
+    // Compute pack progress for this user
+    const userPacks = packs.map(pack => {
+        const completed = pack.levels.filter(l => beaten.has(l)).length;
 
         return {
-            user,
-            total: Math.round(total),
-            verified: scores.verified,
-            victories: scores.victories,
+            ...pack,
+            progress: completed,
+            total: pack.levels.length,
+            complete: completed === pack.levels.length,
         };
     });
+
+    return {
+        user,
+        total: Math.round(total),
+        verified: scores.verified,
+        victories: scores.victories,
+        packs: userPacks,
+    };
+});
 
     return [res.sort((a, b) => b.total - a.total), errs];
 }
