@@ -93,3 +93,47 @@ input[type="checkbox"] {
     cursor: pointer;
     margin: 0;
 }
+
+.page-packs {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.pack {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: rgba(0,0,0,0.03);
+}
+
+.pack-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-left: 6px solid;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pack-header h2 {
+    margin: 0;
+}
+
+.pack-count {
+    opacity: 0.6;
+    font-size: 0.9rem;
+}
+
+.level-name a {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.level-name a:hover {
+    text-decoration: underline;
+}
+
+.level-status {
+    text-align: right;
+    opacity: 0.6;
+}
