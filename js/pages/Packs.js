@@ -9,76 +9,84 @@ export default {
     }),
 
     template: `
-        <main v-if="loading">
+        <main v-if="loading" class="packs-loading">
             <p>Loading packs...</p>
         </main>
 
-        <main v-else class="packs-layout">
+        <main v-else class="packs-page">
 
-            <!-- LEFT SIDEBAR -->
+            <!-- LEFT PANEL -->
             <aside class="packs-sidebar">
+
+                <div class="packs-title">
+                    <h2>Packs</h2>
+                </div>
+
                 <div
                     v-for="(pack, i) in packs"
                     :key="pack.id"
-                    class="pack-item"
+                    class="pack-card"
                     :class="{ active: selectedPack === i }"
                     @click="selectedPack = i"
-                    :style="{ borderLeftColor: pack.color || '#999' }"
+                    :style="{ '--pack-color': pack.color || '#888' }"
                 >
-                    <div class="pack-name">
+                    <div class="pack-card__name">
                         {{ pack.name }}
                     </div>
 
-                    <div class="pack-sub">
+                    <div class="pack-card__meta">
                         {{ pack.levels.length }} levels
                     </div>
                 </div>
+
             </aside>
 
-            <!-- RIGHT CONTENT -->
-            <section class="pack-content">
+            <!-- RIGHT PANEL -->
+            <section class="packs-content">
 
-                <div v-if="currentPack">
+                <div v-if="currentPack" class="pack-header">
 
-                    <h1
-                        class="pack-title"
-                        :style="{ color: currentPack.color || 'black' }"
+                    <div
+                        class="pack-header__bar"
+                        :style="{ background: currentPack.color || '#888' }"
+                    ></div>
+
+                    <div class="pack-header__text">
+                        <h1>{{ currentPack.name }}</h1>
+                        <p>{{ currentPack.levels.length }} levels</p>
+                    </div>
+
+                </div>
+
+                <div v-if="currentPack" class="levels-list">
+
+                    <div
+                        v-for="levelPath in currentPack.levels"
+                        :key="levelPath"
+                        class="level-row"
                     >
-                        {{ currentPack.name }}
-                    </h1>
+                        <div class="level-name">
 
-                    <p class="pack-meta">
-                        {{ currentPack.levels.length }} levels
-                    </p>
+                            <a
+                                v-if="getLevel(levelPath)"
+                                :href="getLevel(levelPath).verification"
+                                target="_blank"
+                            >
+                                {{ getLevel(levelPath).name }}
+                            </a>
 
-                    <table class="table">
-                        <tr v-for="levelPath in currentPack.levels">
+                            <span v-else class="missing">
+                                {{ levelPath }}
+                            </span>
 
-                            <td class="level-name">
-                                <a
-                                    v-if="getLevel(levelPath)"
-                                    :href="getLevel(levelPath).verification"
-                                    target="_blank"
-                                >
-                                    {{ getLevel(levelPath).name }}
-                                </a>
+                        </div>
 
-                                <span v-else>
-                                    {{ levelPath }}
-                                </span>
-                            </td>
+                        <div class="level-status">
+                            <span v-if="getLevel(levelPath)">Available</span>
+                            <span v-else>Missing</span>
+                        </div>
 
-                            <td class="level-status">
-                                <span v-if="getLevel(levelPath)">
-                                    Available
-                                </span>
-                                <span v-else>
-                                    Missing
-                                </span>
-                            </td>
-
-                        </tr>
-                    </table>
+                    </div>
 
                 </div>
 
