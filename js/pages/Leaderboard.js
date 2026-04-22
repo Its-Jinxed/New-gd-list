@@ -17,6 +17,7 @@ export default {
         <main v-if="loading">
             <Spinner></Spinner>
         </main>
+
         <main v-else class="page-leaderboard-container">
             <div class="page-leaderboard">
                 <div class="error-container">
@@ -48,6 +49,7 @@ export default {
                         <h1>#{{ selected + 1 }} {{ entry.user }}</h1>
                         <h3>{{ localize(entry.total) }}</h3>
 
+                        <!-- VICTORIES -->
                         <h2 v-if="entry.victories && entry.victories.length > 0">
                             Victories ({{ entry.victories.length }})
                         </h2>
@@ -69,6 +71,28 @@ export default {
                         </table>
 
                         <p v-else>No victories yet.</p>
+
+                        <!-- VERIFIED -->
+                        <h2 v-if="entry.verified && entry.verified.length > 0">
+                            Verified ({{ entry.verified.length }})
+                        </h2>
+
+                        <table class="table" v-if="entry.verified && entry.verified.length > 0">
+                            <tr v-for="score in entry.verified">
+                                <td class="rank">
+                                    <p>#{{ score.rank }}</p>
+                                </td>
+                                <td class="level">
+                                    <a class="type-label-lg" target="_blank" :href="score.link">
+                                        {{ score.level }}
+                                    </a>
+                                </td>
+                                <td class="score">
+                                    <p>+{{ localize(score.score) }}</p>
+                                </td>
+                            </tr>
+                        </table>
+
                     </div>
                 </div>
             </div>
@@ -80,6 +104,7 @@ export default {
                 user: '',
                 total: 0,
                 victories: [],
+                verified: [],
             };
         },
     },
