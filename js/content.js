@@ -1,45 +1,31 @@
 import { round, score } from './score.js';
 
-/**
- * Path to directory containing `_list.json` and all levels
- */
 const dir = 'data';
 
-/**
- * Youtube thumbnail function etc:
- */
+/* =========================
+   YOUTUBE ID
+========================= */
 function getYouTubeId(url) {
-    const match = url?.match(/(?:v=|embed\/)([^&?/]+)/);
+    const match = url?.match(/(?:v=|youtu\.be\/|embed\/)([^&?/]+)/);
     return match ? match[1] : null;
 }
 
-/**
- * Calculate creator points based on level rating
- * @param {String} rating "Joke" | "Standard" | "Featured" | "Epic"
- * @returns {Number}
- */
+/* =========================
+   CREATOR POINTS SYSTEM
+========================= */
 export function creatorScore(rating) {
     switch ((rating || '').toLowerCase()) {
-        case 'joke':
-            return 1;
-
-        case 'standard':
-            return 2;
-
-        case 'featured':
-            return 3;
-
-        case 'epic':
-            return 5;
-
-        default:
-            return 0;
+        case 'joke': return 1;
+        case 'standard': return 2;
+        case 'featured': return 3;
+        case 'epic': return 5;
+        default: return 0;
     }
 }
 
 /* =========================
-   SAFE LIST FETCH (FIXED)
-   ========================= */
+   SAFE LIST FETCH
+========================= */
 export async function fetchList() {
     try {
         const listResult = await fetch(`${dir}/_list.json`);
@@ -67,37 +53,27 @@ export async function fetchList() {
 
                     const level = await levelResult.json();
 
-                    level.creators = Array.isArray(level.creators)
-                        ? level.creators
-                        : [level.creators];
-
                     return [
                         {
                             ...level,
                             path,
                             youtubeId: getYouTubeId(level.verification),
+                            creators: Array.isArray(level.creators)
+                                ? level.creators
+                                : [level.creators],
                             victors: level.victors ?? [],
                         },
                         null,
                     ];
                 } catch (err) {
-                    console.error(`Failed to load level #${rank + 1} ${path}.`, err);
+                    console.error(`Failed level ${rank + 1}: ${path}`, err);
                     return [null, path];
                 }
-            }),
+            })
         );
     } catch (err) {
         console.error("Critical list load failure:", err);
         return [];
-    }
-}
-
-export async function fetchEditors() {
-    try {
-        const editorsResults = await fetch(`${dir}/_editors.json`);
-        return await editorsResults.json();
-    } catch {
-        return null;
     }
 }
 
@@ -113,7 +89,7 @@ export async function fetchPacks() {
 
 /* =========================
    LEADERBOARD
-   ========================= */
+========================= */
 export async function fetchLeaderboard() {
     const list = await fetchList();
     const packs = await fetchPacks();
@@ -121,9 +97,7 @@ export async function fetchLeaderboard() {
     const scoreMap = {};
     const errs = [];
 
-    // 🛑 HARD GUARD (prevents infinite loading crash)
     if (!Array.isArray(list) || list.length === 0) {
-        console.error("fetchList() returned invalid/empty data:", list);
         return [[], ["List failed to load"]];
     }
 
@@ -134,45 +108,44 @@ export async function fetchLeaderboard() {
         }
 
         const levelScore = score(rank + 1);
-        const creatorPoints = getCreatorPoints(level);
+        const creatorPoints = creatorScore(level.rating);
 
         const verifier = level.verifier;
         const victors = new Set(level.victors ?? []);
 
-        // =========================
-        // VERIFIED (creator)
-        // =========================
-        const verifiedUser =
+        /* =========================
+           CREATOR
+        ========================= */
+        const creatorUser =
             Object.keys(scoreMap).find(
-                (u) => u.toLowerCase() === verifier?.toLowerCase(),
+                u => u.toLowerCase() === verifier?.toLowerCase()
             ) || verifier;
 
-        scoreMap[verifiedUser] ??= {
+        scoreMap[creatorUser] ??= {
             verified: [],
             victories: [],
             creatorScore: 0,
         };
 
-        scoreMap[verifiedUser].verified.push({
+        scoreMap[creatorUser].verified.push({
             rank: rank + 1,
             level: level.name,
             path: level.path,
             score: levelScore,
-            creatorScore: creatorPoints,
             link: level.verification,
         });
 
-        scoreMap[verifiedUser].creatorScore += creatorPoints;
+        scoreMap[creatorUser].creatorScore += creatorPoints;
 
-        // =========================
-        // VICTORS
-        // =========================
-        victors.forEach((name) => {
+        /* =========================
+           VICTORS
+        ========================= */
+        victors.forEach(name => {
             if (!name || name.toLowerCase() === verifier?.toLowerCase()) return;
 
             const user =
                 Object.keys(scoreMap).find(
-                    (u) => u.toLowerCase() === name.toLowerCase(),
+                    u => u.toLowerCase() === name.toLowerCase()
                 ) || name;
 
             scoreMap[user] ??= {
@@ -191,18 +164,16 @@ export async function fetchLeaderboard() {
         });
     });
 
-    const res = Object.entries(scoreMap).map(([user, scores]) => {
-        const total = [...scores.verified, ...scores.victories]
+    const result = Object.entries(scoreMap).map(([user, data]) => {
+        const total = [...data.verified, ...data.victories]
             .reduce((sum, s) => sum + (s.score || 0), 0);
 
-        const creatorScore = scores.creatorScore || 0;
-
         const beaten = new Set([
-            ...scores.verified.map(v => v.path),
-            ...scores.victories.map(v => v.path),
+            ...data.verified.map(v => v.path),
+            ...data.victories.map(v => v.path),
         ]);
 
-        const userPacks = packs.map(pack => {
+        const packsWithProgress = packs.map(pack => {
             const completed = pack.levels.filter(l => beaten.has(l)).length;
 
             return {
@@ -216,15 +187,15 @@ export async function fetchLeaderboard() {
         return {
             user,
             total: Math.round(total),
-            creatorScore,
-            verified: scores.verified,
-            victories: scores.victories,
-            packs: userPacks,
+            creatorScore: data.creatorScore || 0,
+            verified: data.verified,
+            victories: data.victories,
+            packs: packsWithProgress,
         };
     });
 
     return [
-        res.sort((a, b) => b.total - a.total),
+        result.sort((a, b) => b.total - a.total),
         errs
     ];
 }
