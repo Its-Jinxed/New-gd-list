@@ -27,12 +27,13 @@ export default {
         store,
 
         // =====================
-        // NEW UI STATE
+        // FILTER STATE (UPDATED)
         // =====================
         search: "",
-        filterCreator: "all",
-        filterRating: "all",
-        sortMode: "difficulty"
+        selectedCreators: [],
+        selectedRatings: [],
+        sortMode: "difficulty",
+        filtersOpen: false,
     }),
 
     template: `
@@ -42,12 +43,10 @@ export default {
 
         <main v-else class="app-shell page-list">
 
-            <!-- LEFT: LIST -->
+            <!-- LEFT -->
             <aside class="app-sidebar">
 
-                <!-- =====================
-                     SEARCH + FILTER UI
-                ====================== -->
+                <!-- CONTROLS -->
                 <div class="list-controls">
 
                     <input
@@ -57,24 +56,9 @@ export default {
                         class="list-search"
                     />
 
-                    <select v-model="filterCreator" class="list-filter">
-                        <option value="all">All creators</option>
-                        <option
-                            v-for="c in uniqueCreators"
-                            :key="c"
-                            :value="c"
-                        >
-                            {{ c }}
-                        </option>
-                    </select>
-
-                    <select v-model="filterRating" class="list-filter">
-                        <option value="all">All ratings</option>
-                        <option>Joke</option>
-                        <option>Standard</option>
-                        <option>Featured</option>
-                        <option>Epic</option>
-                    </select>
+                    <button class="list-filter" @click="filtersOpen = !filtersOpen">
+                        Filters
+                    </button>
 
                     <select v-model="sortMode" class="list-filter">
                         <option value="difficulty">Difficulty</option>
@@ -83,6 +67,24 @@ export default {
 
                 </div>
 
+                <!-- DROPDOWN FILTER PANEL -->
+                <div v-if="filtersOpen" class="filter-panel">
+
+                    <h4>Creators</h4>
+                    <label v-for="c in uniqueCreators" :key="c">
+                        <input type="checkbox" :value="c" v-model="selectedCreators">
+                        {{ c }}
+                    </label>
+
+                    <h4>Ratings</h4>
+                    <label v-for="r in ['Joke','Standard','Featured','Epic']" :key="r">
+                        <input type="checkbox" :value="r" v-model="selectedRatings">
+                        {{ r }}
+                    </label>
+
+                </div>
+
+                <!-- LIST -->
                 <table class="list" v-if="filteredList">
                     <tr v-for="([level, err], i) in filteredList" :key="level?.id || i">
 
@@ -95,7 +97,7 @@ export default {
                             <button @click="selected = i">
 
                                 <img
-                                    v-if="level && level.youtubeId"
+                                    v-if="level?.youtubeId"
                                     class="thumb"
                                     :src="'https://img.youtube.com/vi/' + level.youtubeId + '/mqdefault.jpg'"
                                 />
@@ -164,7 +166,7 @@ export default {
                     <h2>Victors</h2>
 
                     <table class="victors" v-if="level.victors && level.victors.length">
-                        <tr v-for="victor in level.victors">
+                        <tr v-for="victor in level.victors" :key="victor">
                             <td>
                                 <span class="type-label-lg">
                                     {{ victor }}
@@ -192,54 +194,47 @@ export default {
             return embed(this.level.showcase || this.level.verification);
         },
 
-        // =====================
-        // UNIQUE FILTER OPTIONS
-        // =====================
         uniqueCreators() {
             const set = new Set();
 
             this.list.forEach(([lvl]) => {
-                if (!lvl?.creators) return;
-                lvl.creators.forEach(c => set.add(c));
+                (lvl?.creators || []).forEach(c => set.add(c));
             });
 
-            return Array.from(set).sort();
+            return [...set].sort();
         },
 
-        // =====================
-        // FILTER + SORT SYSTEM
-        // =====================
         filteredList() {
             let arr = [...this.list];
 
-            // search
+            // SEARCH
             if (this.search) {
                 arr = arr.filter(([lvl]) =>
                     lvl?.name?.toLowerCase().includes(this.search.toLowerCase())
                 );
             }
 
-            // creator filter
-            if (this.filterCreator !== "all") {
+            // CREATOR FILTER
+            if (this.selectedCreators.length) {
                 arr = arr.filter(([lvl]) =>
-                    lvl?.creators?.includes(this.filterCreator)
+                    lvl?.creators?.some(c =>
+                        this.selectedCreators.includes(c)
+                    )
                 );
             }
 
-            // rating filter
-            if (this.filterRating !== "all") {
+            // RATING FILTER
+            if (this.selectedRatings.length) {
                 arr = arr.filter(([lvl]) =>
-                    lvl?.rating === this.filterRating
+                    this.selectedRatings.includes(lvl?.rating)
                 );
             }
 
-            // sorting
+            // SORT
             if (this.sortMode === "length") {
-                arr.sort((a, b) => {
-                    const aLen = a[0]?.length ?? 0;
-                    const bLen = b[0]?.length ?? 0;
-                    return aLen - bLen;
-                });
+                arr = arr.sort((a, b) =>
+                    (b[0]?.length || 0) - (a[0]?.length || 0)
+                );
             }
 
             return arr;
