@@ -27,7 +27,8 @@ export default {
             <!-- LEFT: LIST -->
             <aside class="app-sidebar">
                 <table class="list" v-if="list">
-                    <tr v-for="([level, err], i) in list">
+
+                    <tr v-for="([level, err], i) in list" :key="level?.id || i">
 
                         <td class="rank">
                             <p v-if="i + 1 <= 150" class="type-label-lg">#{{ i + 1 }}</p>
@@ -35,7 +36,7 @@ export default {
                         </td>
 
                         <td class="level" :class="{ active: selected === i, error: !level }">
-                            <button @click="selected = i">
+                            <button @click="selectLevel(i)">
                                 <img
                                     v-if="level && level.youtubeId"
                                     class="thumb"
@@ -104,7 +105,7 @@ export default {
                     <h2>Victors</h2>
 
                     <table class="victors" v-if="level.victors && level.victors.length">
-                        <tr v-for="victor in level.victors">
+                        <tr v-for="victor in level.victors" :key="victor">
                             <td>
                                 <span class="type-label-lg">
                                     {{ victor }}
@@ -134,7 +135,7 @@ export default {
 
     computed: {
         level() {
-            return this.list[this.selected]?.[0];
+            return this.list?.[this.selected]?.[0] || null;
         },
 
         video() {
@@ -169,5 +170,10 @@ export default {
     methods: {
         embed,
         score,
+
+        // ✅ safer selection (prevents future filter/sort bugs)
+        selectLevel(i) {
+            this.selected = i;
+        }
     },
 };
