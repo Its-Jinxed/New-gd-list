@@ -156,7 +156,7 @@ export default {
                             </p>
 
                             <p class="type-body">
-                                <span>Length: {{ level?.length || 'N/A' }}</span>
+                                <span>Length: {{ level?.lengthDisplay || level?.length || 'N/A' }}</span>
                             </p>
 
                         </div>
