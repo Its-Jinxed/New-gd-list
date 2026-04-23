@@ -1,9 +1,10 @@
 [
   {
-    "id": "pack1blah",
-    "name": "Starter Pack",
+    "id": "Entry Pack 1",
+    "name": "Entry Pack 1",
     "color": "#2ecc71",
-    "levels": ["Wobble Wobble"]
+    "levels": ["Serenity", "Daydream", "Beneath"]
+    "points": 
   },
   {
     "id": "hard-pack",
