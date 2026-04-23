@@ -13,18 +13,12 @@
     margin: 0 auto;
 }
 
-/* =========================
-   SCROLL CONTAINERS
-========================= */
-
+/* scroll areas */
 .page-leaderboard > div {
     overflow-y: auto;
 }
 
-/* =========================
-   ERROR BAR
-========================= */
-
+/* error */
 .page-leaderboard .error-container {
     grid-row: 1;
     grid-column: 1 / span 2;
@@ -37,27 +31,19 @@
     border-radius: 0.75rem;
 }
 
-/* =========================
-   LEFT + RIGHT PANELS
-========================= */
-
+/* panels */
 .page-leaderboard .board-container,
 .page-leaderboard .player-container {
     grid-row: 2;
     padding-block: 2rem;
 }
 
-/* left panel spacing */
 .page-leaderboard .board-container {
     padding-inline: 1rem;
 }
 
-/* =========================
-   TABLE
-========================= */
-
+/* LEFT TABLE */
 .page-leaderboard .board {
-    display: block;
     width: 100%;
 }
 
@@ -66,10 +52,7 @@
     padding-block: 1rem;
 }
 
-/* =========================
-   USER BUTTONS
-========================= */
-
+/* LEFT BUTTON */
 .page-leaderboard .user button {
     width: 100%;
     border: none;
@@ -82,10 +65,10 @@
     background: var(--color-background);
     color: var(--color-on-background);
 
-    font-size: 1rem;
+    font-size: inherit;
     font-weight: 600;
 
-    transition: background 0.15s ease, transform 0.15s ease;
+    transition: all 0.15s ease;
 }
 
 .page-leaderboard .user button:hover {
@@ -98,37 +81,23 @@
     color: var(--color-on-primary);
 }
 
-/* =========================
-   TABS
-========================= */
-
+/* tabs */
 .lb-tabs {
     display: flex;
     justify-content: center;
     gap: 1rem;
-
     margin-bottom: 1.5rem;
 }
 
 .lb-tab {
     padding: 0.6rem 1.2rem;
-
     border-radius: 999px;
     border: none;
-
     background: var(--panel-bg);
-    color: var(--color-on-background);
-
     cursor: pointer;
 
-    font-size: 0.95rem;
+    font-size: inherit;
     font-weight: 600;
-
-    transition: all 0.15s ease;
-}
-
-.lb-tab:hover {
-    background: var(--panel-bg-hover);
 }
 
 .lb-tab.active {
@@ -136,43 +105,38 @@
     color: var(--color-on-primary);
 }
 
-/* =========================
-   PACK CHIPS (UPGRADED TSL STYLE)
-========================= */
+/* RIGHT SIDE TEXT MATCHING LEFT STYLE */
+.player-container .type-label-lg,
+.player-container h1,
+.player-container h2,
+.player-container a,
+.player-container p {
+    font-size: inherit;
+    font-weight: 600;
+}
 
+/* PACK CHIPS */
 .pack-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    padding: 0.55rem 1rem;
+    padding: 0.6rem 1rem;
     margin: 0.25rem;
 
     border-radius: 999px;
 
-    font-size: 1rem;
+    font-size: inherit;
     font-weight: 600;
-
-    line-height: 1;
 
     background: var(--panel-bg);
     color: var(--color-on-background);
 
-    opacity: 0.6;
-
-    transition: all 0.15s ease;
-
-    user-select: none;
+    opacity: 0.7;
 }
 
-/* completed packs */
 .pack-badge.complete {
     opacity: 1;
-    background: rgba(255, 215, 0, 0.25); /* soft gold base */
+    background: rgba(255, 215, 0, 0.25);
     border: 1px solid rgba(255, 215, 0, 0.6);
-}
-
-/* hover effect (subtle lift like TSL) */
-.pack-badge:hover {
-    transform: translateY(-2px);
 }
