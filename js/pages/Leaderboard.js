@@ -15,97 +15,108 @@ export default {
 
     template: `
         <main v-if="loading">
-            <Spinner />
+            <Spinner></Spinner>
         </main>
 
-        <main v-else class="page">
+        <main v-else class="page-leaderboard-container">
+            <div class="page-leaderboard">
 
-            <!-- SIDEBAR -->
-            <div class="page-sidebar leaderboard-sidebar">
+                <div class="error-container">
+                    <p class="error" v-if="err.length > 0">
+                        Leaderboard may be incorrect, as the following levels could not be loaded:
+                        {{ err.join(', ') }}
+                    </p>
+                </div>
 
-                <div
-                    v-for="(entry, i) in leaderboard"
-                    :key="entry.user"
-                    class="ui-row user-row"
-                    :class="{ active: selected === i }"
-                    @click="selected = i"
-                >
-                    <div class="user-rank">#{{ i + 1 }}</div>
+                <!-- LEFT -->
+                <div class="board-container">
+                    <table class="board">
+                        <tr v-for="(entry, i) in leaderboard" :key="entry.user">
 
-                    <div class="user-name type-label-lg">
-                        {{ entry.user }}
-                        <span v-if="i === 0"> 🥇</span>
-                        <span v-else-if="i === 1"> 🥈</span>
-                        <span v-else-if="i === 2"> 🥉</span>
-                    </div>
+                            <td class="rank">
+                                <p class="type-label-lg">#{{ i + 1 }}</p>
+                            </td>
 
-                    <div class="ui-muted">
-                        {{ localize(entry.total) }}
+                            <td class="user" :class="{ active: selected == i }">
+                                <button @click="selected = i">
+                                    <span class="type-label-lg">
+                                        {{ entry.user }} — {{ localize(entry.total) }} pts
+
+                                        <span v-if="i === 0"> 🥇</span>
+                                        <span v-else-if="i === 1"> 🥈</span>
+                                        <span v-else-if="i === 2"> 🥉</span>
+                                    </span>
+                                </button>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- RIGHT -->
+                <div class="player-container">
+                    <div class="player">
+
+                        <h1>
+                            #{{ selected + 1 }} {{ entry.user }} —
+                            {{ localize(entry.total) }} pts
+                        </h1>
+
+                        <div class="pack-badges" v-if="entry.packs && entry.packs.length">
+                            <span
+                                v-for="pack in entry.packs.filter(p => p.complete)"
+                                :key="pack.name"
+                                class="pack-badge"
+                                :style="{ background: pack.color || 'gold' }"
+                            >
+                                {{ pack.name }}
+                            </span>
+                        </div>
+
+                        <h2 v-if="entry.verified.length">
+                            Verified ({{ entry.verified.length }})
+                        </h2>
+
+                        <table class="table" v-if="entry.verified.length">
+                            <tr v-for="score in entry.verified" :key="score.level">
+                                <td class="rank"><p>#{{ score.rank }}</p></td>
+                                <td class="level">
+                                    <a target="_blank" :href="score.link">
+                                        {{ score.level }}
+                                    </a>
+                                </td>
+                                <td class="score">
+                                    <p>+{{ localize(score.score) }}</p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p v-else>No verified levels.</p>
+
+                        <h2 v-if="entry.victories.length">
+                            Completed ({{ entry.victories.length }})
+                        </h2>
+
+                        <table class="table" v-if="entry.victories.length">
+                            <tr v-for="score in entry.victories" :key="score.level">
+                                <td class="rank"><p>#{{ score.rank }}</p></td>
+                                <td class="level">
+                                    <a target="_blank" :href="score.link">
+                                        {{ score.level }}
+                                    </a>
+                                </td>
+                                <td class="score">
+                                    <p>+{{ localize(score.score) }}</p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p v-else>No completed levels yet.</p>
+
                     </div>
                 </div>
 
             </div>
-
-            <!-- PLAYER PANEL -->
-            <div class="page-content player-panel">
-
-                <div class="ui-card player-header">
-                    <h1>
-                        #{{ selected + 1 }} {{ entry.user }}
-                    </h1>
-                    <div>{{ localize(entry.total) }} pts</div>
-                </div>
-
-                <div class="pack-badges" v-if="entry.packs?.length">
-                    <span
-                        v-for="pack in entry.packs.filter(p => p.complete)"
-                        class="pack-badge"
-                        :style="{ background: pack.color || 'gold' }"
-                    >
-                        {{ pack.name }}
-                    </span>
-                </div>
-
-                <div class="ui-card player-section">
-                    <h2>Verified ({{ entry.verified.length }})</h2>
-
-                    <div class="player-levels">
-                        <div
-                            v-for="score in entry.verified"
-                            class="ui-row"
-                        >
-                            <span>#{{ score.rank }}</span>
-
-                            <a :href="score.link" target="_blank" class="type-label-lg">
-                                {{ score.level }}
-                            </a>
-
-                            <span>+{{ localize(score.score) }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ui-card player-section">
-                    <h2>Completed ({{ entry.victories.length }})</h2>
-
-                    <div class="player-levels">
-                        <div
-                            v-for="score in entry.victories"
-                            class="ui-row"
-                        >
-                            <span>#{{ score.rank }}</span>
-
-                            <a :href="score.link" target="_blank" class="type-label-lg">
-                                {{ score.level }}
-                            </a>
-
-                            <span>+{{ localize(score.score) }}</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
         </main>
     `,
 
