@@ -26,8 +26,6 @@ export async function fetchList() {
                 try {
                     const level = await levelResult.json();
 
-                    console.log(level.verification, getYouTubeId(level.verification));
-
                     level.creators = Array.isArray(level.creators)
                         ? level.creators
                         : [level.creators];
@@ -56,11 +54,21 @@ export async function fetchList() {
 export async function fetchEditors() {
     try {
         const editorsResults = await fetch(`${dir}/_editors.json`);
-        const editors = await editorsResults.json();
-        return editors;
+        return await editorsResults.json();
     } catch {
         return null;
     }
+}
+
+/* =========================
+   CREATOR POINT RULES
+   ========================= */
+function getCreatorPoints(level) {
+    const rating = (level.rating || '').toLowerCase();
+
+    if (rating === 'epic') return 5;
+    if (rating === 'featured') return 3;
+    return 2; // standard
 }
 
 export async function fetchLeaderboard() {
@@ -77,6 +85,7 @@ export async function fetchLeaderboard() {
         }
 
         const levelScore = score(rank + 1);
+        const creatorPoints = getCreatorPoints(level);
 
         const verifier = level.verifier;
         const victors = new Set(level.victors ?? []);
@@ -92,6 +101,7 @@ export async function fetchLeaderboard() {
         scoreMap[verifiedUser] ??= {
             verified: [],
             victories: [],
+            creatorScore: 0,
         };
 
         scoreMap[verifiedUser].verified.push({
@@ -99,17 +109,17 @@ export async function fetchLeaderboard() {
             level: level.name,
             path: level.path,
             score: levelScore,
+            creatorScore: creatorPoints,
             link: level.verification,
         });
+
+        scoreMap[verifiedUser].creatorScore += creatorPoints;
 
         // =========================
         // VICTORS (beaten level)
         // =========================
         victors.forEach((name) => {
-            // 🚫 Prevent verifier from also being counted as a victor
-            if (name.toLowerCase() === verifier.toLowerCase()) {
-                return;
-            }
+            if (name.toLowerCase() === verifier.toLowerCase()) return;
 
             const user =
                 Object.keys(scoreMap).find(
@@ -119,6 +129,7 @@ export async function fetchLeaderboard() {
             scoreMap[user] ??= {
                 verified: [],
                 victories: [],
+                creatorScore: 0,
             };
 
             scoreMap[user].victories.push({
@@ -132,35 +143,38 @@ export async function fetchLeaderboard() {
     });
 
     const res = Object.entries(scoreMap).map(([user, scores]) => {
-    const total = [...scores.verified, ...scores.victories]
-        .reduce((sum, s) => sum + s.score, 0);
+        const total = [...scores.verified, ...scores.victories]
+            .reduce((sum, s) => sum + s.score, 0);
 
-    // Build set of beaten levels
-    const beaten = new Set([
-        ...scores.verified.map(v => v.path),
-        ...scores.victories.map(v => v.path),
-    ]);
+        const creatorScore = scores.creatorScore || 0;
 
-    // Compute pack progress for this user
-    const userPacks = packs.map(pack => {
-        const completed = pack.levels.filter(l => beaten.has(l)).length;
+        // Build set of beaten levels
+        const beaten = new Set([
+            ...scores.verified.map(v => v.path),
+            ...scores.victories.map(v => v.path),
+        ]);
+
+        // Packs
+        const userPacks = packs.map(pack => {
+            const completed = pack.levels.filter(l => beaten.has(l)).length;
+
+            return {
+                ...pack,
+                progress: completed,
+                total: pack.levels.length,
+                complete: completed === pack.levels.length,
+            };
+        });
 
         return {
-            ...pack,
-            progress: completed,
-            total: pack.levels.length,
-            complete: completed === pack.levels.length,
+            user,
+            total: Math.round(total),
+            creatorScore,
+            verified: scores.verified,
+            victories: scores.victories,
+            packs: userPacks,
         };
     });
-
-    return {
-        user,
-        total: Math.round(total),
-        verified: scores.verified,
-        victories: scores.victories,
-        packs: userPacks,
-    };
-});
 
     return [res.sort((a, b) => b.total - a.total), errs];
 }
