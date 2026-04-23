@@ -14,6 +14,10 @@
     --border-radius: 1rem;
 }
 
+* {
+  transition: all 0.15s ease;
+}
+
 main.dark,
 header.dark {
     color-scheme: dark;
