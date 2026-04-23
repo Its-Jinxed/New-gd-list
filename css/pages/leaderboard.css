@@ -13,12 +13,18 @@
     margin: 0 auto;
 }
 
-/* scroll areas */
+/* =========================
+   SCROLL AREAS
+========================= */
+
 .page-leaderboard > div {
     overflow-y: auto;
 }
 
-/* error */
+/* =========================
+   ERROR
+========================= */
+
 .page-leaderboard .error-container {
     grid-row: 1;
     grid-column: 1 / span 2;
@@ -31,7 +37,10 @@
     border-radius: 0.75rem;
 }
 
-/* panels */
+/* =========================
+   PANELS
+========================= */
+
 .page-leaderboard .board-container,
 .page-leaderboard .player-container {
     grid-row: 2;
@@ -42,7 +51,10 @@
     padding-inline: 1rem;
 }
 
-/* LEFT TABLE */
+/* =========================
+   LEFT TABLE
+========================= */
+
 .page-leaderboard .board {
     width: 100%;
 }
@@ -52,7 +64,10 @@
     padding-block: 1rem;
 }
 
-/* LEFT BUTTON */
+/* =========================
+   LEFT USER BUTTONS
+========================= */
+
 .page-leaderboard .user button {
     width: 100%;
     border: none;
@@ -65,7 +80,7 @@
     background: var(--color-background);
     color: var(--color-on-background);
 
-    font-size: inherit;
+    font-size: 1rem;
     font-weight: 600;
 
     transition: all 0.15s ease;
@@ -81,7 +96,10 @@
     color: var(--color-on-primary);
 }
 
-/* tabs */
+/* =========================
+   TABS
+========================= */
+
 .lb-tabs {
     display: flex;
     justify-content: center;
@@ -96,7 +114,7 @@
     background: var(--panel-bg);
     cursor: pointer;
 
-    font-size: inherit;
+    font-size: 1rem;
     font-weight: 600;
 }
 
@@ -105,38 +123,70 @@
     color: var(--color-on-primary);
 }
 
-/* RIGHT SIDE TEXT MATCHING LEFT STYLE */
-.player-container .type-label-lg,
-.player-container h1,
-.player-container h2,
+/* =========================
+   RIGHT PANEL TYPOGRAPHY (FIXED HIERARCHY)
+========================= */
+
+.player-container h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.player-container h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.player-container p,
 .player-container a,
-.player-container p {
-    font-size: inherit;
+.player-container td {
+    font-size: 1rem;
     font-weight: 600;
 }
 
-/* PACK CHIPS */
+/* ensure level names match left leaderboard style */
+.player-container .level a {
+    text-decoration: none;
+    color: var(--color-on-background);
+}
+
+/* =========================
+   PACK CHIPS (IMPROVED)
+========================= */
+
 .pack-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    padding: 0.6rem 1rem;
+    padding: 0.7rem 1.1rem;
     margin: 0.25rem;
 
     border-radius: 999px;
 
-    font-size: inherit;
+    font-size: 1rem;
     font-weight: 600;
 
     background: var(--panel-bg);
     color: var(--color-on-background);
 
-    opacity: 0.7;
+    opacity: 0.75;
+
+    transition: all 0.15s ease;
+
+    user-select: none;
 }
 
 .pack-badge.complete {
     opacity: 1;
     background: rgba(255, 215, 0, 0.25);
     border: 1px solid rgba(255, 215, 0, 0.6);
+}
+
+.pack-badge:hover {
+    transform: translateY(-2px);
+    opacity: 1;
 }
