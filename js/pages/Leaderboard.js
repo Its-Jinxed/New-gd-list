@@ -121,12 +121,13 @@ export default {
 
                     <p v-else class="type-label-lg">No verified levels.</p>
 
-                    <!-- CREATED (NEW CREATOR TAB DATA) -->
+                    <!-- CREATED (FIXED: CLEAN CREATOR BREAKDOWN ONLY) -->
                     <h2 v-if="mode === 'creator' && entry.created?.length">
                         Created Levels ({{ entry.created.length }})
                     </h2>
 
                     <table v-if="mode === 'creator' && entry.created?.length">
+
                         <tr v-for="score in entry.created" :key="score.level">
 
                             <td class="rank">
@@ -146,6 +147,7 @@ export default {
                             </td>
 
                         </tr>
+
                     </table>
 
                     <p v-if="mode === 'creator' && !entry.created?.length" class="type-label-lg">
