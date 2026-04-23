@@ -1,27 +1,64 @@
 .page-list .list-container {
-    padding: 2rem;
+    width: 100%;
 }
 
+/* LIST CARD (left sidebar feel) */
+.page-list .list {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+}
+
+/* rank column */
 .page-list .list .rank {
-    text-align: end;
+    text-align: right;
     padding-right: 1rem;
+    opacity: 0.7;
 }
 
+/* LEVEL BUTTON CARD */
 .page-list .list .level button {
     width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
     border: none;
-    border-radius: 0.5rem;
+    border-radius: var(--border-radius);
+
     padding: 1rem;
+
     text-align: left;
-    background: var(--color-background);
+
+    background: var(--panel-bg);
     color: var(--color-on-background);
+
+    cursor: pointer;
 }
 
+/* hover */
 .page-list .list .level button:hover {
-    background: var(--color-background-hover);
+    background: var(--panel-bg-hover);
 }
 
+/* active selection */
 .page-list .list .level.active button {
     background: var(--color-primary);
     color: var(--color-on-primary);
+}
+
+/* thumbnail */
+.page-list .thumb {
+    width: 80px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+/* centre empty state properly */
+.page-list .level-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
