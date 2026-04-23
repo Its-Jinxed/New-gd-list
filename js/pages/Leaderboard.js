@@ -4,7 +4,9 @@ import { localize } from '../util.js';
 import Spinner from '../components/Spinner.js';
 
 export default {
-    components: { Spinner },
+    components: {
+        Spinner,
+    },
 
     data: () => ({
         leaderboard: [],
@@ -23,15 +25,14 @@ export default {
 
                 <div class="error-container">
                     <p class="error" v-if="err.length > 0">
-                        Leaderboard may be incorrect, as the following levels could not be loaded:
-                        {{ err.join(', ') }}
+                        Leaderboard may be incorrect, as the following levels could not be loaded: {{ err.join(', ') }}
                     </p>
                 </div>
 
-                <!-- LEFT -->
+                <!-- LEFT PANEL -->
                 <div class="board-container">
                     <table class="board">
-                        <tr v-for="(entry, i) in leaderboard" :key="entry.user">
+                        <tr v-for="(entry, i) in leaderboard">
 
                             <td class="rank">
                                 <p class="type-label-lg">#{{ i + 1 }}</p>
@@ -53,7 +54,7 @@ export default {
                     </table>
                 </div>
 
-                <!-- RIGHT -->
+                <!-- RIGHT PANEL -->
                 <div class="player-container">
                     <div class="player">
 
@@ -65,7 +66,6 @@ export default {
                         <div class="pack-badges" v-if="entry.packs && entry.packs.length">
                             <span
                                 v-for="pack in entry.packs.filter(p => p.complete)"
-                                :key="pack.name"
                                 class="pack-badge"
                                 :style="{ background: pack.color || 'gold' }"
                             >
@@ -73,12 +73,12 @@ export default {
                             </span>
                         </div>
 
-                        <h2 v-if="entry.verified.length">
+                        <h2 v-if="entry.verified && entry.verified.length > 0">
                             Verified ({{ entry.verified.length }})
                         </h2>
 
-                        <table class="table" v-if="entry.verified.length">
-                            <tr v-for="score in entry.verified" :key="score.level">
+                        <table class="table" v-if="entry.verified && entry.verified.length > 0">
+                            <tr v-for="score in entry.verified">
                                 <td class="rank"><p>#{{ score.rank }}</p></td>
                                 <td class="level">
                                     <a target="_blank" :href="score.link">
@@ -93,12 +93,12 @@ export default {
 
                         <p v-else>No verified levels.</p>
 
-                        <h2 v-if="entry.victories.length">
+                        <h2 v-if="entry.victories && entry.victories.length > 0">
                             Completed ({{ entry.victories.length }})
                         </h2>
 
-                        <table class="table" v-if="entry.victories.length">
-                            <tr v-for="score in entry.victories" :key="score.level">
+                        <table class="table" v-if="entry.victories && entry.victories.length > 0">
+                            <tr v-for="score in entry.victories">
                                 <td class="rank"><p>#{{ score.rank }}</p></td>
                                 <td class="level">
                                     <a target="_blank" :href="score.link">
@@ -139,5 +139,7 @@ export default {
         this.loading = false;
     },
 
-    methods: { localize },
+    methods: {
+        localize,
+    },
 };
