@@ -71,13 +71,38 @@ export default {
                     </label>
 
                     <h4>Ratings</h4>
-                    <label v-for="r in ['Joke','Standard','Featured','Epic']" :key="r">
-                        <input type="checkbox" :value="r" v-model="selectedRatings">
-                        {{ r }}
-                    </label>
+
+                    <!-- TOP ROW GROUP -->
+                    <div class="filter-group">
+                        <label>
+                            <input type="checkbox" value="Joke" v-model="selectedRatings">
+                            Joke
+                        </label>
+
+                        <label>
+                            <input type="checkbox" value="Standard" v-model="selectedRatings">
+                            Standard
+                        </label>
+                    </div>
+
+                    <!-- BREAK -->
+                    <div class="filter-separator"></div>
+
+                    <!-- BOTTOM ROW GROUP -->
+                    <div class="filter-group">
+                        <label>
+                            <input type="checkbox" value="Featured" v-model="selectedRatings">
+                            Featured
+                        </label>
+
+                        <label>
+                            <input type="checkbox" value="Epic" v-model="selectedRatings">
+                            Epic
+                        </label>
+                    </div>
 
                 </div>
-
+            
                 <table class="list" v-if="filteredList">
 
                     <tr v-for="([level, err], i) in filteredList" :key="level?.path || i">
