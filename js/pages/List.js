@@ -23,7 +23,7 @@ export default {
         <main v-else class="page-list">
             <div class="list-container">
                 <table class="list" v-if="list">
-                    <tr v-for="([level, err], i) in list" :key="i">
+                    <tr v-for="([level, err], i) in list">
                         <td class="rank">
                             <p v-if="i + 1 <= 150" class="type-label-lg">#{{ i + 1 }}</p>
                             <p v-else class="type-label-lg">Legacy</p>
@@ -48,12 +48,9 @@ export default {
                 <div class="level" v-if="level">
                     <h1>{{ level.name }}</h1>
 
-                    <LevelAuthors
-                        :creators="level.creators"
-                        :verifier="level.verifier"
-                    ></LevelAuthors>
+                    <LevelAuthors :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
 
-                    <iframe class="video" :src="video" frameborder="0"></iframe>
+                    <iframe class="video" id="videoframe" :src="video" frameborder="0"></iframe>
 
                     <ul class="stats">
                         <li>
@@ -73,15 +70,15 @@ export default {
                     <h2>Victors</h2>
 
                     <table class="victors">
-                        <tr v-for="victor in level.victors" :key="victor">
-                            <td>
-                                <span class="type-label-lg">{{ victor }}</span>
-                            </td>
+                        <tr v-for="victor in level.victors" class="victor">
+                            <span class="type-label-lg">
+                                {{ victor }}
+                            </span>
                         </tr>
                     </table>
                 </div>
 
-                <div v-else class="level" style="height: 100%; display:flex; justify-content:center; align-items:center;">
+                <div v-else class="level" style="height: 100%; justify-content: center; align-items: center;">
                     <p>(ノಠ益ಠ)ノ彡┻━┻</p>
                 </div>
             </div>
@@ -98,13 +95,13 @@ export default {
     }),
     computed: {
         level() {
-            return this.list[this.selected]?.[0];
+            return this.list[this.selected][0];
         },
         video() {
-            if (!this.level) return "";
             if (!this.level.showcase) {
                 return embed(this.level.verification);
             }
+
             return embed(
                 this.toggledShowcase
                     ? this.level.showcase
@@ -124,7 +121,9 @@ export default {
             this.errors.push(
                 ...this.list
                     .filter(([_, err]) => err)
-                    .map(([_, err]) => `Failed to load level. (${err}.json)`)
+                    .map(([_, err]) => {
+                        return `Failed to load level. (${err}.json)`;
+                    })
             );
             if (!this.editors) {
                 this.errors.push("Failed to load list editors.");
