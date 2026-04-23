@@ -72,66 +72,57 @@ export default {
                     </label>
 
                     <h4>Ratings</h4>
-
-                    <div class="filter-group">
-                        <label>
-                            <input type="checkbox" value="Joke" v-model="selectedRatings">
-                            Joke
-                        </label>
-
-                        <label>
-                            <input type="checkbox" value="Standard" v-model="selectedRatings">
-                            Standard
-                        </label>
-                    </div>
-
-                    <div class="filter-separator"></div>
-
-                    <div class="filter-group">
-                        <label>
-                            <input type="checkbox" value="Featured" v-model="selectedRatings">
-                            Featured
-                        </label>
-
-                        <label>
-                            <input type="checkbox" value="Epic" v-model="selectedRatings">
-                            Epic
-                        </label>
-                    </div>
+                    <label v-for="r in ['Joke','Standard','Featured','Epic']" :key="r">
+                        <input type="checkbox" :value="r" v-model="selectedRatings">
+                        {{ r }}
+                    </label>
 
                 </div>
 
                 <table class="list" v-if="filteredList">
 
-                    <tr
-                        v-for="(item, i) in filteredList"
-                        :key="item.level?.path || i"
-                    >
+                    <tr v-for="([level, err], i) in filteredList" :key="level?.path || i">
 
                         <td class="rank">
-                            <p class="type-label-lg">
-                                #{{ item.originalRank + 1 }}
+                            <p v-if="level" class="type-label-lg">
+                                #{{ level.trueRank }}
                             </p>
                         </td>
 
-                        <td class="level" :class="{ active: selected === item.originalRank, error: !item.level }">
-                            <button @click="selected = item.originalRank">
+                        <td class="level" :class="{ active: selected === i, error: !level }">
+                            <button @click="selected = i">
 
                                 <img
-                                    v-if="item.level?.youtubeId"
+                                    v-if="level?.youtubeId"
                                     class="thumb"
-                                    :src="'https://img.youtube.com/vi/' + item.level.youtubeId + '/mqdefault.jpg'"
+                                    :src="'https://img.youtube.com/vi/' + level.youtubeId + '/mqdefault.jpg'"
                                 />
 
-                                <span class="type-label-lg">
-                                    {{ item.level?.name || 'Error (' + item.err + '.json)' }}
-                                </span>
+                                <div class="level-text">
+
+                                    <!-- TOP LINE -->
+                                    <span class="type-label-lg">
+                                        {{ level?.name || 'Error (' + err + '.json)' }}
+                                    </span>
+
+                                    <!-- SECOND LINE -->
+                                    <div class="level-meta">
+                                        <span>{{ score(i + 1, 100, level?.percentToQualify) }} pts</span>
+                                    </div>
+
+                                    <!-- THIRD LINE -->
+                                    <div class="level-meta-sub">
+                                        <span>ID: {{ level?.id || 'N/A' }}</span>
+                                        <span>Rating: {{ level?.rating || 'N/A' }}</span>
+                                        <span>Length: {{ level?.length || 'N/A' }}</span>
+                                    </div>
+
+                                </div>
 
                             </button>
                         </td>
 
                     </tr>
-
                 </table>
 
             </aside>
@@ -153,23 +144,6 @@ export default {
                         :src="video"
                         frameborder="0"
                     ></iframe>
-
-                    <ul class="stats">
-                        <li>
-                            <div class="type-title-sm">Points when completed</div>
-                            <p>{{ score(selected + 1, 100, level.percentToQualify) }}</p>
-                        </li>
-
-                        <li>
-                            <div class="type-title-sm">ID</div>
-                            <p>{{ level.id }}</p>
-                        </li>
-
-                        <li>
-                            <div class="type-title-sm">Rating</div>
-                            <p>{{ level.rating }}</p>
-                        </li>
-                    </ul>
 
                 </div>
 
@@ -197,7 +171,7 @@ export default {
 
     computed: {
         level() {
-            return this.list[this.selected]?.[0] || null;
+            return this.filteredList[this.selected]?.[0];
         },
 
         video() {
@@ -207,50 +181,40 @@ export default {
 
         uniqueCreators() {
             const set = new Set();
-
             this.list.forEach(([lvl]) => {
                 (lvl?.creators || []).forEach(c => set.add(c));
             });
-
             return [...set].sort();
         },
 
         filteredList() {
-            return this.list
-                .map(([level, err], index) => ({
-                    level,
-                    err,
-                    originalRank: index
-                }))
-                .filter(item => {
-                    const lvl = item.level;
+            let arr = [...this.list];
 
-                    if (this.search) {
-                        if (!lvl?.name?.toLowerCase().includes(this.search.toLowerCase())) {
-                            return false;
-                        }
-                    }
+            if (this.search) {
+                arr = arr.filter(([lvl]) =>
+                    lvl?.name?.toLowerCase().includes(this.search.toLowerCase())
+                );
+            }
 
-                    if (this.selectedCreators.length) {
-                        if (!lvl?.creators?.some(c => this.selectedCreators.includes(c))) {
-                            return false;
-                        }
-                    }
+            if (this.selectedCreators.length) {
+                arr = arr.filter(([lvl]) =>
+                    lvl?.creators?.some(c => this.selectedCreators.includes(c))
+                );
+            }
 
-                    if (this.selectedRatings.length) {
-                        if (!this.selectedRatings.includes(lvl?.rating)) {
-                            return false;
-                        }
-                    }
+            if (this.selectedRatings.length) {
+                arr = arr.filter(([lvl]) =>
+                    this.selectedRatings.includes(lvl?.rating)
+                );
+            }
 
-                    return true;
-                })
-                .sort((a, b) => {
-                    if (this.sortMode === "length") {
-                        return (b.level?.length || 0) - (a.level?.length || 0);
-                    }
-                    return 0;
-                });
+            if (this.sortMode === "length") {
+                arr.sort((a, b) =>
+                    (b[0]?.length || 0) - (a[0]?.length || 0)
+                );
+            }
+
+            return arr;
         }
     },
 
