@@ -13,6 +13,17 @@ function getYouTubeId(url) {
     return match ? match[1] : null;
 }
 
+/* =========================
+   CREATOR POINT RULES
+   ========================= */
+function getCreatorPoints(level) {
+    const rating = (level.rating || '').toLowerCase();
+
+    if (rating === 'epic') return 5;
+    if (rating === 'featured') return 3;
+    return 2; // standard
+}
+
 export async function fetchList() {
     const listResult = await fetch(`${dir}/_list.json`);
 
@@ -45,8 +56,8 @@ export async function fetchList() {
                 }
             }),
         );
-    } catch {
-        console.error(`Failed to load list.`);
+    } catch (err) {
+        console.error(`Failed to load list.`, err);
         return null;
     }
 }
@@ -60,15 +71,13 @@ export async function fetchEditors() {
     }
 }
 
-/* =========================
-   CREATOR POINT RULES
-   ========================= */
-function getCreatorPoints(level) {
-    const rating = (level.rating || '').toLowerCase();
-
-    if (rating === 'epic') return 5;
-    if (rating === 'featured') return 3;
-    return 2; // standard
+export async function fetchPacks() {
+    try {
+        const res = await fetch(`${dir}/_packs.json`);
+        return await res.json();
+    } catch {
+        return [];
+    }
 }
 
 export async function fetchLeaderboard() {
@@ -78,9 +87,15 @@ export async function fetchLeaderboard() {
     const scoreMap = {};
     const errs = [];
 
+    // 🛑 HARD GUARD (prevents infinite loading crash)
+    if (!Array.isArray(list)) {
+        console.error("fetchList() returned invalid data:", list);
+        return [[], ["List failed to load"]];
+    }
+
     list.forEach(([level, err], rank) => {
-        if (err) {
-            errs.push(err);
+        if (err || !level) {
+            errs.push(err || `level_${rank}`);
             return;
         }
 
@@ -95,7 +110,7 @@ export async function fetchLeaderboard() {
         // =========================
         const verifiedUser =
             Object.keys(scoreMap).find(
-                (u) => u.toLowerCase() === verifier.toLowerCase(),
+                (u) => u.toLowerCase() === verifier?.toLowerCase(),
             ) || verifier;
 
         scoreMap[verifiedUser] ??= {
@@ -119,7 +134,7 @@ export async function fetchLeaderboard() {
         // VICTORS (beaten level)
         // =========================
         victors.forEach((name) => {
-            if (name.toLowerCase() === verifier.toLowerCase()) return;
+            if (!name || name.toLowerCase() === verifier?.toLowerCase()) return;
 
             const user =
                 Object.keys(scoreMap).find(
@@ -144,17 +159,15 @@ export async function fetchLeaderboard() {
 
     const res = Object.entries(scoreMap).map(([user, scores]) => {
         const total = [...scores.verified, ...scores.victories]
-            .reduce((sum, s) => sum + s.score, 0);
+            .reduce((sum, s) => sum + (s.score || 0), 0);
 
         const creatorScore = scores.creatorScore || 0;
 
-        // Build set of beaten levels
         const beaten = new Set([
             ...scores.verified.map(v => v.path),
             ...scores.victories.map(v => v.path),
         ]);
 
-        // Packs
         const userPacks = packs.map(pack => {
             const completed = pack.levels.filter(l => beaten.has(l)).length;
 
@@ -176,14 +189,8 @@ export async function fetchLeaderboard() {
         };
     });
 
-    return [res.sort((a, b) => b.total - a.total), errs];
-}
-
-export async function fetchPacks() {
-    try {
-        const res = await fetch(`${dir}/_packs.json`);
-        return await res.json();
-    } catch {
-        return [];
-    }
+    return [
+        res.sort((a, b) => b.total - a.total),
+        errs
+    ];
 }
