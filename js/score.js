@@ -1,22 +1,27 @@
- /**
- * Calculate the score awarded based on rank only (victor system)
+/**
  * @param {Number} rank Position on the list
  * @returns {Number}
  */
 export function score(rank) {
-    // Only top 30 levels give points
+    // Only top 30 levels on curve, after that everything is worth 5
     if (rank > 30) {
-        return 0;
+        return 5;
     }
 
-    let score = (-24.9975 * Math.pow(rank - 1, 0.4) + 200);
+    const max = 250;
+    const min = 10;
 
-    return Math.round(Math.max(score, 0));
+    // Normalize rank (0 → 1)
+    const t = (rank - 1) / 29;
+
+    // Cubic curve (p = 3)
+    const points = min + (max - min) * Math.pow(1 - t, 3);
+
+    return Math.round(points);
 }
 
 /**
- * Round helper (now simplified since scale = 0)
- * Kept only for compatibility with existing code
+ * Round helper (kept for compatibility)
  */
 export function round(num) {
     return Math.round(num);
