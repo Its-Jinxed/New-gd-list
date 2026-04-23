@@ -100,22 +100,9 @@ export default {
 
                                 <div class="level-text">
 
-                                    <!-- TOP LINE -->
                                     <span class="type-label-lg">
                                         {{ level?.name || 'Error (' + err + '.json)' }}
                                     </span>
-
-                                    <!-- SECOND LINE -->
-                                    <div class="level-meta">
-                                        <span>{{ score(i + 1, 100, level?.percentToQualify) }} pts</span>
-                                    </div>
-
-                                    <!-- THIRD LINE -->
-                                    <div class="level-meta-sub">
-                                        <span>ID: {{ level?.id || 'N/A' }}</span>
-                                        <span>Rating: {{ level?.rating || 'N/A' }}</span>
-                                        <span>Length: {{ level?.length || 'N/A' }}</span>
-                                    </div>
 
                                 </div>
 
@@ -144,6 +131,21 @@ export default {
                         :src="video"
                         frameborder="0"
                     ></iframe>
+
+                    <!-- ✅ MOVED METADATA HERE -->
+                    <div class="level-meta-main">
+
+                        <div class="meta-row">
+                            <span><strong>Points:</strong> {{ score(selected + 1, 100, level?.percentToQualify) }} pts</span>
+                        </div>
+
+                        <div class="meta-row">
+                            <span><strong>ID:</strong> {{ level?.id || 'N/A' }}</span>
+                            <span><strong>Rating:</strong> {{ level?.rating || 'N/A' }}</span>
+                            <span><strong>Length:</strong> {{ level?.length || 'N/A' }}</span>
+                        </div>
+
+                    </div>
 
                 </div>
 
