@@ -132,17 +132,23 @@ export default {
                         frameborder="0"
                     ></iframe>
 
-                    <!-- ✅ MOVED METADATA HERE -->
+                    <!-- ✅ Styled metadata (creator/verifier-style tags) -->
                     <div class="level-meta-main">
 
                         <div class="meta-row">
-                            <span><strong>Points:</strong> {{ score(selected + 1, 100, level?.percentToQualify) }} pts</span>
+
+                            <span class="meta-tag">
+                                💠 {{ score(selected + 1, 100, level?.percentToQualify) }} pts
+                            </span>
+
                         </div>
 
                         <div class="meta-row">
-                            <span><strong>ID:</strong> {{ level?.id || 'N/A' }}</span>
-                            <span><strong>Rating:</strong> {{ level?.rating || 'N/A' }}</span>
-                            <span><strong>Length:</strong> {{ level?.length || 'N/A' }}</span>
+
+                            <span class="meta-tag">🆔 {{ level?.id || 'N/A' }}</span>
+                            <span class="meta-tag">⭐ {{ level?.rating || 'N/A' }}</span>
+                            <span class="meta-tag">⏱ {{ level?.length || 'N/A' }}</span>
+
                         </div>
 
                     </div>
