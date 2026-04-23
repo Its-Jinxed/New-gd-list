@@ -52,19 +52,13 @@ export default {
                     <tr v-for="(entry, i) in sortedLeaderboard" :key="entry.user || i">
 
                         <td class="rank">
-                            <p class="type-label-lg">#{{ i + 1 }}</p>
+                            <p>#{{ i + 1 }}</p>
                         </td>
 
                         <td class="user" :class="{ active: selected === i }">
                             <button @click="selected = i">
-                                <span class="type-label-lg">
-                                    {{ entry.user }} —
-                                    {{ localize(entry.displayScore || 0) }} pts
-
-                                    <span v-if="i === 0"> 🥇</span>
-                                    <span v-else-if="i === 1"> 🥈</span>
-                                    <span v-else-if="i === 2"> 🥉</span>
-                                </span>
+                                {{ entry.user }} —
+                                {{ localize(entry.displayScore || 0) }} pts
                             </button>
                         </td>
 
@@ -74,91 +68,24 @@ export default {
 
             <!-- RIGHT -->
             <div class="player-container" v-if="entry">
-                <div class="player">
 
-                    <h1 class="lb-title">
-                        #{{ selected + 1 }} {{ entry.user }} —
-                        {{ localize(entry.displayScore || 0) }} pts
-                    </h1>
+                <h1>
+                    #{{ selected + 1 }} {{ entry.user }} —
+                    {{ localize(entry.displayScore || 0) }} pts
+                </h1>
 
-                    <!-- PACKS (ONLY COMPLETED) -->
-                    <div
-                        class="pack-badges"
-                        v-if="completedPacks(entry).length"
+                <!-- PACKS -->
+                <div class="pack-badges" v-if="completedPacks(entry).length">
+                    <span
+                        v-for="pack in completedPacks(entry)"
+                        :key="pack.name"
+                        class="pack-badge complete"
+                        :style="{ background: pack.color || 'gold' }"
                     >
-                        <span
-                            v-for="pack in completedPacks(entry)"
-                            :key="pack.name"
-                            class="pack-badge complete"
-                            :style="{ background: pack.color || 'gold' }"
-                        >
-                            {{ pack.name }}
-                        </span>
-                    </div>
-
-                    <!-- VERIFIED -->
-                    <h2 v-if="entry.verified?.length">
-                        Verified ({{ entry.verified.length }})
-                    </h2>
-
-                    <table v-if="entry.verified?.length">
-                        <tr v-for="score in entry.verified" :key="score.level">
-
-                            <td class="rank">
-                                <p class="type-label-lg">#{{ score.rank }}</p>
-                            </td>
-
-                            <td class="level">
-                                <a :href="score.link" target="_blank">
-                                    <span class="type-label-lg">
-                                        {{ score.level }}
-                                    </span>
-                                </a>
-                            </td>
-
-                            <td class="score">
-                                <p class="type-label-lg">
-                                    +{{ localize(score.score) }}
-                                </p>
-                            </td>
-
-                        </tr>
-                    </table>
-
-                    <p v-else class="type-label-lg">No verified levels.</p>
-
-                    <!-- COMPLETED -->
-                    <h2 v-if="entry.victories?.length">
-                        Completed ({{ entry.victories.length }})
-                    </h2>
-
-                    <table v-if="entry.victories?.length">
-                        <tr v-for="score in entry.victories" :key="score.level">
-
-                            <td class="rank">
-                                <p class="type-label-lg">#{{ score.rank }}</p>
-                            </td>
-
-                            <td class="level">
-                                <a :href="score.link" target="_blank">
-                                    <span class="type-label-lg">
-                                        {{ score.level }}
-                                    </span>
-                                </a>
-                            </td>
-
-                            <td class="score">
-                                <p class="type-label-lg">
-                                    +{{ localize(score.score) }}
-                                </p>
-                            </td>
-
-                        </tr>
-                    </table>
-
-                    <p v-else class="type-label-lg">No completed levels yet.</p>
-
+                        {{ pack.name }}
+                    </span>
                 </div>
+
             </div>
 
         </div>
@@ -167,26 +94,17 @@ export default {
 
     computed: {
         entry() {
-            return this.sortedLeaderboard?.[this.selected] || {
-                user: '',
-                total: 0,
-                victories: [],
-                verified: [],
-                packs: [],
-                creatorScore: 0,
-                displayScore: 0,
-            };
+            return this.sortedLeaderboard?.[this.selected] || null;
         },
 
         sortedLeaderboard() {
-            const list = Array.isArray(this.leaderboard)
-                ? [...this.leaderboard]
-                : [];
-
-            return list
+            return [...(this.leaderboard || [])]
                 .map(p => ({
                     ...p,
-                    displayScore: this.getDisplayScore(p),
+                    displayScore:
+                        this.mode === 'creator'
+                            ? p.creatorScore
+                            : p.total,
                 }))
                 .sort((a, b) => (b.displayScore || 0) - (a.displayScore || 0));
         },
@@ -195,17 +113,8 @@ export default {
     methods: {
         localize,
 
-        // choose correct score mode
-        getDisplayScore(player) {
-            if (this.mode === 'creator') {
-                return player.creatorScore || 0;
-            }
-            return player.total || 0;
-        },
-
-        // ONLY COMPLETED PACKS
         completedPacks(entry) {
-            return (entry.packs || []).filter(p => p.complete);
+            return (entry?.packs || []).filter(p => p.complete);
         },
     },
 
@@ -214,20 +123,13 @@ export default {
             const result = await fetchLeaderboard();
 
             if (Array.isArray(result)) {
-                const [leaderboard, err] = result;
+                const [data, err] = result;
 
-                this.leaderboard = Array.isArray(leaderboard)
-                    ? leaderboard
-                    : [];
-
-                this.err = Array.isArray(err) ? err : [];
-            } else {
-                this.leaderboard = [];
-                this.err = ['invalid_response'];
+                this.leaderboard = data || [];
+                this.err = err || [];
             }
         } catch (e) {
             console.error(e);
-            this.leaderboard = [];
             this.err = ['fatal_error'];
         } finally {
             this.loading = false;
