@@ -62,7 +62,14 @@ export default {
                             <button @click="selected = i">
                                 <span class="type-label-lg">
                                     {{ entry.user }} —
-                                    {{ localize(getTotalScore(entry)) }} pts
+
+                                    <template v-if="mode === 'creator'">
+                                        {{ localize(getCreatorScore(entry).total) }} pts
+                                    </template>
+
+                                    <template v-else>
+                                        {{ localize(getListScore(entry)) }} pts
+                                    </template>
 
                                     <span v-if="i === 0"> 🥇</span>
                                     <span v-else-if="i === 1"> 🥈</span>
@@ -81,7 +88,12 @@ export default {
 
                     <h1 class="lb-title">
                         #{{ selected + 1 }} {{ entry.user }} —
-                        {{ localize(getTotalScore(entry)) }} pts
+                        <template v-if="mode === 'creator'">
+                            {{ localize(getCreatorScore(entry).total) }} pts
+                        </template>
+                        <template v-else>
+                            {{ localize(getListScore(entry)) }} pts
+                        </template>
                     </h1>
 
                     <!-- PACKS -->
@@ -172,11 +184,9 @@ export default {
         entry() {
             return this.leaderboard?.[this.selected] || {
                 user: '',
-                total: 0,
                 victories: [],
                 verified: [],
                 packs: [],
-                creatorScore: 0,
             };
         },
     },
@@ -188,7 +198,10 @@ export default {
             return (entry.packs || []).filter(p => p.complete);
         },
 
-        getTotalScore(entry) {
+        // =========================
+        // LIST SCORE (existing system)
+        // =========================
+        getListScore(entry) {
             const verified = (entry.verified || []).reduce(
                 (sum, s) => sum + (s.score || 0),
                 0
@@ -200,6 +213,36 @@ export default {
             );
 
             return verified + victories;
+        },
+
+        // =========================
+        // CREATOR SCORE SYSTEM
+        // =========================
+        getCreatorScore(entry) {
+            const weights = {
+                Joke: 1,
+                Standard: 2,
+                Featured: 3,
+                Epic: 5,
+            };
+
+            let total = 0;
+            const breakdown = [];
+
+            const created = entry.createdLevels || [];
+
+            for (const lvl of created) {
+                const value = weights[lvl.rating] || 0;
+
+                total += value;
+
+                breakdown.push({
+                    level: lvl.level,
+                    score: value,
+                });
+            }
+
+            return { total, breakdown };
         },
     },
 
