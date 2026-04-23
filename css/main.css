@@ -8,8 +8,8 @@
     --color-error: #de0000;
     --color-on-error: white;
 
-    --panel-bg: rgba(0,0,0,0.03);
-    --panel-bg-hover: rgba(0,0,0,0.06);
+    --panel-bg: rgba(0,0,0,0.1);
+    --panel-bg-hover: rgba(0,0,0,0.15);
     --border-radius: 1rem;
 }
 
@@ -239,9 +239,4 @@ table {
     justify-content: center;
     align-items: center;
     grid-column: span 3;
-}
-
-:root {
-    --panel-bg: color-mix(in srgb, var(--panel-bg) 92%, black);
-    --panel-bg-hover: color-mix(in srgb, var(--panel-bg-hover) 92%, black);
 }
