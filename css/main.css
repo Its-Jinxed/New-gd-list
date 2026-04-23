@@ -8,8 +8,8 @@
     --color-error: #de0000;
     --color-on-error: white;
 
-    --panel-bg: rgba(0,0,0,0.1);
-    --panel-bg-hover: rgba(0,0,0,0.15);
+    --panel-bg: rgba(0,0,0,0.08);
+    --panel-bg-hover: rgba(0,0,0,0.12);
     --border-radius: 1rem;
 }
 
