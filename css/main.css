@@ -240,3 +240,8 @@ table {
     align-items: center;
     grid-column: span 3;
 }
+
+:root {
+    --panel-bg: color-mix(in srgb, var(--panel-bg) 92%, black);
+    --panel-bg-hover: color-mix(in srgb, var(--panel-bg-hover) 92%, black);
+}
