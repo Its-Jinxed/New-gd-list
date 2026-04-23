@@ -9,102 +9,75 @@ export default {
     }),
 
     template: `
-        <main v-if="loading" class="packs-loading">
+        <main v-if="loading">
             <p class="type-label-lg">Loading packs...</p>
         </main>
 
-        <main v-else class="packs-page">
+        <main v-else class="page">
 
-            <!-- LEFT PANEL -->
-            <aside class="packs-sidebar">
+            <!-- SIDEBAR -->
+            <div class="page-sidebar">
 
                 <div
                     v-for="(pack, i) in packs"
                     :key="pack.id"
-                    class="pack-card"
+                    class="ui-row"
                     :class="{ active: selectedPack === i }"
                     @click="selectedPack = i"
-                    :style="{ '--pack-color': pack.color || '#888' }"
                 >
-                    <div class="pack-card__name type-label-lg">
-                        {{ pack.name }}
+                    <div>
+                        <div class="type-label-lg">{{ pack.name }}</div>
+                        <div class="ui-muted">{{ pack.levels.length }} levels</div>
                     </div>
-
-                    <div class="pack-card__meta type-label-lg">
-                        {{ pack.levels.length }} levels
-                    </div>
-
                 </div>
 
-            </aside>
+            </div>
 
-            <!-- RIGHT PANEL -->
-            <section class="packs-content">
+            <!-- CONTENT -->
+            <div class="page-content">
 
-                <div v-if="currentPack" class="pack-header">
+                <div v-if="currentPack" class="ui-card">
 
-                    <div
-                        class="pack-header__bar"
-                        :style="{ background: currentPack.color || '#888' }"
-                    ></div>
-
-                    <div class="pack-header__text">
-                        <h1 class="type-label-lg">{{ currentPack.name }}</h1>
-                    </div>
-
-                </div>
-
-                <div v-if="currentPack" class="levels-list">
-
-                    <div
-                        v-for="(levelPath, index) in currentPack.levels"
-                        :key="levelPath"
-                        class="level-row"
-                    >
-
-                        <!-- POSITION -->
-                        <div class="level-position type-label-lg">
-                            #{{ index + 1 }}
+                    <div style="display:flex;align-items:center;gap:1rem;">
+                        <div style="width:8px;height:50px;border-radius:6px;"
+                             :style="{ background: currentPack.color || '#888' }">
                         </div>
 
-                        <!-- NAME -->
-                        <div class="level-name">
-                            <a
-                                v-if="getLevel(levelPath)"
-                                class="type-label-lg"
-                                :href="getLevel(levelPath).verification"
-                                target="_blank"
-                            >
-                                {{ getLevel(levelPath).name }}
-                            </a>
+                        <h1>{{ currentPack.name }}</h1>
+                    </div>
 
-                            <span v-else class="missing type-label-lg">
-                                {{ levelPath }}
+                    <div style="margin-top:1.5rem; display:flex; flex-direction:column; gap:0.75rem;">
+
+                        <div
+                            v-for="(levelPath, i) in currentPack.levels"
+                            :key="levelPath"
+                            class="ui-row"
+                        >
+                            <span>#{{ i + 1 }}</span>
+
+                            <span class="type-label-lg">
+                                {{ getLevel(levelPath)?.name || levelPath }}
                             </span>
-                        </div>
 
-                        <!-- THUMBNAIL -->
-                        <div class="level-thumb">
                             <img
                                 v-if="getLevel(levelPath)?.youtubeId"
                                 :src="'https://img.youtube.com/vi/' + getLevel(levelPath).youtubeId + '/mqdefault.jpg'"
-                                alt="thumbnail"
+                                style="width:120px;border-radius:8px;"
                             />
-                            <div v-else class="thumb-placeholder"></div>
                         </div>
 
                     </div>
 
                 </div>
 
-            </section>
+            </div>
 
         </main>
     `,
 
     computed: {
         currentPack() {
-            return this.packs[this.selectedPack] || null;
+            return this.packs[this.selectedPack];
         }
     },
 
