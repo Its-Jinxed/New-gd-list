@@ -13,13 +13,20 @@
     --border-radius: 1rem;
 }
 
-/* smooth transitions */
+/* =========================
+   GLOBAL TRANSITIONS
+========================= */
+
 * {
     transition: all 0.15s ease;
 }
 
-main.dark,
-header.dark {
+/* =========================
+   DARK MODE (FIXED)
+   IMPORTANT: now global, not tied to main/header
+========================= */
+
+.dark {
     color-scheme: dark;
 
     --color-background: #1c1b1f;
@@ -36,6 +43,10 @@ header.dark {
     --panel-bg-hover: rgba(255,255,255,0.08);
 }
 
+/* =========================
+   BASE LAYOUT
+========================= */
+
 html, body {
     height: 100%;
 }
@@ -44,6 +55,8 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
+    background: var(--color-background);
+    color: var(--color-on-background);
 }
 
 /* =========================
@@ -60,7 +73,7 @@ header {
 }
 
 /* =========================
-   AREDL APP SHELL (CORE FIX)
+   AREDL APP SHELL (CORE SYSTEM)
 ========================= */
 
 .app-shell {
@@ -73,7 +86,10 @@ header {
     box-sizing: border-box;
 }
 
-/* ALL PANELS = CARDS */
+/* =========================
+   CARD SYSTEM (ALL PANELS)
+========================= */
+
 .app-sidebar,
 .app-main,
 .app-right {
@@ -88,7 +104,7 @@ header {
     overflow-y: auto;
 }
 
-/* content width control (prevents stretching) */
+/* ensures inner content doesn't stretch full width */
 .app-sidebar > *,
 .app-main > *,
 .app-right > * {
@@ -96,31 +112,63 @@ header {
     max-width: 100%;
 }
 
-/* centre main content properly */
+/* =========================
+   MIDDLE PANEL (FULL CENTRE FIX)
+========================= */
+
 .app-main {
     justify-content: center;
+    text-align: center;
 }
 
+/* THIS is the key AREDL fix */
 .app-main .level {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1.5rem;
+
     width: 100%;
     max-width: 720px;
     margin: 0 auto;
 }
 
-/* headings centred like AREDL */
+/* stats row centered */
+.app-main .stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+}
+
+/* victors centered */
+.app-main .victors {
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* headings centered like AREDL */
 .app-main h1,
 .app-main h2,
 .app-right h2 {
     text-align: center;
 }
 
-/* tables centered */
+/* =========================
+   TABLE FIX (CENTRED)
+========================= */
+
 table {
     width: 100%;
     margin: 0 auto;
 }
 
-/* empty states */
+/* =========================
+   EMPTY STATES
+========================= */
+
 .app-main:empty,
 .app-right:empty {
     display: flex;
@@ -128,7 +176,10 @@ table {
     align-items: center;
 }
 
-/* spinner */
+/* =========================
+   SPINNER
+========================= */
+
 .spinner {
     display: flex;
     justify-content: center;
