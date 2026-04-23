@@ -13,15 +13,28 @@ function getYouTubeId(url) {
     return match ? match[1] : null;
 }
 
-/* =========================
-   CREATOR POINT RULES
-   ========================= */
-function getCreatorPoints(level) {
-    const rating = (level.rating || '').toLowerCase();
+/**
+ * Calculate creator points based on level rating
+ * @param {String} rating "Joke" | "Standard" | "Featured" | "Epic"
+ * @returns {Number}
+ */
+export function creatorScore(rating) {
+    switch ((rating || '').toLowerCase()) {
+        case 'joke':
+            return 1;
 
-    if (rating === 'epic') return 5;
-    if (rating === 'featured') return 3;
-    return 2; // standard
+        case 'standard':
+            return 2;
+
+        case 'featured':
+            return 3;
+
+        case 'epic':
+            return 5;
+
+        default:
+            return 0;
+    }
 }
 
 /* =========================
