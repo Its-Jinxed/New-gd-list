@@ -21,10 +21,7 @@ export default {
         list: [],
         editors: [],
         loading: true,
-
-        // FIX: store actual level, not index
-        selectedLevel: null,
-
+        selected: 0,
         errors: [],
         roleIconMap,
         store,
@@ -74,51 +71,25 @@ export default {
                     </label>
 
                     <h4>Ratings</h4>
-
-                    <div class="filter-group">
-                        <label>
-                            <input type="checkbox" value="Joke" v-model="selectedRatings">
-                            Joke
-                        </label>
-
-                        <label>
-                            <input type="checkbox" value="Standard" v-model="selectedRatings">
-                            Standard
-                        </label>
-                    </div>
-
-                    <div class="filter-separator"></div>
-
-                    <div class="filter-group">
-                        <label>
-                            <input type="checkbox" value="Featured" v-model="selectedRatings">
-                            Featured
-                        </label>
-
-                        <label>
-                            <input type="checkbox" value="Epic" v-model="selectedRatings">
-                            Epic
-                        </label>
-                    </div>
+                    <label v-for="r in ['Joke','Standard','Featured','Epic']" :key="r">
+                        <input type="checkbox" :value="r" v-model="selectedRatings">
+                        {{ r }}
+                    </label>
 
                 </div>
 
                 <table class="list" v-if="filteredList">
 
-                    <tr
-                        v-for="([level, err], i) in filteredList"
-                        :key="level?.path || i"
-                    >
+                    <tr v-for="([level, err], i) in filteredList" :key="level?.path || i">
 
                         <td class="rank">
                             <p v-if="level" class="type-label-lg">
-                                #{{ i + 1 }}
+                                #{{ level.trueRank }}
                             </p>
                         </td>
 
-                        <td class="level" :class="{ active: selectedLevel === level, error: !level }">
-
-                            <button @click="selectedLevel = level">
+                        <td class="level" :class="{ active: selected === i, error: !level }">
+                            <button @click="selected = i">
 
                                 <img
                                     v-if="level?.youtubeId"
@@ -131,11 +102,9 @@ export default {
                                 </span>
 
                             </button>
-
                         </td>
 
                     </tr>
-
                 </table>
 
             </aside>
@@ -181,9 +150,8 @@ export default {
     `,
 
     computed: {
-        // FIX: direct object, not index-based
         level() {
-            return this.selectedLevel || this.filteredList?.[0]?.[0] || null;
+            return this.filteredList[this.selected]?.[0];
         },
 
         video() {
@@ -221,7 +189,7 @@ export default {
             }
 
             if (this.sortMode === "length") {
-                arr = arr.sort((a, b) =>
+                arr.sort((a, b) =>
                     (b[0]?.length || 0) - (a[0]?.length || 0)
                 );
             }
@@ -233,10 +201,6 @@ export default {
     async mounted() {
         this.list = await fetchList();
         this.editors = await fetchEditors();
-
-        // FIX: auto-select first visible level
-        this.selectedLevel = this.list?.[0]?.[0] || null;
-
         this.loading = false;
     },
 
