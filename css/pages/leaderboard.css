@@ -59,9 +59,19 @@
     width: 100%;
 }
 
+/* FIX: rank spacing (#1 → "#1 ")
+   applies to BOTH left + right tables */
+.page-leaderboard .rank p {
+    display: inline-block;
+    margin-right: 0.4rem;
+    white-space: nowrap;
+}
+
+/* optional: nicer fixed alignment column */
 .page-leaderboard .rank {
-    text-align: end;
+    text-align: right;
     padding-block: 1rem;
+    width: 3.5rem;
 }
 
 /* =========================
@@ -124,7 +134,7 @@
 }
 
 /* =========================
-   RIGHT PANEL TYPOGRAPHY (FIXED HIERARCHY)
+   RIGHT PANEL TYPOGRAPHY
 ========================= */
 
 .player-container h1 {
@@ -147,14 +157,14 @@
     font-weight: 600;
 }
 
-/* ensure level names match left leaderboard style */
+/* level links match left side feel */
 .player-container .level a {
     text-decoration: none;
     color: var(--color-on-background);
 }
 
 /* =========================
-   PACK CHIPS (IMPROVED)
+   PACK CHIPS
 ========================= */
 
 .pack-badge {
