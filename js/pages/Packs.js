@@ -54,7 +54,7 @@ export default {
 
                     <div class="pack-header__text">
                         <h1>{{ currentPack.name }}</h1>
-                        <p>{{ currentPack.levels.length }} levels</p>
+                        <!-- removed duplicate level count -->
                     </div>
 
                 </div>
