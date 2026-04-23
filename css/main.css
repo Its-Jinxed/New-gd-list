@@ -271,3 +271,57 @@ header .nav {
     border-radius: 10px;
     background: rgba(0,0,0,0.1);
 }
+
+
+/* =========================
+   RESTORE GLOBAL CENTERING BEHAVIOUR
+========================= */
+
+/* Ensure page containers can center content properly */
+.page-list,
+.page-leaderboard-container,
+.packs-page {
+    justify-content: center;
+}
+
+/* Fix right-side panels (this is where most centering was lost) */
+.level-container,
+.player-container,
+.packs-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Keep text blocks readable width instead of full stretch */
+.level,
+.player,
+.pack-header,
+.levels-list,
+.board-container {
+    width: 100%;
+    max-width: 60rem;
+}
+
+/* Center "empty states" properly again */
+.level-container .level:empty,
+.player:empty,
+.packs-content:empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Fix table centering regression */
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Restore vertical centering in main content areas */
+.page-list .level-container,
+.page-leaderboard .player-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
