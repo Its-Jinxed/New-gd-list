@@ -13,7 +13,7 @@
 }
 
 /* =========================
-   RANK COLUMN (TIGHTER + FIXED)
+   RANK COLUMN (TIGHT + FIXED)
 ========================= */
 
 .page-list .list .rank {
@@ -22,17 +22,14 @@
 
     white-space: nowrap;
 
-    /* reduced width to bring everything left */
     width: 2.8rem;
     min-width: 2.8rem;
 
-    /* reduced spacing to level column */
     padding-right: 0.6rem;
 
     font-variant-numeric: tabular-nums;
 }
 
-/* safety: prevent wrapping anywhere inside */
 .page-list .list .rank * {
     white-space: nowrap;
 }
@@ -84,11 +81,65 @@
 }
 
 /* =========================
-   EMPTY STATE CENTERING
+   EMPTY STATE
 ========================= */
 
 .page-list .level-container {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* =========================================================
+   NEW: SEARCH / FILTER / SORT CONTROLS (ADDED ONLY)
+========================================================= */
+
+.page-list .list-controls {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* search input */
+.page-list .list-search {
+    flex: 1;
+    min-width: 180px;
+
+    padding: 0.6rem 0.8rem;
+
+    border: none;
+    border-radius: 0.5rem;
+
+    background: var(--panel-bg);
+    color: var(--color-on-background);
+
+    outline: none;
+}
+
+/* dropdowns */
+.page-list .list-filter {
+    padding: 0.6rem 0.8rem;
+
+    border: none;
+    border-radius: 0.5rem;
+
+    background: var(--panel-bg);
+    color: var(--color-on-background);
+
+    cursor: pointer;
+}
+
+/* hover feel (subtle, not too dark) */
+.page-list .list-search:hover,
+.page-list .list-filter:hover {
+    background: var(--panel-bg-hover);
+}
+
+/* focus state */
+.page-list .list-search:focus,
+.page-list .list-filter:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
 }
