@@ -8,13 +8,22 @@
     grid-template-columns: minmax(24rem, 2fr) 3fr;
     grid-template-rows: max-content 1fr;
     column-gap: 2rem;
+
     max-width: 80rem;
     margin: 0 auto;
 }
 
+/* =========================
+   SCROLL CONTAINERS
+========================= */
+
 .page-leaderboard > div {
     overflow-y: auto;
 }
+
+/* =========================
+   ERROR BAR
+========================= */
 
 .page-leaderboard .error-container {
     grid-row: 1;
@@ -25,8 +34,12 @@
     padding: 1rem;
     background-color: var(--color-error);
     color: var(--color-on-error);
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
 }
+
+/* =========================
+   LEFT + RIGHT PANELS
+========================= */
 
 .page-leaderboard .board-container,
 .page-leaderboard .player-container {
@@ -34,9 +47,14 @@
     padding-block: 2rem;
 }
 
+/* left panel spacing */
 .page-leaderboard .board-container {
     padding-inline: 1rem;
 }
+
+/* =========================
+   TABLE
+========================= */
 
 .page-leaderboard .board {
     display: block;
@@ -48,18 +66,31 @@
     padding-block: 1rem;
 }
 
+/* =========================
+   USER BUTTONS
+========================= */
+
 .page-leaderboard .user button {
     width: 100%;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
+
     padding: 1rem;
+
     text-align: left;
+
     background: var(--color-background);
     color: var(--color-on-background);
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    transition: background 0.15s ease, transform 0.15s ease;
 }
 
 .page-leaderboard .user button:hover {
     background: var(--color-background-hover);
+    transform: translateX(2px);
 }
 
 .page-leaderboard .user.active button {
@@ -67,19 +98,37 @@
     color: var(--color-on-primary);
 }
 
+/* =========================
+   TABS
+========================= */
+
 .lb-tabs {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    margin-bottom: 1rem;
+
+    margin-bottom: 1.5rem;
 }
 
 .lb-tab {
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.2rem;
+
     border-radius: 999px;
     border: none;
+
     background: var(--panel-bg);
+    color: var(--color-on-background);
+
     cursor: pointer;
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    transition: all 0.15s ease;
+}
+
+.lb-tab:hover {
+    background: var(--panel-bg-hover);
 }
 
 .lb-tab.active {
@@ -87,15 +136,43 @@
     color: var(--color-on-primary);
 }
 
-/* PACK CHIPS STYLE */
+/* =========================
+   PACK CHIPS (UPGRADED TSL STYLE)
+========================= */
+
 .pack-badge {
-    padding: 0.25rem 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.55rem 1rem;
+    margin: 0.25rem;
+
     border-radius: 999px;
-    font-size: 0.8rem;
-    margin: 0.2rem;
-    opacity: 0.7;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    line-height: 1;
+
+    background: var(--panel-bg);
+    color: var(--color-on-background);
+
+    opacity: 0.6;
+
+    transition: all 0.15s ease;
+
+    user-select: none;
 }
 
+/* completed packs */
 .pack-badge.complete {
     opacity: 1;
+    background: rgba(255, 215, 0, 0.25); /* soft gold base */
+    border: 1px solid rgba(255, 215, 0, 0.6);
+}
+
+/* hover effect (subtle lift like TSL) */
+.pack-badge:hover {
+    transform: translateY(-2px);
 }
