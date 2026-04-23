@@ -22,8 +22,7 @@
 }
 
 /* =========================
-   DARK MODE (FIXED)
-   IMPORTANT: now global, not tied to main/header
+   DARK MODE (GLOBAL FIX)
 ========================= */
 
 .dark {
@@ -73,7 +72,7 @@ header {
 }
 
 /* =========================
-   AREDL APP SHELL (CORE SYSTEM)
+   AREDL APP SHELL
 ========================= */
 
 .app-shell {
@@ -87,7 +86,7 @@ header {
 }
 
 /* =========================
-   CARD SYSTEM (ALL PANELS)
+   CARD SYSTEM
 ========================= */
 
 .app-sidebar,
@@ -104,7 +103,7 @@ header {
     overflow-y: auto;
 }
 
-/* ensures inner content doesn't stretch full width */
+/* prevent full-width stretching inside cards */
 .app-sidebar > *,
 .app-main > *,
 .app-right > * {
@@ -113,26 +112,32 @@ header {
 }
 
 /* =========================
-   MIDDLE PANEL (FULL CENTRE FIX)
+   MIDDLE PANEL (FIXED ALIGNMENT)
 ========================= */
 
 .app-main {
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    justify-content: flex-start; /* FIX: removes big top gap */
+
     text-align: center;
+
+    padding-top: 1rem; /* requested spacing fix */
 }
 
-/* THIS is the key AREDL fix */
+/* level container */
 .app-main .level {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 
     gap: 1.5rem;
 
     width: 100%;
     max-width: 720px;
-    margin: 0 auto;
+    margin: 1rem auto 0; /* extra breathing space below top */
 }
 
 /* stats row centered */
@@ -149,7 +154,7 @@ header {
     text-align: center;
 }
 
-/* headings centered like AREDL */
+/* headings centered */
 .app-main h1,
 .app-main h2,
 .app-right h2 {
@@ -157,7 +162,7 @@ header {
 }
 
 /* =========================
-   TABLE FIX (CENTRED)
+   TABLE FIX
 ========================= */
 
 table {
