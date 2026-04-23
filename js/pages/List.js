@@ -26,9 +26,6 @@ export default {
         roleIconMap,
         store,
 
-        // =====================
-        // FILTER STATE (UPDATED)
-        // =====================
         search: "",
         selectedCreators: [],
         selectedRatings: [],
@@ -43,10 +40,8 @@ export default {
 
         <main v-else class="app-shell page-list">
 
-            <!-- LEFT -->
             <aside class="app-sidebar">
 
-                <!-- CONTROLS -->
                 <div class="list-controls">
 
                     <input
@@ -67,7 +62,6 @@ export default {
 
                 </div>
 
-                <!-- DROPDOWN FILTER PANEL -->
                 <div v-if="filtersOpen" class="filter-panel">
 
                     <h4>Creators</h4>
@@ -84,13 +78,14 @@ export default {
 
                 </div>
 
-                <!-- LIST -->
                 <table class="list" v-if="filteredList">
-                    <tr v-for="([level, err], i) in filteredList" :key="level?.id || i">
+
+                    <tr v-for="([level, err], i) in filteredList" :key="level?.path || i">
 
                         <td class="rank">
-                            <p v-if="i + 1 <= 150" class="type-label-lg">#{{ i + 1 }}</p>
-                            <p v-else class="type-label-lg">Legacy</p>
+                            <p v-if="level" class="type-label-lg">
+                                #{{ level.trueRank }}
+                            </p>
                         </td>
 
                         <td class="level" :class="{ active: selected === i, error: !level }">
@@ -114,7 +109,6 @@ export default {
 
             </aside>
 
-            <!-- MIDDLE -->
             <section class="app-main">
 
                 <div v-if="level" class="level">
@@ -128,54 +122,25 @@ export default {
 
                     <iframe
                         class="video"
-                        id="videoframe"
                         :src="video"
                         frameborder="0"
                     ></iframe>
 
-                    <ul class="stats">
-                        <li>
-                            <div class="type-title-sm">Points when completed</div>
-                            <p>{{ score(selected + 1, 100, level.percentToQualify) }}</p>
-                        </li>
-
-                        <li>
-                            <div class="type-title-sm">ID</div>
-                            <p>{{ level.id }}</p>
-                        </li>
-
-                        <li>
-                            <div class="type-title-sm">Rating</div>
-                            <p>{{ level.rating }}</p>
-                        </li>
-                    </ul>
-
-                </div>
-
-                <div v-else class="level">
-                    <p>(ノಠ益ಠ)ノ彡┻━┻</p>
                 </div>
 
             </section>
 
-            <!-- RIGHT -->
             <aside class="app-right">
 
                 <div v-if="level">
 
                     <h2>Victors</h2>
 
-                    <table class="victors" v-if="level.victors && level.victors.length">
+                    <table v-if="level.victors?.length">
                         <tr v-for="victor in level.victors" :key="victor">
-                            <td>
-                                <span class="type-label-lg">
-                                    {{ victor }}
-                                </span>
-                            </td>
+                            <td>{{ victor }}</td>
                         </tr>
                     </table>
-
-                    <p v-else>No victors yet.</p>
 
                 </div>
 
@@ -196,43 +161,35 @@ export default {
 
         uniqueCreators() {
             const set = new Set();
-
             this.list.forEach(([lvl]) => {
                 (lvl?.creators || []).forEach(c => set.add(c));
             });
-
             return [...set].sort();
         },
 
         filteredList() {
             let arr = [...this.list];
 
-            // SEARCH
             if (this.search) {
                 arr = arr.filter(([lvl]) =>
                     lvl?.name?.toLowerCase().includes(this.search.toLowerCase())
                 );
             }
 
-            // CREATOR FILTER
             if (this.selectedCreators.length) {
                 arr = arr.filter(([lvl]) =>
-                    lvl?.creators?.some(c =>
-                        this.selectedCreators.includes(c)
-                    )
+                    lvl?.creators?.some(c => this.selectedCreators.includes(c))
                 );
             }
 
-            // RATING FILTER
             if (this.selectedRatings.length) {
                 arr = arr.filter(([lvl]) =>
                     this.selectedRatings.includes(lvl?.rating)
                 );
             }
 
-            // SORT
             if (this.sortMode === "length") {
-                arr = arr.sort((a, b) =>
+                arr.sort((a, b) =>
                     (b[0]?.length || 0) - (a[0]?.length || 0)
                 );
             }
@@ -244,23 +201,6 @@ export default {
     async mounted() {
         this.list = await fetchList();
         this.editors = await fetchEditors();
-
-        if (!this.list) {
-            this.errors = [
-                "Failed to load list. Retry in a few minutes or notify list staff.",
-            ];
-        } else {
-            this.errors.push(
-                ...this.list
-                    .filter(([_, err]) => err)
-                    .map(([_, err]) => `Failed to load level. (${err}.json)`)
-            );
-
-            if (!this.editors) {
-                this.errors.push("Failed to load list editors.");
-            }
-        }
-
         this.loading = false;
     },
 
