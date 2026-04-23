@@ -10,5 +10,17 @@
     "name": "Hard Pack",
     "color": "#ae21d1",
     "levels": ["Wobble Wobble"]
-  }
+  },
+  {
+    "id": "harb-pack",
+    "name": "Harb Pack",
+    "color": "#ae21d1",
+    "levels": ["Wobble Wobble"]
+  },
+  {
+    "id": "bard-pack",
+    "name": "Bard Pack",
+    "color": "#ae21d1",
+    "levels": ["Wobble Wobble"]
+  }  
 ]
