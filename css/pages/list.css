@@ -62,3 +62,13 @@
     align-items: center;
     justify-content: center;
 }
+/* =========================
+   DARKER LIST PANELS (UI ONLY)
+   ========================= */
+
+.page-list {
+    --panel-bg: #1f1f1f;              /* darker cards */
+    --panel-bg-hover: #262626;
+    --color-background: #141414;     /* main middle/right areas */
+    --color-background-hover: #1a1a1a;
+}
