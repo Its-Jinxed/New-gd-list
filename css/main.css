@@ -56,6 +56,9 @@ body {
     flex-direction: column;
     background: var(--color-background);
     color: var(--color-on-background);
+
+    /* HARD FIX: prevents horizontal scroll */
+    overflow-x: hidden;
 }
 
 /* =========================
@@ -83,6 +86,9 @@ header {
     height: calc(100vh - 4.5rem);
     padding: 2rem;
     box-sizing: border-box;
+
+    /* HARD FIX: prevents child overflow spill */
+    overflow: hidden;
 }
 
 /* =========================
@@ -101,6 +107,9 @@ header {
     align-items: center;
 
     overflow-y: auto;
+
+    /* IMPORTANT: allows flex/grid children to shrink properly */
+    min-width: 0;
 }
 
 /* prevent full-width stretching inside cards */
@@ -109,10 +118,24 @@ header {
 .app-right > * {
     width: 100%;
     max-width: 100%;
+    box-sizing: border-box;
 }
 
 /* =========================
-   MIDDLE PANEL (FIXED ALIGNMENT)
+   LEFT SIDEBAR SAFETY FIX
+========================= */
+
+.app-sidebar {
+    overflow-x: hidden;
+}
+
+.app-sidebar * {
+    overflow-wrap: anywhere;
+    max-width: 100%;
+}
+
+/* =========================
+   MIDDLE PANEL (AREDL STYLE FIXED)
 ========================= */
 
 .app-main {
@@ -120,7 +143,7 @@ header {
     flex-direction: column;
     align-items: center;
 
-    justify-content: flex-start; /* FIX: removes big top gap */
+    justify-content: flex-start; /* removes big vertical gap */
 
     text-align: center;
 
@@ -137,7 +160,8 @@ header {
 
     width: 100%;
     max-width: 720px;
-    margin: 1rem auto 0; /* extra breathing space below top */
+
+    margin: 0 auto;
 }
 
 /* stats row centered */
