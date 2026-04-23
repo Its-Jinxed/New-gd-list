@@ -60,6 +60,7 @@ export default {
                                 <span class="type-label-lg">
                                     {{ entry.user }} —
                                     {{ localize(entry.displayScore || 0) }} pts
+
                                     <span v-if="i === 0"> 🥇</span>
                                     <span v-else-if="i === 1"> 🥈</span>
                                     <span v-else-if="i === 2"> 🥉</span>
@@ -75,30 +76,24 @@ export default {
             <div class="player-container" v-if="entry">
                 <div class="player">
 
-                    <!-- BIG HEADER -->
                     <h1 class="lb-title">
                         #{{ selected + 1 }} {{ entry.user }} —
                         {{ localize(entry.displayScore || 0) }} pts
                     </h1>
 
-                    <!-- PACKS -->
+                    <!-- PACKS (FIXED) -->
                     <div class="pack-badges" v-if="entry.packs?.length">
                         <span
                             v-for="pack in entry.packs"
                             :key="pack.name"
                             class="pack-badge"
                             :class="{ complete: pack.complete }"
-                            :style="{
-                                background: pack.complete
-                                    ? (pack.color || 'gold')
-                                    : 'transparent'
-                            }"
                         >
                             {{ pack.name }}
                         </span>
                     </div>
 
-                    <!-- SECTION HEADER -->
+                    <!-- VERIFIED -->
                     <h2 class="lb-section" v-if="entry.verified?.length">
                         Verified ({{ entry.verified.length }})
                     </h2>
@@ -129,6 +124,7 @@ export default {
 
                     <p v-else class="type-label-lg">No verified levels.</p>
 
+                    <!-- COMPLETED -->
                     <h2 class="lb-section" v-if="entry.victories?.length">
                         Completed ({{ entry.victories.length }})
                     </h2>
