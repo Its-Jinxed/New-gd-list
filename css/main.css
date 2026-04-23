@@ -8,20 +8,15 @@
     --color-error: #de0000;
     --color-on-error: white;
 
-    /* NEW UI TOKENS */
     --panel-bg: rgba(0,0,0,0.03);
     --panel-bg-hover: rgba(0,0,0,0.06);
     --border-radius: 1rem;
 }
 
+/* smooth transitions */
 * {
-  transition: all 0.15s ease;
+    transition: all 0.15s ease;
 }
-
-
-.app-shell { display: grid; grid-template-columns: 320px 1fr 360px; }
-.app-sidebar, .app-main, .app-right { overflow-y: auto; }
-
 
 main.dark,
 header.dark {
@@ -41,42 +36,19 @@ header.dark {
     --panel-bg-hover: rgba(255,255,255,0.08);
 }
 
-html,
-body {
+html, body {
     height: 100%;
 }
 
 body {
+    margin: 0;
     display: flex;
     flex-direction: column;
-    margin: 0;
 }
 
 /* =========================
-   GLOBAL LAYOUT FIXES
+   HEADER
 ========================= */
-
-header,
-main {
-    background-color: var(--color-background);
-    color: var(--color-on-background);
-    display: grid;
-    grid-template-columns: minmax(26rem, 1fr) minmax(16rem, 3fr);
-    column-gap: 1.5rem;
-}
-
-main {
-    height: 0;
-    flex: 1;
-    display: grid;
-    grid-template-rows: minmax(0, 1fr);
-}
-
-main > div {
-    overflow-y: auto;
-}
-
-/* HEADER FIX */
 
 header {
     display: flex;
@@ -87,246 +59,79 @@ header {
     color: var(--color-on-primary);
 }
 
-@media screen and (min-width: 1366px) {
-    header {
-        display: grid;
-        padding-inline: 8rem;
-    }
-}
-
-header .logo {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-header .nav {
-    flex: 1;
-}
-
 /* =========================
-   SPINNER
+   AREDL APP SHELL (CORE FIX)
 ========================= */
 
-.spinner {
+.app-shell {
+    display: grid;
+    grid-template-columns: 320px 1fr 360px;
+    gap: 2rem;
+
+    height: calc(100vh - 4.5rem);
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+/* ALL PANELS = CARDS */
+.app-sidebar,
+.app-main,
+.app-right {
+    background: var(--panel-bg);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+
     display: flex;
+    flex-direction: column;
     align-items: center;
+
+    overflow-y: auto;
+}
+
+/* content width control (prevents stretching) */
+.app-sidebar > *,
+.app-main > *,
+.app-right > * {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* centre main content properly */
+.app-main {
     justify-content: center;
-    grid-column: span 3;
 }
 
-/* =========================
-   PACKS PAGE
-========================= */
-
-.packs-page {
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    gap: 3rem;
-    padding: 2.5rem;
-    height: 100%;
+.app-main .level {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
-
-.packs-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    padding: 1rem;
-    background: var(--panel-bg);
-    border-radius: var(--border-radius);
-}
-
-.packs-title h2 {
-    margin: 0 0 1rem 0;
-    font-size: 1.3rem;
-    opacity: 0.85;
-}
-
-/* PACK CARDS */
-
-.pack-card {
-    padding: 1.4rem 1.2rem;
-    border-radius: var(--border-radius);
-    background: var(--panel-bg);
-    cursor: pointer;
-    border-left: 6px solid var(--pack-color);
-    transition: 0.2s ease;
-}
-
-.pack-card:hover {
-    background: var(--panel-bg-hover);
-    transform: translateX(4px);
-}
-
-.pack-card.active {
-    background: var(--panel-bg-hover);
-}
-
-.pack-card__name {
-    font-weight: 800;
-    font-size: 1.1rem;
-}
-
-.pack-card__meta {
-    font-size: 0.95rem;
-    opacity: 0.65;
-    margin-top: 0.3rem;
-}
-
-/* =========================
-   RIGHT PANEL
-========================= */
-
-.packs-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-
-    padding: 1rem;
-    background: var(--panel-bg);
-    border-radius: var(--border-radius);
-}
-
-/* PACK HEADER */
-
-.pack-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.pack-header__bar {
-    width: 8px;
-    height: 52px;
-    border-radius: 6px;
-}
-
-.pack-header__text h1 {
-    margin: 0;
-    font-size: 1.7rem;
-}
-
-/* =========================
-   LEVEL LIST
-========================= */
-
-.levels-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-/* LEVEL ROW */
-
-.level-row {
-    display: grid;
-    grid-template-columns: 70px 1fr 140px;
-    gap: 1.5rem;
-    align-items: center;
-
-    padding: 1.3rem 1.4rem;
-    border-radius: var(--border-radius);
-
-    background: var(--panel-bg);
-    transition: 0.2s ease;
-}
-
-.level-row:hover {
-    background: var(--panel-bg-hover);
-    transform: translateY(-2px);
-}
-
-/* POSITION */
-
-.level-position {
-    font-weight: 700;
-    opacity: 0.7;
+/* headings centred like AREDL */
+.app-main h1,
+.app-main h2,
+.app-right h2 {
     text-align: center;
 }
 
-/* NAME */
-
-.level-name a {
-    font-size: 1.05rem;
-    font-weight: 700;
-    text-decoration: none;
-}
-
-.level-name a:hover {
-    text-decoration: underline;
-}
-
-/* THUMBNAIL */
-
-.level-thumb img {
-    width: 140px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.thumb-placeholder {
-    width: 140px;
-    height: 80px;
-    border-radius: 10px;
-    background: rgba(0,0,0,0.1);
-}
-
-
-/* =========================
-   RESTORE GLOBAL CENTERING BEHAVIOUR
-========================= */
-
-/* Ensure page containers can center content properly */
-.page-list,
-.page-leaderboard-container,
-.packs-page {
-    justify-content: center;
-}
-
-/* Fix right-side panels (this is where most centering was lost) */
-.level-container,
-.player-container,
-.packs-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Keep text blocks readable width instead of full stretch */
-.level,
-.player,
-.pack-header,
-.levels-list,
-.board-container {
-    width: 100%;
-    max-width: 60rem;
-}
-
-/* Center "empty states" properly again */
-.level-container .level:empty,
-.player:empty,
-.packs-content:empty {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Fix table centering regression */
+/* tables centered */
 table {
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
+    margin: 0 auto;
 }
 
-/* Restore vertical centering in main content areas */
-.page-list .level-container,
-.page-leaderboard .player-container {
+/* empty states */
+.app-main:empty,
+.app-right:empty {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+}
+
+/* spinner */
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: span 3;
 }
