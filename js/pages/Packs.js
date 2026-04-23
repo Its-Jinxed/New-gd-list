@@ -10,7 +10,7 @@ export default {
 
     template: `
         <main v-if="loading" class="packs-loading">
-            <p>Loading packs...</p>
+            <p class="type-label-lg">Loading packs...</p>
         </main>
 
         <main v-else class="packs-page">
@@ -19,7 +19,7 @@ export default {
             <aside class="packs-sidebar">
 
                 <div class="packs-title">
-                    <h2>Packs</h2>
+                    <h2 class="type-label-lg">Packs</h2>
                 </div>
 
                 <div
@@ -30,11 +30,11 @@ export default {
                     @click="selectedPack = i"
                     :style="{ '--pack-color': pack.color || '#888' }"
                 >
-                    <div class="pack-card__name">
+                    <div class="pack-card__name type-label-lg">
                         {{ pack.name }}
                     </div>
 
-                    <div class="pack-card__meta">
+                    <div class="pack-card__meta type-label-lg">
                         {{ pack.levels.length }} levels
                     </div>
 
@@ -53,7 +53,7 @@ export default {
                     ></div>
 
                     <div class="pack-header__text">
-                        <h1>{{ currentPack.name }}</h1>
+                        <h1 class="type-label-lg">{{ currentPack.name }}</h1>
                     </div>
 
                 </div>
@@ -67,7 +67,7 @@ export default {
                     >
 
                         <!-- POSITION -->
-                        <div class="level-position">
+                        <div class="level-position type-label-lg">
                             #{{ index + 1 }}
                         </div>
 
