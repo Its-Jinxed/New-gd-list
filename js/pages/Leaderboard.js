@@ -90,100 +90,111 @@ export default {
                         }} pts
                     </h1>
 
-                    <!-- VERIFIED -->
-                    <h2 v-if="entry.verified?.length">
-                        Verified ({{ entry.verified.length }})
-                    </h2>
+                    <!-- =========================
+                         CREATOR MODE ONLY
+                    ========================== -->
+                    <template v-if="mode === 'creator'">
 
-                    <table v-if="entry.verified?.length">
-                        <tr v-for="score in entry.verified" :key="score.level">
+                        <h2 v-if="entry.created?.length">
+                            Created Levels ({{ entry.created.length }})
+                        </h2>
 
-                            <td class="rank">
-                                <p class="type-label-lg">#{{ score.rank }}</p>
-                            </td>
+                        <table v-if="entry.created?.length">
+                            <tr v-for="score in entry.created" :key="score.level">
 
-                            <td class="level">
-                                <a :href="score.link" target="_blank">
+                                <td class="rank">
+                                    <p class="type-label-lg">#{{ score.rank }}</p>
+                                </td>
+
+                                <td class="level">
                                     <span class="type-label-lg">
                                         {{ score.level }}
                                     </span>
-                                </a>
-                            </td>
+                                </td>
 
-                            <td class="score">
-                                <p class="type-label-lg">
-                                    +{{ localize(score.score) }}
-                                </p>
-                            </td>
+                                <td class="score">
+                                    <p class="type-label-lg">
+                                        +{{ localize(score.score) }}
+                                    </p>
+                                </td>
 
-                        </tr>
-                    </table>
+                            </tr>
+                        </table>
 
-                    <p v-else class="type-label-lg">No verified levels.</p>
+                        <p v-else class="type-label-lg">
+                            No created levels yet.
+                        </p>
 
-                    <!-- CREATED (FIXED: CLEAN CREATOR BREAKDOWN ONLY) -->
-                    <h2 v-if="mode === 'creator' && entry.created?.length">
-                        Created Levels ({{ entry.created.length }})
-                    </h2>
+                    </template>
 
-                    <table v-if="mode === 'creator' && entry.created?.length">
+                    <!-- =========================
+                         LIST MODE ONLY
+                    ========================== -->
+                    <template v-else>
 
-                        <tr v-for="score in entry.created" :key="score.level">
+                        <!-- VERIFIED -->
+                        <h2 v-if="entry.verified?.length">
+                            Verified ({{ entry.verified.length }})
+                        </h2>
 
-                            <td class="rank">
-                                <p class="type-label-lg">#{{ score.rank }}</p>
-                            </td>
+                        <table v-if="entry.verified?.length">
+                            <tr v-for="score in entry.verified" :key="score.level">
 
-                            <td class="level">
-                                <span class="type-label-lg">
-                                    {{ score.level }}
-                                </span>
-                            </td>
+                                <td class="rank">
+                                    <p class="type-label-lg">#{{ score.rank }}</p>
+                                </td>
 
-                            <td class="score">
-                                <p class="type-label-lg">
-                                    +{{ localize(score.score) }}
-                                </p>
-                            </td>
+                                <td class="level">
+                                    <a :href="score.link" target="_blank">
+                                        <span class="type-label-lg">
+                                            {{ score.level }}
+                                        </span>
+                                    </a>
+                                </td>
 
-                        </tr>
+                                <td class="score">
+                                    <p class="type-label-lg">
+                                        +{{ localize(score.score) }}
+                                    </p>
+                                </td>
 
-                    </table>
+                            </tr>
+                        </table>
 
-                    <p v-if="mode === 'creator' && !entry.created?.length" class="type-label-lg">
-                        No created levels yet.
-                    </p>
+                        <p v-else class="type-label-lg">No verified levels.</p>
 
-                    <!-- COMPLETED -->
-                    <h2 v-if="entry.victories?.length">
-                        Completed ({{ entry.victories.length }})
-                    </h2>
+                        <!-- COMPLETED -->
+                        <h2 v-if="entry.victories?.length">
+                            Completed ({{ entry.victories.length }})
+                        </h2>
 
-                    <table v-if="entry.victories?.length">
-                        <tr v-for="score in entry.victories" :key="score.level">
+                        <table v-if="entry.victories?.length">
+                            <tr v-for="score in entry.victories" :key="score.level">
 
-                            <td class="rank">
-                                <p class="type-label-lg">#{{ score.rank }}</p>
-                            </td>
+                                <td class="rank">
+                                    <p class="type-label-lg">#{{ score.rank }}</p>
+                                </td>
 
-                            <td class="level">
-                                <a :href="score.link" target="_blank">
-                                    <span class="type-label-lg">
-                                        {{ score.level }}
-                                    </span>
-                                </a>
-                            </td>
+                                <td class="level">
+                                    <a :href="score.link" target="_blank">
+                                        <span class="type-label-lg">
+                                            {{ score.level }}
+                                        </span>
+                                    </a>
+                                </td>
 
-                            <td class="score">
-                                <p class="type-label-lg">
-                                    +{{ localize(score.score) }}
-                                </p>
-                            </td>
+                                <td class="score">
+                                    <p class="type-label-lg">
+                                        +{{ localize(score.score) }}
+                                    </p>
+                                </td>
 
-                        </tr>
-                    </table>
+                            </tr>
+                        </table>
 
-                    <p v-else class="type-label-lg">No completed levels yet.</p>
+                        <p v-else class="type-label-lg">No completed levels yet.</p>
+
+                    </template>
 
                 </div>
             </div>
