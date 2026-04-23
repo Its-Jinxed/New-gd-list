@@ -91,55 +91,16 @@ export default {
                     </h1>
 
                     <!-- =========================
-                         CREATOR MODE ONLY
+                         LIST POINTS VIEW
                     ========================== -->
-                    <template v-if="mode === 'creator'">
+                    <template v-if="mode === 'total'">
 
-                        <h2 v-if="entry.created?.length">
-                            Created Levels ({{ entry.created.length }})
-                        </h2>
-
-                        <table v-if="entry.created?.length">
-                            <tr v-for="score in entry.created" :key="score.level">
-
-                                <td class="rank">
-                                    <p class="type-label-lg">#{{ score.rank }}</p>
-                                </td>
-
-                                <td class="level">
-                                    <span class="type-label-lg">
-                                        {{ score.level }}
-                                    </span>
-                                </td>
-
-                                <td class="score">
-                                    <p class="type-label-lg">
-                                        +{{ localize(score.score) }}
-                                    </p>
-                                </td>
-
-                            </tr>
-                        </table>
-
-                        <p v-else class="type-label-lg">
-                            No created levels yet.
-                        </p>
-
-                    </template>
-
-                    <!-- =========================
-                         LIST MODE ONLY
-                    ========================== -->
-                    <template v-else>
-
-                        <!-- VERIFIED -->
                         <h2 v-if="entry.verified?.length">
                             Verified ({{ entry.verified.length }})
                         </h2>
 
                         <table v-if="entry.verified?.length">
                             <tr v-for="score in entry.verified" :key="score.level">
-
                                 <td class="rank">
                                     <p class="type-label-lg">#{{ score.rank }}</p>
                                 </td>
@@ -157,20 +118,17 @@ export default {
                                         +{{ localize(score.score) }}
                                     </p>
                                 </td>
-
                             </tr>
                         </table>
 
                         <p v-else class="type-label-lg">No verified levels.</p>
 
-                        <!-- COMPLETED -->
                         <h2 v-if="entry.victories?.length">
                             Completed ({{ entry.victories.length }})
                         </h2>
 
                         <table v-if="entry.victories?.length">
                             <tr v-for="score in entry.victories" :key="score.level">
-
                                 <td class="rank">
                                     <p class="type-label-lg">#{{ score.rank }}</p>
                                 </td>
@@ -188,11 +146,58 @@ export default {
                                         +{{ localize(score.score) }}
                                     </p>
                                 </td>
-
                             </tr>
                         </table>
 
                         <p v-else class="type-label-lg">No completed levels yet.</p>
+
+                    </template>
+
+                    <!-- =========================
+                         CREATOR VIEW (GROUPED)
+                    ========================== -->
+                    <template v-else>
+
+                        <h2 v-if="entry.created?.length">
+                            Created Levels ({{ entry.created.length }})
+                        </h2>
+
+                        <div v-if="entry.created?.length">
+
+                            <!-- LOOP GROUPS -->
+                            <div v-for="(levels, rating) in groupedCreated" :key="rating">
+
+                                <h3 class="type-title-sm">{{ rating }}</h3>
+
+                                <table>
+                                    <tr v-for="score in levels" :key="score.level">
+
+                                        <td class="rank">
+                                            <p class="type-label-lg">#{{ score.rank }}</p>
+                                        </td>
+
+                                        <td class="level">
+                                            <span class="type-label-lg">
+                                                {{ score.level }}
+                                            </span>
+                                        </td>
+
+                                        <td class="score">
+                                            <p class="type-label-lg">
+                                                +{{ localize(score.score) }}
+                                            </p>
+                                        </td>
+
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                        <p v-else class="type-label-lg">
+                            No created levels yet.
+                        </p>
 
                     </template>
 
@@ -212,9 +217,32 @@ export default {
                 victories: [],
                 verified: [],
                 created: [],
-                packs: [],
             };
         },
+
+        // ✅ GROUP + SORT CREATOR LEVELS
+        groupedCreated() {
+            if (!this.entry?.created) return {};
+
+            const order = ['Epic', 'Featured', 'Standard', 'Joke'];
+
+            const groups = {};
+
+            order.forEach(r => {
+                groups[r] = [];
+            });
+
+            this.entry.created.forEach(lvl => {
+                const rating = lvl.rating || 'Other';
+                if (!groups[rating]) groups[rating] = [];
+                groups[rating].push(lvl);
+            });
+
+            // remove empty groups
+            return Object.fromEntries(
+                Object.entries(groups).filter(([_, v]) => v.length)
+            );
+        }
     },
 
     methods: {
