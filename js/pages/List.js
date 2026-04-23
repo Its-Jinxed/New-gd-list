@@ -132,24 +132,22 @@ export default {
                         frameborder="0"
                     ></iframe>
 
-                    <!-- ✅ SAME STYLE AS LevelAuthors -->
+                    <!-- ✅ FULL MATCH TO LevelAuthors STYLE -->
                     <div class="level-meta-main">
 
-                        <div class="meta-row">
-
-                            <span class="author-tag">
-                                💠 {{ score(selected + 1, 100, level?.percentToQualify) }} pts
+                        <div class="type-title-sm">Points</div>
+                        <p class="type-body">
+                            <span>
+                                {{ score(selected + 1, 100, level?.percentToQualify) }} pts
                             </span>
+                        </p>
 
-                        </div>
-
-                        <div class="meta-row">
-
-                            <span class="author-tag">🆔 {{ level?.id || 'N/A' }}</span>
-                            <span class="author-tag">⭐ {{ level?.rating || 'N/A' }}</span>
-                            <span class="author-tag">⏱ {{ level?.length || 'N/A' }}</span>
-
-                        </div>
+                        <div class="type-title-sm">Details</div>
+                        <p class="type-body">
+                            <span>ID: {{ level?.id || 'N/A' }}</span>,
+                            <span>Rating: {{ level?.rating || 'N/A' }}</span>,
+                            <span>Length: {{ level?.length || 'N/A' }}</span>
+                        </p>
 
                     </div>
 
