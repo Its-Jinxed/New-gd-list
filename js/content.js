@@ -72,7 +72,7 @@ export async function fetchList() {
                             path,
                             youtubeId: getYouTubeId(level.verification),
                             victors: level.victors ?? [],
-                            trueRank: rank + 1, // ✅ FIXED: stable difficulty rank
+                            trueRank: rank + 1,
                         },
                         null,
                     ];
@@ -147,11 +147,13 @@ export async function fetchLeaderboard() {
         scoreMap[verifiedUser] ??= {
             verified: [],
             victories: [],
+            created: [],
             creatorScore: 0,
         };
 
+        // VERIFIED (player completion)
         scoreMap[verifiedUser].verified.push({
-            rank: level.trueRank, // ✅ FIXED
+            rank: level.trueRank,
             level: level.name,
             path: level.path,
             score: levelScore,
@@ -159,8 +161,18 @@ export async function fetchLeaderboard() {
             link: level.verification,
         });
 
+        // CREATOR TRACKING (NEW)
+        scoreMap[verifiedUser].created.push({
+            rank: level.trueRank,
+            level: level.name,
+            path: level.path,
+            score: creatorPoints,
+            rating: level.rating,
+        });
+
         scoreMap[verifiedUser].creatorScore += creatorPoints;
 
+        // VICTORS (other players)
         victors.forEach((name) => {
             if (!name || name.toLowerCase() === verifier?.toLowerCase()) return;
 
@@ -172,11 +184,12 @@ export async function fetchLeaderboard() {
             scoreMap[user] ??= {
                 verified: [],
                 victories: [],
+                created: [],
                 creatorScore: 0,
             };
 
             scoreMap[user].victories.push({
-                rank: level.trueRank, // ✅ FIXED
+                rank: level.trueRank,
                 level: level.name,
                 path: level.path,
                 score: levelScore,
@@ -211,6 +224,7 @@ export async function fetchLeaderboard() {
             creatorScore: scores.creatorScore || 0,
             verified: scores.verified,
             victories: scores.victories,
+            created: scores.created || [],
             packs: packsList,
         };
     });
