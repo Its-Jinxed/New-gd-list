@@ -59,15 +59,14 @@
     width: 100%;
 }
 
-/* FIX: rank spacing (#1 → "#1 ")
-   applies to BOTH left + right tables */
+/* FIXED RANK SPACING (clean + consistent everywhere) */
 .page-leaderboard .rank p {
     display: inline-block;
     margin-right: 0.4rem;
     white-space: nowrap;
 }
 
-/* optional: nicer fixed alignment column */
+/* aligns rank column cleanly */
 .page-leaderboard .rank {
     text-align: right;
     padding-block: 1rem;
@@ -126,6 +125,12 @@
 
     font-size: 1rem;
     font-weight: 600;
+
+    transition: all 0.15s ease;
+}
+
+.lb-tab:hover {
+    background: var(--panel-bg-hover);
 }
 
 .lb-tab.active {
@@ -135,7 +140,17 @@
 
 /* =========================
    RIGHT PANEL TYPOGRAPHY
+   (matches LEFT style cleanly)
 ========================= */
+
+.player-container h1,
+.player-container h2,
+.player-container p,
+.player-container a,
+.player-container td {
+    font-size: 1rem;
+    font-weight: 600;
+}
 
 .player-container h1 {
     font-size: 1.6rem;
@@ -150,21 +165,14 @@
     margin-bottom: 0.5rem;
 }
 
-.player-container p,
-.player-container a,
-.player-container td {
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-/* level links match left side feel */
+/* level links consistency */
 .player-container .level a {
     text-decoration: none;
     color: var(--color-on-background);
 }
 
 /* =========================
-   PACK CHIPS
+   PACK CHIPS (FIXED + STABLE)
 ========================= */
 
 .pack-badge {
@@ -190,12 +198,14 @@
     user-select: none;
 }
 
+/* completed packs */
 .pack-badge.complete {
     opacity: 1;
     background: rgba(255, 215, 0, 0.25);
     border: 1px solid rgba(255, 215, 0, 0.6);
 }
 
+/* hover effect */
 .pack-badge:hover {
     transform: translateY(-2px);
     opacity: 1;
