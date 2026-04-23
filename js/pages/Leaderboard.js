@@ -62,14 +62,10 @@ export default {
                             <button @click="selected = i">
                                 <span class="type-label-lg">
                                     {{ entry.user }} —
-
-                                    <template v-if="mode === 'creator'">
-                                        {{ localize(getCreatorScore(entry).total) }} pts
-                                    </template>
-
-                                    <template v-else>
-                                        {{ localize(getListScore(entry)) }} pts
-                                    </template>
+                                    {{ mode === 'creator'
+                                        ? localize(entry.creatorScore || 0)
+                                        : localize(entry.total || 0)
+                                    }} pts
 
                                     <span v-if="i === 0"> 🥇</span>
                                     <span v-else-if="i === 1"> 🥈</span>
@@ -88,28 +84,11 @@ export default {
 
                     <h1 class="lb-title">
                         #{{ selected + 1 }} {{ entry.user }} —
-                        <template v-if="mode === 'creator'">
-                            {{ localize(getCreatorScore(entry).total) }} pts
-                        </template>
-                        <template v-else>
-                            {{ localize(getListScore(entry)) }} pts
-                        </template>
+                        {{ mode === 'creator'
+                            ? localize(entry.creatorScore || 0)
+                            : localize(entry.total || 0)
+                        }} pts
                     </h1>
-
-                    <!-- PACKS -->
-                    <div
-                        class="pack-badges"
-                        v-if="completedPacks(entry).length"
-                    >
-                        <span
-                            v-for="pack in completedPacks(entry)"
-                            :key="pack.name"
-                            class="pack-badge complete"
-                            :style="{ background: pack.color || 'gold' }"
-                        >
-                            {{ pack.name }}
-                        </span>
-                    </div>
 
                     <!-- VERIFIED -->
                     <h2 v-if="entry.verified?.length">
@@ -141,6 +120,37 @@ export default {
                     </table>
 
                     <p v-else class="type-label-lg">No verified levels.</p>
+
+                    <!-- CREATED (NEW CREATOR TAB DATA) -->
+                    <h2 v-if="mode === 'creator' && entry.created?.length">
+                        Created Levels ({{ entry.created.length }})
+                    </h2>
+
+                    <table v-if="mode === 'creator' && entry.created?.length">
+                        <tr v-for="score in entry.created" :key="score.level">
+
+                            <td class="rank">
+                                <p class="type-label-lg">#{{ score.rank }}</p>
+                            </td>
+
+                            <td class="level">
+                                <span class="type-label-lg">
+                                    {{ score.level }}
+                                </span>
+                            </td>
+
+                            <td class="score">
+                                <p class="type-label-lg">
+                                    +{{ localize(score.score) }}
+                                </p>
+                            </td>
+
+                        </tr>
+                    </table>
+
+                    <p v-if="mode === 'creator' && !entry.created?.length" class="type-label-lg">
+                        No created levels yet.
+                    </p>
 
                     <!-- COMPLETED -->
                     <h2 v-if="entry.victories?.length">
@@ -184,8 +194,11 @@ export default {
         entry() {
             return this.leaderboard?.[this.selected] || {
                 user: '',
+                total: 0,
+                creatorScore: 0,
                 victories: [],
                 verified: [],
+                created: [],
                 packs: [],
             };
         },
@@ -193,57 +206,6 @@ export default {
 
     methods: {
         localize,
-
-        completedPacks(entry) {
-            return (entry.packs || []).filter(p => p.complete);
-        },
-
-        // =========================
-        // LIST SCORE (existing system)
-        // =========================
-        getListScore(entry) {
-            const verified = (entry.verified || []).reduce(
-                (sum, s) => sum + (s.score || 0),
-                0
-            );
-
-            const victories = (entry.victories || []).reduce(
-                (sum, s) => sum + (s.score || 0),
-                0
-            );
-
-            return verified + victories;
-        },
-
-        // =========================
-        // CREATOR SCORE SYSTEM
-        // =========================
-        getCreatorScore(entry) {
-            const weights = {
-                Joke: 1,
-                Standard: 2,
-                Featured: 3,
-                Epic: 5,
-            };
-
-            let total = 0;
-            const breakdown = [];
-
-            const created = entry.createdLevels || [];
-
-            for (const lvl of created) {
-                const value = weights[lvl.rating] || 0;
-
-                total += value;
-
-                breakdown.push({
-                    level: lvl.level,
-                    score: value,
-                });
-            }
-
-            return { total, breakdown };
-        },
     },
 
     async mounted() {
