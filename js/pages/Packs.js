@@ -54,7 +54,6 @@ export default {
 
                     <div class="pack-header__text">
                         <h1>{{ currentPack.name }}</h1>
-                        <!-- removed duplicate level count -->
                     </div>
 
                 </div>
@@ -76,13 +75,14 @@ export default {
                         <div class="level-name">
                             <a
                                 v-if="getLevel(levelPath)"
+                                class="type-label-lg"
                                 :href="getLevel(levelPath).verification"
                                 target="_blank"
                             >
                                 {{ getLevel(levelPath).name }}
                             </a>
 
-                            <span v-else class="missing">
+                            <span v-else class="missing type-label-lg">
                                 {{ levelPath }}
                             </span>
                         </div>
