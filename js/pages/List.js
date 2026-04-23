@@ -132,12 +132,12 @@ export default {
                         frameborder="0"
                     ></iframe>
 
-                    <!-- ✅ Styled metadata (creator/verifier-style tags) -->
+                    <!-- ✅ SAME STYLE AS LevelAuthors -->
                     <div class="level-meta-main">
 
                         <div class="meta-row">
 
-                            <span class="meta-tag">
+                            <span class="author-tag">
                                 💠 {{ score(selected + 1, 100, level?.percentToQualify) }} pts
                             </span>
 
@@ -145,9 +145,9 @@ export default {
 
                         <div class="meta-row">
 
-                            <span class="meta-tag">🆔 {{ level?.id || 'N/A' }}</span>
-                            <span class="meta-tag">⭐ {{ level?.rating || 'N/A' }}</span>
-                            <span class="meta-tag">⏱ {{ level?.length || 'N/A' }}</span>
+                            <span class="author-tag">🆔 {{ level?.id || 'N/A' }}</span>
+                            <span class="author-tag">⭐ {{ level?.rating || 'N/A' }}</span>
+                            <span class="author-tag">⏱ {{ level?.length || 'N/A' }}</span>
 
                         </div>
 
