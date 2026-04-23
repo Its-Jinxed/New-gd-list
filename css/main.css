@@ -7,11 +7,17 @@
     --color-on-primary: white;
     --color-error: #de0000;
     --color-on-error: white;
+
+    /* NEW UI TOKENS */
+    --panel-bg: rgba(0,0,0,0.03);
+    --panel-bg-hover: rgba(0,0,0,0.06);
+    --border-radius: 1rem;
 }
 
 main.dark,
 header.dark {
     color-scheme: dark;
+
     --color-background: #1c1b1f;
     --color-on-background: white;
     --color-background-hover: #27262c;
@@ -21,6 +27,9 @@ header.dark {
     --color-on-primary: white;
     --color-error: #de0000;
     --color-on-error: white;
+
+    --panel-bg: rgba(255,255,255,0.04);
+    --panel-bg-hover: rgba(255,255,255,0.08);
 }
 
 html,
@@ -35,7 +44,7 @@ body {
 }
 
 /* =========================
-   LAYOUT
+   GLOBAL LAYOUT FIXES
 ========================= */
 
 header,
@@ -44,35 +53,7 @@ main {
     color: var(--color-on-background);
     display: grid;
     grid-template-columns: minmax(26rem, 1fr) minmax(16rem, 3fr);
-    column-gap: 1rem;
-}
-
-header {
-    display: flex;
-    padding-inline: 10rem;
-    height: 4rem;
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
-}
-
-@media screen and (min-width: 1366px) {
-    header {
-        display: grid;
-        padding-inline: 10rem;
-    }
-}
-
-header .logo {
-    justify-self: end;
-    align-self: center;
-    display: flex;
-    align-items: flex-end;
-    gap: 1rem;
-    padding-right: 3rem;
-}
-
-header .nav {
-    flex: 1;
+    column-gap: 1.5rem;
 }
 
 main {
@@ -80,12 +61,43 @@ main {
     flex: 1;
     display: grid;
     grid-template-rows: minmax(0, 1fr);
-    column-gap: 1rem;
 }
 
 main > div {
     overflow-y: auto;
 }
+
+/* HEADER FIX (prevents logo sitting too high/odd alignment) */
+
+header {
+    display: flex;
+    align-items: center;
+    padding-inline: 6rem;
+    height: 4.5rem;
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+@media screen and (min-width: 1366px) {
+    header {
+        display: grid;
+        padding-inline: 8rem;
+    }
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+header .nav {
+    flex: 1;
+}
+
+/* =========================
+   SPINNER
+========================= */
 
 .spinner {
     display: flex;
@@ -95,73 +107,80 @@ main > div {
 }
 
 /* =========================
-   PACKS PAGE
+   PACKS PAGE (MORE AIRY)
 ========================= */
 
 .packs-page {
     display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 2.5rem;
-    padding: 2rem;
+    grid-template-columns: 340px 1fr;
+    gap: 3rem;
+    padding: 2.5rem;
     height: 100%;
 }
 
 /* =========================
-   SIDEBAR
+   SIDEBAR (PANEL STYLE)
 ========================= */
 
 .packs-sidebar {
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
+    gap: 1rem;
+
+    padding: 1rem;
+    background: var(--panel-bg);
+    border-radius: var(--border-radius);
 }
 
 .packs-title h2 {
-    margin: 0 0 0.75rem 0;
-    opacity: 0.8;
-    font-size: 1.2rem;
+    margin: 0 0 1rem 0;
+    font-size: 1.3rem;
+    opacity: 0.85;
 }
 
-/* PACK CARDS (TALLER + CLEANER) */
+/* PACK CARDS */
 
 .pack-card {
-    padding: 1.25rem 1.1rem;
-    border-radius: 0.9rem;
-    background: rgba(0,0,0,0.04);
+    padding: 1.4rem 1.2rem;
+    border-radius: var(--border-radius);
+    background: var(--panel-bg);
     cursor: pointer;
-    border-left: 5px solid var(--pack-color);
-    transition: 0.15s ease;
-    margin-bottom: 0.6rem;
+    border-left: 6px solid var(--pack-color);
+    transition: 0.2s ease;
 }
 
 .pack-card:hover {
-    background: rgba(0,0,0,0.07);
-    transform: translateX(3px);
+    background: var(--panel-bg-hover);
+    transform: translateX(4px);
 }
 
 .pack-card.active {
-    background: rgba(0,0,0,0.12);
+    background: var(--panel-bg-hover);
 }
 
 .pack-card__name {
-    font-weight: 700;
-    font-size: 1.05rem;
+    font-weight: 800;
+    font-size: 1.1rem;
 }
 
 .pack-card__meta {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     opacity: 0.65;
-    margin-top: 0.25rem;
+    margin-top: 0.3rem;
 }
 
 /* =========================
-   RIGHT PANEL
+   RIGHT PANEL (CONTENT AREA)
 ========================= */
 
 .packs-content {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+
+    padding: 1rem;
+    background: var(--panel-bg);
+    border-radius: var(--border-radius);
 }
 
 /* PACK HEADER */
@@ -173,70 +192,59 @@ main > div {
 }
 
 .pack-header__bar {
-    width: 6px;
-    height: 44px;
-    border-radius: 4px;
+    width: 8px;
+    height: 52px;
+    border-radius: 6px;
 }
 
 .pack-header__text h1 {
     margin: 0;
-}
-
-.pack-header__text p {
-    margin: 0;
-    opacity: 0.6;
+    font-size: 1.7rem;
 }
 
 /* =========================
-   LEVEL LIST (MORE SPACING)
+   LEVEL LIST
 ========================= */
 
 .levels-list {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
-/* LEVEL ROW (BIGGER + CLEANER) */
+/* LEVEL ROW (MORE “CARD LIKE”) */
 
 .level-row {
     display: grid;
-    grid-template-columns: 90px 1fr 110px;
-    gap: 1.25rem;
+    grid-template-columns: 70px 1fr 140px;
+    gap: 1.5rem;
     align-items: center;
 
-    padding: 1.1rem 1.25rem;
-    background: rgba(0,0,0,0.03);
-    border-radius: 0.75rem;
+    padding: 1.3rem 1.4rem;
+    border-radius: var(--border-radius);
 
-    transition: 0.15s ease;
+    background: var(--panel-bg);
+    transition: 0.2s ease;
 }
 
 .level-row:hover {
-    background: rgba(0,0,0,0.06);
+    background: var(--panel-bg-hover);
     transform: translateY(-2px);
 }
 
-/* THUMBNAILS */
+/* POSITION */
 
-.level-thumb img {
-    width: 110px;
-    height: 64px;
-    object-fit: cover;
-    border-radius: 8px;
+.level-position {
+    font-weight: 700;
+    opacity: 0.7;
+    text-align: center;
 }
 
-.thumb-placeholder {
-    width: 110px;
-    height: 64px;
-    border-radius: 8px;
-    background: rgba(0,0,0,0.1);
-}
-
-/* LEVEL NAME */
+/* NAME */
 
 .level-name a {
-    font-weight: 600;
+    font-size: 1.05rem;
+    font-weight: 700;
     text-decoration: none;
 }
 
@@ -244,16 +252,18 @@ main > div {
     text-decoration: underline;
 }
 
-/* STATUS */
+/* THUMBNAIL */
 
-.level-status {
-    text-align: right;
-    opacity: 0.6;
-    font-size: 0.9rem;
+.level-thumb img {
+    width: 140px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
-/* MISSING */
-
-.missing {
-    opacity: 0.5;
+.thumb-placeholder {
+    width: 140px;
+    height: 80px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.1);
 }
