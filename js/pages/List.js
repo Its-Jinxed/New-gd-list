@@ -17,6 +17,24 @@ const roleIconMap = {
 export default {
     components: { Spinner, LevelAuthors },
 
+    data: () => ({
+        list: [],
+        editors: [],
+        loading: true,
+        selected: 0,
+        errors: [],
+        roleIconMap,
+        store,
+
+        // =====================
+        // NEW UI STATE
+        // =====================
+        search: "",
+        filterCreator: "all",
+        filterRating: "all",
+        sortMode: "difficulty"
+    }),
+
     template: `
         <main v-if="loading">
             <Spinner />
@@ -26,9 +44,47 @@ export default {
 
             <!-- LEFT: LIST -->
             <aside class="app-sidebar">
-                <table class="list" v-if="list">
 
-                    <tr v-for="([level, err], i) in list" :key="level?.id || i">
+                <!-- =====================
+                     SEARCH + FILTER UI
+                ====================== -->
+                <div class="list-controls">
+
+                    <input
+                        v-model="search"
+                        type="text"
+                        placeholder="Search levels..."
+                        class="list-search"
+                    />
+
+                    <select v-model="filterCreator" class="list-filter">
+                        <option value="all">All creators</option>
+                        <option
+                            v-for="c in uniqueCreators"
+                            :key="c"
+                            :value="c"
+                        >
+                            {{ c }}
+                        </option>
+                    </select>
+
+                    <select v-model="filterRating" class="list-filter">
+                        <option value="all">All ratings</option>
+                        <option>Joke</option>
+                        <option>Standard</option>
+                        <option>Featured</option>
+                        <option>Epic</option>
+                    </select>
+
+                    <select v-model="sortMode" class="list-filter">
+                        <option value="difficulty">Difficulty</option>
+                        <option value="length">Length</option>
+                    </select>
+
+                </div>
+
+                <table class="list" v-if="filteredList">
+                    <tr v-for="([level, err], i) in filteredList" :key="level?.id || i">
 
                         <td class="rank">
                             <p v-if="i + 1 <= 150" class="type-label-lg">#{{ i + 1 }}</p>
@@ -36,7 +92,8 @@ export default {
                         </td>
 
                         <td class="level" :class="{ active: selected === i, error: !level }">
-                            <button @click="selectLevel(i)">
+                            <button @click="selected = i">
+
                                 <img
                                     v-if="level && level.youtubeId"
                                     class="thumb"
@@ -46,14 +103,16 @@ export default {
                                 <span class="type-label-lg">
                                     {{ level?.name || 'Error (' + err + '.json)' }}
                                 </span>
+
                             </button>
                         </td>
 
                     </tr>
                 </table>
+
             </aside>
 
-            <!-- MIDDLE: LEVEL DETAILS -->
+            <!-- MIDDLE -->
             <section class="app-main">
 
                 <div v-if="level" class="level">
@@ -97,7 +156,7 @@ export default {
 
             </section>
 
-            <!-- RIGHT: VICTORS -->
+            <!-- RIGHT -->
             <aside class="app-right">
 
                 <div v-if="level">
@@ -105,7 +164,7 @@ export default {
                     <h2>Victors</h2>
 
                     <table class="victors" v-if="level.victors && level.victors.length">
-                        <tr v-for="victor in level.victors" :key="victor">
+                        <tr v-for="victor in level.victors">
                             <td>
                                 <span class="type-label-lg">
                                     {{ victor }}
@@ -123,24 +182,67 @@ export default {
         </main>
     `,
 
-    data: () => ({
-        list: [],
-        editors: [],
-        loading: true,
-        selected: 0,
-        errors: [],
-        roleIconMap,
-        store
-    }),
-
     computed: {
         level() {
-            return this.list?.[this.selected]?.[0] || null;
+            return this.filteredList[this.selected]?.[0];
         },
 
         video() {
             if (!this.level) return "";
             return embed(this.level.showcase || this.level.verification);
+        },
+
+        // =====================
+        // UNIQUE FILTER OPTIONS
+        // =====================
+        uniqueCreators() {
+            const set = new Set();
+
+            this.list.forEach(([lvl]) => {
+                if (!lvl?.creators) return;
+                lvl.creators.forEach(c => set.add(c));
+            });
+
+            return Array.from(set).sort();
+        },
+
+        // =====================
+        // FILTER + SORT SYSTEM
+        // =====================
+        filteredList() {
+            let arr = [...this.list];
+
+            // search
+            if (this.search) {
+                arr = arr.filter(([lvl]) =>
+                    lvl?.name?.toLowerCase().includes(this.search.toLowerCase())
+                );
+            }
+
+            // creator filter
+            if (this.filterCreator !== "all") {
+                arr = arr.filter(([lvl]) =>
+                    lvl?.creators?.includes(this.filterCreator)
+                );
+            }
+
+            // rating filter
+            if (this.filterRating !== "all") {
+                arr = arr.filter(([lvl]) =>
+                    lvl?.rating === this.filterRating
+                );
+            }
+
+            // sorting
+            if (this.sortMode === "length") {
+                arr.sort((a, b) => {
+                    const aLen = a[0]?.length ?? 0;
+                    const bLen = b[0]?.length ?? 0;
+                    return aLen - bLen;
+                });
+            }
+
+            return arr;
         }
     },
 
@@ -170,10 +272,5 @@ export default {
     methods: {
         embed,
         score,
-
-        // ✅ safer selection (prevents future filter/sort bugs)
-        selectLevel(i) {
-            this.selected = i;
-        }
     },
 };
