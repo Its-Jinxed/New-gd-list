@@ -18,6 +18,16 @@
   transition: all 0.15s ease;
 }
 
+.ui-card {
+    background: var(--panel-bg);
+    border-radius: var(--border-radius);
+    padding: 1.2rem;
+}
+
+.ui-card-hover:hover {
+    background: var(--panel-bg-hover);
+}
+
 main.dark,
 header.dark {
     color-scheme: dark;
