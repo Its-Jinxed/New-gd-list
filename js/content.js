@@ -24,17 +24,34 @@ function getCreatorPoints(level) {
     return 2; // standard
 }
 
+/* =========================
+   SAFE LIST FETCH (FIXED)
+   ========================= */
 export async function fetchList() {
-    const listResult = await fetch(`${dir}/_list.json`);
-
     try {
+        const listResult = await fetch(`${dir}/_list.json`);
+
+        if (!listResult.ok) {
+            console.error("Failed to fetch _list.json");
+            return [];
+        }
+
         const list = await listResult.json();
+
+        if (!Array.isArray(list)) {
+            console.error("_list.json is not an array:", list);
+            return [];
+        }
 
         return await Promise.all(
             list.map(async (path, rank) => {
-                const levelResult = await fetch(`${dir}/${path}.json`);
-
                 try {
+                    const levelResult = await fetch(`${dir}/${path}.json`);
+
+                    if (!levelResult.ok) {
+                        throw new Error("Missing level file");
+                    }
+
                     const level = await levelResult.json();
 
                     level.creators = Array.isArray(level.creators)
@@ -57,8 +74,8 @@ export async function fetchList() {
             }),
         );
     } catch (err) {
-        console.error(`Failed to load list.`, err);
-        return null;
+        console.error("Critical list load failure:", err);
+        return [];
     }
 }
 
@@ -74,12 +91,16 @@ export async function fetchEditors() {
 export async function fetchPacks() {
     try {
         const res = await fetch(`${dir}/_packs.json`);
+        if (!res.ok) return [];
         return await res.json();
     } catch {
         return [];
     }
 }
 
+/* =========================
+   LEADERBOARD
+   ========================= */
 export async function fetchLeaderboard() {
     const list = await fetchList();
     const packs = await fetchPacks();
@@ -88,8 +109,8 @@ export async function fetchLeaderboard() {
     const errs = [];
 
     // 🛑 HARD GUARD (prevents infinite loading crash)
-    if (!Array.isArray(list)) {
-        console.error("fetchList() returned invalid data:", list);
+    if (!Array.isArray(list) || list.length === 0) {
+        console.error("fetchList() returned invalid/empty data:", list);
         return [[], ["List failed to load"]];
     }
 
@@ -131,7 +152,7 @@ export async function fetchLeaderboard() {
         scoreMap[verifiedUser].creatorScore += creatorPoints;
 
         // =========================
-        // VICTORS (beaten level)
+        // VICTORS
         // =========================
         victors.forEach((name) => {
             if (!name || name.toLowerCase() === verifier?.toLowerCase()) return;
