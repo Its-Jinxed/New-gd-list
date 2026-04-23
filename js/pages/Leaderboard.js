@@ -10,7 +10,7 @@ export default {
         loading: true,
         selected: 0,
         err: [],
-        mode: 'total', // total | creator
+        mode: 'total',
     }),
 
     template: `
@@ -21,7 +21,6 @@ export default {
         <main v-else class="page-leaderboard-container">
             <div class="page-leaderboard">
 
-                <!-- ERROR -->
                 <div class="error-container" v-if="err.length">
                     <p class="error">
                         Leaderboard may be incorrect: {{ err.join(', ') }}
@@ -54,7 +53,6 @@ export default {
                             v-for="(entry, i) in sortedLeaderboard"
                             :key="entry.user || i"
                         >
-
                             <td class="rank">
                                 <p class="type-label-lg">#{{ i + 1 }}</p>
                             </td>
@@ -71,7 +69,6 @@ export default {
                                     </span>
                                 </button>
                             </td>
-
                         </tr>
                     </table>
                 </div>
@@ -80,7 +77,8 @@ export default {
                 <div class="player-container" v-if="entry">
                     <div class="player">
 
-                        <h1>
+                        <!-- MATCH LEFT STYLE -->
+                        <h1 class="type-label-lg">
                             #{{ selected + 1 }} {{ entry.user }} —
                             {{ localize(entry.displayScore || 0) }} pts
                         </h1>
@@ -103,56 +101,73 @@ export default {
                         </div>
 
                         <!-- VERIFIED -->
-                        <h2 v-if="entry.verified?.length">
+                        <h2 v-if="entry.verified?.length" class="type-label-lg">
                             Verified ({{ entry.verified.length }})
                         </h2>
 
                         <table v-if="entry.verified?.length">
-                            <tr
-                                v-for="score in entry.verified"
-                                :key="score.level"
-                            >
-                                <td class="rank"><p>#{{ score.rank }}</p></td>
+                            <tr v-for="score in entry.verified" :key="score.level">
+
+                                <td class="rank">
+                                    <p class="type-label-lg">#{{ score.rank }}</p>
+                                </td>
 
                                 <td class="level">
-                                    <a :href="score.link" target="_blank">
+                                    <a
+                                        :href="score.link"
+                                        target="_blank"
+                                        class="type-label-lg"
+                                    >
                                         {{ score.level }}
                                     </a>
                                 </td>
 
                                 <td class="score">
-                                    <p>+{{ localize(score.score) }}</p>
+                                    <p class="type-label-lg">
+                                        +{{ localize(score.score) }}
+                                    </p>
                                 </td>
                             </tr>
                         </table>
 
-                        <p v-else>No verified levels.</p>
+                        <p v-else class="type-label-lg">
+                            No verified levels.
+                        </p>
 
                         <!-- VICTORIES -->
-                        <h2 v-if="entry.victories?.length">
+                        <h2 v-if="entry.victories?.length" class="type-label-lg">
                             Completed ({{ entry.victories.length }})
                         </h2>
 
                         <table v-if="entry.victories?.length">
-                            <tr
-                                v-for="score in entry.victories"
-                                :key="score.level"
-                            >
-                                <td class="rank"><p>#{{ score.rank }}</p></td>
+                            <tr v-for="score in entry.victories" :key="score.level">
+
+                                <td class="rank">
+                                    <p class="type-label-lg">#{{ score.rank }}</p>
+                                </td>
 
                                 <td class="level">
-                                    <a :href="score.link" target="_blank">
+                                    <a
+                                        :href="score.link"
+                                        target="_blank"
+                                        class="type-label-lg"
+                                    >
                                         {{ score.level }}
                                     </a>
                                 </td>
 
                                 <td class="score">
-                                    <p>+{{ localize(score.score) }}</p>
+                                    <p class="type-label-lg">
+                                        +{{ localize(score.score) }}
+                                    </p>
                                 </td>
+
                             </tr>
                         </table>
 
-                        <p v-else>No completed levels yet.</p>
+                        <p v-else class="type-label-lg">
+                            No completed levels yet.
+                        </p>
 
                     </div>
                 </div>
@@ -163,17 +178,15 @@ export default {
 
     computed: {
         entry() {
-            return (
-                this.sortedLeaderboard?.[this.selected] || {
-                    user: '',
-                    total: 0,
-                    victories: [],
-                    verified: [],
-                    packs: [],
-                    creatorScore: 0,
-                    displayScore: 0,
-                }
-            );
+            return this.sortedLeaderboard?.[this.selected] || {
+                user: '',
+                total: 0,
+                victories: [],
+                verified: [],
+                packs: [],
+                creatorScore: 0,
+                displayScore: 0,
+            };
         },
 
         sortedLeaderboard() {
@@ -197,7 +210,6 @@ export default {
         try {
             const result = await fetchLeaderboard();
 
-            // SAFETY: ensure array shape
             if (Array.isArray(result)) {
                 const [leaderboard, err] = result;
 
@@ -207,12 +219,11 @@ export default {
 
                 this.err = Array.isArray(err) ? err : [];
             } else {
-                console.error('Invalid leaderboard response:', result);
                 this.leaderboard = [];
-                this.err = ['invalid_leaderboard_response'];
+                this.err = ['invalid_response'];
             }
         } catch (e) {
-            console.error('Leaderboard crash:', e);
+            console.error(e);
             this.leaderboard = [];
             this.err = ['fatal_error'];
         } finally {
