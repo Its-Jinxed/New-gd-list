@@ -46,7 +46,8 @@
    BASE LAYOUT
 ========================= */
 
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -56,8 +57,6 @@ body {
     flex-direction: column;
     background: var(--color-background);
     color: var(--color-on-background);
-
-    /* HARD FIX: prevents horizontal scroll */
     overflow-x: hidden;
 }
 
@@ -87,7 +86,6 @@ header {
     padding: 2rem;
     box-sizing: border-box;
 
-    /* HARD FIX: prevents child overflow spill */
     overflow: hidden;
 }
 
@@ -107,12 +105,10 @@ header {
     align-items: center;
 
     overflow-y: auto;
-
-    /* IMPORTANT: allows flex/grid children to shrink properly */
     min-width: 0;
 }
 
-/* prevent full-width stretching inside cards */
+/* prevent overflow issues */
 .app-sidebar > *,
 .app-main > *,
 .app-right > * {
@@ -122,7 +118,7 @@ header {
 }
 
 /* =========================
-   LEFT SIDEBAR SAFETY FIX
+   LEFT SIDEBAR FIX
 ========================= */
 
 .app-sidebar {
@@ -135,36 +131,53 @@ header {
 }
 
 /* =========================
-   MIDDLE PANEL (AREDL STYLE FIXED)
+   MIDDLE PANEL (AREDL CORE)
 ========================= */
 
 .app-main {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    justify-content: flex-start; /* removes big vertical gap */
-
+    justify-content: flex-start;
     text-align: center;
-
-    padding-top: 1rem; /* requested spacing fix */
+    padding-top: 1rem;
 }
 
-/* level container */
+/* LEVEL WRAPPER */
 .app-main .level {
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    gap: 1.5rem;
+    gap: 1.25rem;
 
     width: 100%;
-    max-width: 720px;
+    max-width: 1100px;
 
     margin: 0 auto;
 }
 
-/* stats row centered */
+/* =========================
+   VIDEO (MAIN FOCUS)
+========================= */
+
+.app-main .video,
+.app-main iframe.video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+
+    max-height: 65vh;
+
+    border-radius: var(--border-radius);
+    background: black;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+/* =========================
+   STATS ROW
+========================= */
+
 .app-main .stats {
     display: flex;
     justify-content: center;
@@ -172,13 +185,19 @@ header {
     width: 100%;
 }
 
-/* victors centered */
+/* =========================
+   VICTORS
+========================= */
+
 .app-main .victors {
     margin: 0 auto;
     text-align: center;
 }
 
-/* headings centered */
+/* =========================
+   HEADINGS
+========================= */
+
 .app-main h1,
 .app-main h2,
 .app-right h2 {
