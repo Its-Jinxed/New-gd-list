@@ -81,13 +81,16 @@ export default {
                         {{ localize(entry.displayScore || 0) }} pts
                     </h1>
 
-                    <!-- PACKS (FIXED) -->
-                    <div class="pack-badges" v-if="entry.packs?.length">
+                    <!-- PACKS (ONLY COMPLETED) -->
+                    <div
+                        class="pack-badges"
+                        v-if="completedPacks(entry).length"
+                    >
                         <span
-                            v-for="pack in entry.packs"
+                            v-for="pack in completedPacks(entry)"
                             :key="pack.name"
-                            class="pack-badge"
-                            :class="{ complete: pack.complete }"
+                            class="pack-badge complete"
+                            :style="{ background: pack.color || 'gold' }"
                         >
                             {{ pack.name }}
                         </span>
@@ -192,6 +195,15 @@ export default {
         },
     },
 
+    methods: {
+        localize,
+
+        // ✅ ONLY COMPLETED PACKS
+        completedPacks(entry) {
+            return (entry.packs || []).filter(p => p.complete);
+        },
+    },
+
     async mounted() {
         try {
             const result = await fetchLeaderboard();
@@ -216,6 +228,4 @@ export default {
             this.loading = false;
         }
     },
-
-    methods: { localize },
 };
