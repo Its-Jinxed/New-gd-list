@@ -186,10 +186,7 @@ export default {
             return list
                 .map(p => ({
                     ...p,
-                    displayScore:
-                        this.mode === 'creator'
-                            ? (p.creatorScore || 0)
-                            : (p.total || 0),
+                    displayScore: this.getDisplayScore(p),
                 }))
                 .sort((a, b) => (b.displayScore || 0) - (a.displayScore || 0));
         },
@@ -197,6 +194,14 @@ export default {
 
     methods: {
         localize,
+
+        // choose correct score mode
+        getDisplayScore(player) {
+            if (this.mode === 'creator') {
+                return player.creatorScore || 0;
+            }
+            return player.total || 0;
+        },
 
         // ONLY COMPLETED PACKS
         completedPacks(entry) {
