@@ -34,7 +34,7 @@ export default {
                     :class="{ active: mode === 'total' }"
                     @click="mode = 'total'"
                 >
-                    Total Points
+                    List Points
                 </button>
 
                 <button
@@ -97,7 +97,7 @@ export default {
                     </div>
 
                     <!-- VERIFIED -->
-                    <h2 class="lb-section" v-if="entry.verified?.length">
+                    <h2 v-if="entry.verified?.length">
                         Verified ({{ entry.verified.length }})
                     </h2>
 
@@ -128,7 +128,7 @@ export default {
                     <p v-else class="type-label-lg">No verified levels.</p>
 
                     <!-- COMPLETED -->
-                    <h2 class="lb-section" v-if="entry.victories?.length">
+                    <h2 v-if="entry.victories?.length">
                         Completed ({{ entry.victories.length }})
                     </h2>
 
@@ -198,7 +198,7 @@ export default {
     methods: {
         localize,
 
-        // ✅ ONLY COMPLETED PACKS
+        // ONLY COMPLETED PACKS
         completedPacks(entry) {
             return (entry.packs || []).filter(p => p.complete);
         },
