@@ -11,6 +11,14 @@ export default {
         selected: 0,
         err: [],
         mode: 'total',
+
+        // =========================
+        // NEW UI STATE
+        // =========================
+        search: '',
+        filterMode: 'all',   // all | creator | rating
+        filterValue: '',
+        sortMode: 'difficulty',
     }),
 
     template: `
@@ -46,10 +54,52 @@ export default {
                 </button>
             </div>
 
+            <!-- =========================
+                 SEARCH / FILTER / SORT
+            ========================== -->
+            <div class="list-controls">
+
+                <input
+                    v-model="search"
+                    class="list-search"
+                    type="text"
+                    placeholder="Search users..."
+                />
+
+                <select v-model="filterMode" class="list-filter">
+                    <option value="all">All</option>
+                    <option value="creator">Creator</option>
+                    <option value="rating">Rating</option>
+                </select>
+
+                <select
+                    v-model="filterValue"
+                    class="list-filter"
+                    v-if="filterMode !== 'all'"
+                >
+                    <option
+                        v-for="opt in filterOptions"
+                        :key="opt"
+                        :value="opt"
+                    >
+                        {{ opt }}
+                    </option>
+                </select>
+
+                <select v-model="sortMode" class="list-filter">
+                    <option value="difficulty">Difficulty</option>
+                    <option value="length">Length</option>
+                </select>
+
+            </div>
+
             <!-- LEFT -->
             <div class="board-container">
                 <table class="board">
-                    <tr v-for="(entry, i) in sortedLeaderboard" :key="entry.user || i">
+                    <tr
+                        v-for="(entry, i) in filteredLeaderboard"
+                        :key="entry.user || i"
+                    >
 
                         <td class="rank">
                             <p class="type-label-lg">#{{ i + 1 }}</p>
@@ -81,7 +131,7 @@ export default {
                         {{ localize(entry.displayScore || 0) }} pts
                     </h1>
 
-                    <!-- PACKS (ONLY COMPLETED) -->
+                    <!-- PACKS -->
                     <div
                         class="pack-badges"
                         v-if="completedPacks(entry).length"
@@ -167,7 +217,7 @@ export default {
 
     computed: {
         entry() {
-            return this.sortedLeaderboard?.[this.selected] || {
+            return this.filteredLeaderboard?.[this.selected] || {
                 user: '',
                 total: 0,
                 victories: [],
@@ -178,20 +228,63 @@ export default {
             };
         },
 
-        sortedLeaderboard() {
-            const list = Array.isArray(this.leaderboard)
-                ? [...this.leaderboard]
-                : [];
+        // =========================
+        // FILTER OPTIONS
+        // =========================
+        filterOptions() {
+            const list = this.leaderboard || [];
 
-            return list
-                .map(p => ({
-                    ...p,
-                    displayScore:
-                        this.mode === 'creator'
-                            ? (p.creatorScore || 0)
-                            : (p.total || 0),
-                }))
-                .sort((a, b) => (b.displayScore || 0) - (a.displayScore || 0));
+            if (this.filterMode === 'creator') {
+                const creators = new Set();
+                list.forEach(l => {
+                    (l.creators || []).forEach(c => creators.add(c));
+                });
+                return [...creators];
+            }
+
+            if (this.filterMode === 'rating') {
+                return ['Joke', 'Standard', 'Featured', 'Epic'];
+            }
+
+            return [];
+        },
+
+        // =========================
+        // MAIN PIPELINE
+        // =========================
+        filteredLeaderboard() {
+            let list = [...this.leaderboard];
+
+            // SEARCH
+            if (this.search.trim()) {
+                const s = this.search.toLowerCase();
+                list = list.filter(l =>
+                    l.user?.toLowerCase().includes(s)
+                );
+            }
+
+            // FILTER
+            if (this.filterMode === 'creator' && this.filterValue) {
+                list = list.filter(l =>
+                    (l.creators || []).includes(this.filterValue)
+                );
+            }
+
+            if (this.filterMode === 'rating' && this.filterValue) {
+                list = list.filter(l =>
+                    l.rating === this.filterValue
+                );
+            }
+
+            // SORT
+            if (this.sortMode === 'length') {
+                list.sort((a, b) => (a.length || 0) - (b.length || 0));
+            } else {
+                list = list.map((p, i) => ({ ...p, _i: i }));
+                list.sort((a, b) => a._i - b._i);
+            }
+
+            return list;
         },
     },
 
