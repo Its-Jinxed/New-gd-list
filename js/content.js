@@ -2,25 +2,34 @@ import { round, score } from './score.js';
 
 const dir = 'data';
 
-/* =========================
-   YOUTUBE ID
-========================= */
 function getYouTubeId(url) {
-    const match = url?.match(/(?:v=|youtu\.be\/|embed\/)([^&?/]+)/);
+    const match = url?.match(/(?:v=|embed\/)([^&?/]+)/);
     return match ? match[1] : null;
 }
 
-/* =========================
-   CREATOR POINTS SYSTEM
-========================= */
+/**
+ * Creator scoring system
+ */
 export function creatorScore(rating) {
     switch ((rating || '').toLowerCase()) {
-        case 'joke': return 1;
-        case 'standard': return 2;
-        case 'featured': return 3;
-        case 'epic': return 5;
-        default: return 0;
+        case 'joke':
+            return 1;
+        case 'standard':
+            return 2;
+        case 'featured':
+            return 3;
+        case 'epic':
+            return 5;
+        default:
+            return 0;
     }
+}
+
+/**
+ * FIX: alias used in leaderboard (prevents crash)
+ */
+export function getCreatorPoints(level) {
+    return creatorScore(level?.rating);
 }
 
 /* =========================
@@ -53,23 +62,24 @@ export async function fetchList() {
 
                     const level = await levelResult.json();
 
+                    level.creators = Array.isArray(level.creators)
+                        ? level.creators
+                        : [level.creators];
+
                     return [
                         {
                             ...level,
                             path,
                             youtubeId: getYouTubeId(level.verification),
-                            creators: Array.isArray(level.creators)
-                                ? level.creators
-                                : [level.creators],
                             victors: level.victors ?? [],
                         },
                         null,
                     ];
                 } catch (err) {
-                    console.error(`Failed level ${rank + 1}: ${path}`, err);
+                    console.error(`Failed to load level #${rank + 1} ${path}.`, err);
                     return [null, path];
                 }
-            })
+            }),
         );
     } catch (err) {
         console.error("Critical list load failure:", err);
@@ -77,6 +87,21 @@ export async function fetchList() {
     }
 }
 
+/* =========================
+   EDITORS (UNCHANGED)
+========================= */
+export async function fetchEditors() {
+    try {
+        const editorsResults = await fetch(`${dir}/_editors.json`);
+        return await editorsResults.json();
+    } catch {
+        return null;
+    }
+}
+
+/* =========================
+   PACKS
+========================= */
 export async function fetchPacks() {
     try {
         const res = await fetch(`${dir}/_packs.json`);
@@ -108,44 +133,39 @@ export async function fetchLeaderboard() {
         }
 
         const levelScore = score(rank + 1);
-        const creatorPoints = creatorScore(level.rating);
+        const creatorPoints = getCreatorPoints(level);
 
         const verifier = level.verifier;
         const victors = new Set(level.victors ?? []);
 
-        /* =========================
-           CREATOR
-        ========================= */
-        const creatorUser =
+        const verifiedUser =
             Object.keys(scoreMap).find(
-                u => u.toLowerCase() === verifier?.toLowerCase()
+                (u) => u.toLowerCase() === verifier?.toLowerCase(),
             ) || verifier;
 
-        scoreMap[creatorUser] ??= {
+        scoreMap[verifiedUser] ??= {
             verified: [],
             victories: [],
             creatorScore: 0,
         };
 
-        scoreMap[creatorUser].verified.push({
+        scoreMap[verifiedUser].verified.push({
             rank: rank + 1,
             level: level.name,
             path: level.path,
             score: levelScore,
+            creatorScore: creatorPoints,
             link: level.verification,
         });
 
-        scoreMap[creatorUser].creatorScore += creatorPoints;
+        scoreMap[verifiedUser].creatorScore += creatorPoints;
 
-        /* =========================
-           VICTORS
-        ========================= */
-        victors.forEach(name => {
+        victors.forEach((name) => {
             if (!name || name.toLowerCase() === verifier?.toLowerCase()) return;
 
             const user =
                 Object.keys(scoreMap).find(
-                    u => u.toLowerCase() === name.toLowerCase()
+                    (u) => u.toLowerCase() === name.toLowerCase(),
                 ) || name;
 
             scoreMap[user] ??= {
@@ -164,16 +184,16 @@ export async function fetchLeaderboard() {
         });
     });
 
-    const result = Object.entries(scoreMap).map(([user, data]) => {
-        const total = [...data.verified, ...data.victories]
+    const res = Object.entries(scoreMap).map(([user, scores]) => {
+        const total = [...scores.verified, ...scores.victories]
             .reduce((sum, s) => sum + (s.score || 0), 0);
 
         const beaten = new Set([
-            ...data.verified.map(v => v.path),
-            ...data.victories.map(v => v.path),
+            ...scores.verified.map(v => v.path),
+            ...scores.victories.map(v => v.path),
         ]);
 
-        const packsWithProgress = packs.map(pack => {
+        const packsList = packs.map(pack => {
             const completed = pack.levels.filter(l => beaten.has(l)).length;
 
             return {
@@ -187,15 +207,15 @@ export async function fetchLeaderboard() {
         return {
             user,
             total: Math.round(total),
-            creatorScore: data.creatorScore || 0,
-            verified: data.verified,
-            victories: data.victories,
-            packs: packsWithProgress,
+            creatorScore: scores.creatorScore || 0,
+            verified: scores.verified,
+            victories: scores.victories,
+            packs: packsList,
         };
     });
 
     return [
-        result.sort((a, b) => b.total - a.total),
+        res.sort((a, b) => b.total - a.total),
         errs
     ];
 }
