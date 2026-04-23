@@ -72,6 +72,7 @@ export async function fetchList() {
                             path,
                             youtubeId: getYouTubeId(level.verification),
                             victors: level.victors ?? [],
+                            trueRank: rank + 1, // ✅ FIXED: stable difficulty rank
                         },
                         null,
                     ];
@@ -150,7 +151,7 @@ export async function fetchLeaderboard() {
         };
 
         scoreMap[verifiedUser].verified.push({
-            rank: rank + 1,
+            rank: level.trueRank, // ✅ FIXED
             level: level.name,
             path: level.path,
             score: levelScore,
@@ -175,7 +176,7 @@ export async function fetchLeaderboard() {
             };
 
             scoreMap[user].victories.push({
-                rank: rank + 1,
+                rank: level.trueRank, // ✅ FIXED
                 level: level.name,
                 path: level.path,
                 score: levelScore,
