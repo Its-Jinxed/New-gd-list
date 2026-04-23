@@ -18,10 +18,6 @@ export default {
             <!-- LEFT PANEL -->
             <aside class="packs-sidebar">
 
-                <div class="packs-title">
-                    <h2 class="type-label-lg">Packs</h2>
-                </div>
-
                 <div
                     v-for="(pack, i) in packs"
                     :key="pack.id"
