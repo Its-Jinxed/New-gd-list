@@ -132,14 +132,14 @@ export default {
                         frameborder="0"
                     ></iframe>
 
-                    <!-- ✅ MATCHES LevelAuthors TYPOGRAPHY SYSTEM -->
+                    <!-- ✅ FIXED POINTS SYSTEM -->
                     <div class="level-meta-main">
 
                         <!-- POINTS -->
                         <div class="type-title-sm">Points</div>
                         <p class="type-body">
                             <span>
-                                {{ score(selected + 1, 100, level?.percentToQualify) }}
+                                {{ score(level.trueRank, 100, level?.percentToQualify) }}
                             </span>
                         </p>
 
