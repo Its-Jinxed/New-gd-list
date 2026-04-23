@@ -132,22 +132,34 @@ export default {
                         frameborder="0"
                     ></iframe>
 
-                    <!-- ✅ FULL MATCH TO LevelAuthors STYLE -->
+                    <!-- ✅ MATCHES LevelAuthors TYPOGRAPHY SYSTEM -->
                     <div class="level-meta-main">
 
+                        <!-- POINTS -->
                         <div class="type-title-sm">Points</div>
                         <p class="type-body">
                             <span>
-                                {{ score(selected + 1, 100, level?.percentToQualify) }} pts
+                                {{ score(selected + 1, 100, level?.percentToQualify) }}
                             </span>
                         </p>
 
+                        <!-- DETAILS -->
                         <div class="type-title-sm">Details</div>
-                        <p class="type-body">
-                            <span>ID: {{ level?.id || 'N/A' }}</span>,
-                            <span>Rating: {{ level?.rating || 'N/A' }}</span>,
-                            <span>Length: {{ level?.length || 'N/A' }}</span>
-                        </p>
+                        <div class="meta-row">
+
+                            <p class="type-body">
+                                <span>ID: {{ level?.id || 'N/A' }}</span>
+                            </p>
+
+                            <p class="type-body">
+                                <span>Rating: {{ level?.rating || 'N/A' }}</span>
+                            </p>
+
+                            <p class="type-body">
+                                <span>Length: {{ level?.length || 'N/A' }}</span>
+                            </p>
+
+                        </div>
 
                     </div>
 
