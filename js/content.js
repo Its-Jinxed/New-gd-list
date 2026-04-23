@@ -25,9 +25,6 @@ export function creatorScore(rating) {
     }
 }
 
-/**
- * FIX: alias used in leaderboard (prevents crash)
- */
 export function getCreatorPoints(level) {
     return creatorScore(level?.rating);
 }
@@ -89,7 +86,7 @@ export async function fetchList() {
 }
 
 /* =========================
-   EDITORS (UNCHANGED)
+   EDITORS
 ========================= */
 export async function fetchEditors() {
     try {
@@ -138,7 +135,11 @@ export async function fetchLeaderboard() {
 
         const verifier = level.verifier;
         const victors = new Set(level.victors ?? []);
+        const creators = new Set(level.creators ?? []);
 
+        // =========================
+        // VERIFIED USER
+        // =========================
         const verifiedUser =
             Object.keys(scoreMap).find(
                 (u) => u.toLowerCase() === verifier?.toLowerCase(),
@@ -151,28 +152,17 @@ export async function fetchLeaderboard() {
             creatorScore: 0,
         };
 
-        // VERIFIED (player completion)
         scoreMap[verifiedUser].verified.push({
             rank: level.trueRank,
             level: level.name,
             path: level.path,
             score: levelScore,
-            creatorScore: creatorPoints,
             link: level.verification,
         });
 
-        // CREATOR TRACKING (NEW)
-        scoreMap[verifiedUser].created.push({
-            rank: level.trueRank,
-            level: level.name,
-            path: level.path,
-            score: creatorPoints,
-            rating: level.rating,
-        });
-
-        scoreMap[verifiedUser].creatorScore += creatorPoints;
-
-        // VICTORS (other players)
+        // =========================
+        // VICTORIES (beaten players)
+        // =========================
         victors.forEach((name) => {
             if (!name || name.toLowerCase() === verifier?.toLowerCase()) return;
 
@@ -195,6 +185,33 @@ export async function fetchLeaderboard() {
                 score: levelScore,
                 link: level.verification,
             });
+        });
+
+        // =========================
+        // CREATOR TRACKING (FIXED)
+        // =========================
+        creators.forEach((creator) => {
+            const user =
+                Object.keys(scoreMap).find(
+                    (u) => u.toLowerCase() === creator?.toLowerCase(),
+                ) || creator;
+
+            scoreMap[user] ??= {
+                verified: [],
+                victories: [],
+                created: [],
+                creatorScore: 0,
+            };
+
+            scoreMap[user].created.push({
+                rank: level.trueRank,
+                level: level.name,
+                path: level.path,
+                score: creatorPoints,
+                rating: level.rating,
+            });
+
+            scoreMap[user].creatorScore += creatorPoints;
         });
     });
 
