@@ -62,7 +62,7 @@ export default {
                             <button @click="selected = i">
                                 <span class="type-label-lg">
                                     {{ entry.user }} —
-                                    {{ localize(entry.displayScore || 0) }} pts
+                                    {{ localize(getTotalScore(entry)) }} pts
 
                                     <span v-if="i === 0"> 🥇</span>
                                     <span v-else-if="i === 1"> 🥈</span>
@@ -81,7 +81,7 @@ export default {
 
                     <h1 class="lb-title">
                         #{{ selected + 1 }} {{ entry.user }} —
-                        {{ localize(entry.displayScore || 0) }} pts
+                        {{ localize(getTotalScore(entry)) }} pts
                     </h1>
 
                     <!-- PACKS -->
@@ -177,7 +177,6 @@ export default {
                 verified: [],
                 packs: [],
                 creatorScore: 0,
-                displayScore: 0,
             };
         },
     },
@@ -187,6 +186,20 @@ export default {
 
         completedPacks(entry) {
             return (entry.packs || []).filter(p => p.complete);
+        },
+
+        getTotalScore(entry) {
+            const verified = (entry.verified || []).reduce(
+                (sum, s) => sum + (s.score || 0),
+                0
+            );
+
+            const victories = (entry.victories || []).reduce(
+                (sum, s) => sum + (s.score || 0),
+                0
+            );
+
+            return verified + victories;
         },
     },
 
