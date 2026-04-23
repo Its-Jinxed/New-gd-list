@@ -8,19 +8,14 @@
     --color-error: #de0000;
     --color-on-error: white;
 
-    /* UI TOKENS */
+    /* NEW UI TOKENS */
     --panel-bg: rgba(0,0,0,0.03);
     --panel-bg-hover: rgba(0,0,0,0.06);
-    --panel-bg-strong: rgba(0,0,0,0.08);
-
-    --radius-sm: 0.5rem;
-    --radius-md: 0.75rem;
-    --radius-lg: 1rem;
+    --border-radius: 1rem;
 }
 
-/* PERFORMANCE FRIENDLY TRANSITIONS */
 * {
-  transition: background 0.15s ease, transform 0.15s ease, color 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 main.dark,
@@ -32,18 +27,17 @@ header.dark {
     --color-background-hover: #27262c;
     --color-on-background-hover: white;
     --color-primary: #283593;
+    --color-primary-disabled: #1f213c;
     --color-on-primary: white;
+    --color-error: #de0000;
+    --color-on-error: white;
 
     --panel-bg: rgba(255,255,255,0.04);
     --panel-bg-hover: rgba(255,255,255,0.08);
-    --panel-bg-strong: rgba(255,255,255,0.12);
 }
 
-/* =========================
-   BASE LAYOUT
-========================= */
-
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -53,7 +47,31 @@ body {
     margin: 0;
 }
 
-/* HEADER */
+/* =========================
+   GLOBAL LAYOUT FIXES
+========================= */
+
+header,
+main {
+    background-color: var(--color-background);
+    color: var(--color-on-background);
+    display: grid;
+    grid-template-columns: minmax(26rem, 1fr) minmax(16rem, 3fr);
+    column-gap: 1.5rem;
+}
+
+main {
+    height: 0;
+    flex: 1;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+}
+
+main > div {
+    overflow-y: auto;
+}
+
+/* HEADER FIX */
 
 header {
     display: flex;
@@ -62,6 +80,13 @@ header {
     height: 4.5rem;
     background-color: var(--color-primary);
     color: var(--color-on-primary);
+}
+
+@media screen and (min-width: 1366px) {
+    header {
+        display: grid;
+        padding-inline: 8rem;
+    }
 }
 
 header .logo {
@@ -74,107 +99,175 @@ header .nav {
     flex: 1;
 }
 
-/* MAIN GRID */
-
-main {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-}
-
 /* =========================
-   SHARED PAGE LAYOUT
+   SPINNER
 ========================= */
 
-.page {
-    display: flex;
-    gap: 2rem;
-    padding: 2rem;
-    height: 100%;
-    width: 100%;
-}
-
-.page-sidebar {
-    width: 320px;
-    flex-shrink: 0;
-}
-
-.page-content {
-    flex: 1;
-    min-width: 0;
-}
-
-/* =========================
-   UI COMPONENTS
-========================= */
-
-/* CARD */
-
-.ui-card {
-    background: var(--panel-bg);
-    border-radius: var(--radius-lg);
-    padding: 1.2rem;
-}
-
-.ui-card-strong {
-    background: var(--panel-bg-strong);
-}
-
-/* ROW (universal clickable item) */
-
-.ui-row {
+.spinner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-
-    padding: 1rem 1.2rem;
-    border-radius: var(--radius-md);
-
-    background: var(--panel-bg);
-    cursor: pointer;
+    justify-content: center;
+    grid-column: span 3;
 }
 
-.ui-row:hover {
+/* =========================
+   PACKS PAGE
+========================= */
+
+.packs-page {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 3rem;
+    padding: 2.5rem;
+    height: 100%;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.packs-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    padding: 1rem;
+    background: var(--panel-bg);
+    border-radius: var(--border-radius);
+}
+
+.packs-title h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.3rem;
+    opacity: 0.85;
+}
+
+/* PACK CARDS */
+
+.pack-card {
+    padding: 1.4rem 1.2rem;
+    border-radius: var(--border-radius);
+    background: var(--panel-bg);
+    cursor: pointer;
+    border-left: 6px solid var(--pack-color);
+    transition: 0.2s ease;
+}
+
+.pack-card:hover {
+    background: var(--panel-bg-hover);
+    transform: translateX(4px);
+}
+
+.pack-card.active {
+    background: var(--panel-bg-hover);
+}
+
+.pack-card__name {
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.pack-card__meta {
+    font-size: 0.95rem;
+    opacity: 0.65;
+    margin-top: 0.3rem;
+}
+
+/* =========================
+   RIGHT PANEL
+========================= */
+
+.packs-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    padding: 1rem;
+    background: var(--panel-bg);
+    border-radius: var(--border-radius);
+}
+
+/* PACK HEADER */
+
+.pack-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pack-header__bar {
+    width: 8px;
+    height: 52px;
+    border-radius: 6px;
+}
+
+.pack-header__text h1 {
+    margin: 0;
+    font-size: 1.7rem;
+}
+
+/* =========================
+   LEVEL LIST
+========================= */
+
+.levels-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* LEVEL ROW */
+
+.level-row {
+    display: grid;
+    grid-template-columns: 70px 1fr 140px;
+    gap: 1.5rem;
+    align-items: center;
+
+    padding: 1.3rem 1.4rem;
+    border-radius: var(--border-radius);
+
+    background: var(--panel-bg);
+    transition: 0.2s ease;
+}
+
+.level-row:hover {
     background: var(--panel-bg-hover);
     transform: translateY(-2px);
 }
 
-.ui-row.active {
-    background: var(--color-primary);
-    color: var(--color-on-primary);
+/* POSITION */
+
+.level-position {
+    font-weight: 700;
+    opacity: 0.7;
+    text-align: center;
 }
 
-/* TEXT */
+/* NAME */
 
-.ui-muted {
-    opacity: 0.65;
+.level-name a {
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-decoration: none;
 }
 
-/* =========================
-   PACK BADGES
-========================= */
-
-.pack-badges {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    align-items: center;
+.level-name a:hover {
+    text-decoration: underline;
 }
 
-.pack-badge {
-    padding: 0.2rem 0.5rem;
-    border-radius: 0.35rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: white;
-    white-space: nowrap;
+/* THUMBNAIL */
+
+.level-thumb img {
+    width: 140px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
-/* =========================
-   SCROLL FIX
-========================= */
-
-.page > * {
-    overflow-y: auto;
+.thumb-placeholder {
+    width: 140px;
+    height: 80px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.1);
 }
