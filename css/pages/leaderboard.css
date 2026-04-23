@@ -66,3 +66,36 @@
     background: var(--color-primary);
     color: var(--color-on-primary);
 }
+
+.lb-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.lb-tab {
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: none;
+    background: var(--panel-bg);
+    cursor: pointer;
+}
+
+.lb-tab.active {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+/* PACK CHIPS STYLE */
+.pack-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    margin: 0.2rem;
+    opacity: 0.7;
+}
+
+.pack-badge.complete {
+    opacity: 1;
+}
