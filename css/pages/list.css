@@ -13,24 +13,26 @@
 }
 
 /* =========================
-   RANK COLUMN (FIXED)
-   - prevents 10+ wrapping
-   - keeps alignment stable
+   RANK COLUMN (TIGHTER + FIXED)
 ========================= */
 
 .page-list .list .rank {
     text-align: right;
-    padding-right: 1rem;
     opacity: 0.7;
 
     white-space: nowrap;
-    width: 3.5rem;
-    min-width: 3.5rem;
+
+    /* reduced width to bring everything left */
+    width: 2.8rem;
+    min-width: 2.8rem;
+
+    /* reduced spacing to level column */
+    padding-right: 0.6rem;
 
     font-variant-numeric: tabular-nums;
 }
 
-/* also prevents any inner element breaking */
+/* safety: prevent wrapping anywhere inside */
 .page-list .list .rank * {
     white-space: nowrap;
 }
