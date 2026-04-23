@@ -2,21 +2,43 @@
     width: 100%;
 }
 
-/* LIST CARD (left sidebar feel) */
+/* =========================
+   LIST TABLE
+========================= */
+
 .page-list .list {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 0.5rem;
 }
 
-/* rank column */
+/* =========================
+   RANK COLUMN (FIXED)
+   - prevents 10+ wrapping
+   - keeps alignment stable
+========================= */
+
 .page-list .list .rank {
     text-align: right;
     padding-right: 1rem;
     opacity: 0.7;
+
+    white-space: nowrap;
+    width: 3.5rem;
+    min-width: 3.5rem;
+
+    font-variant-numeric: tabular-nums;
 }
 
-/* LEVEL BUTTON CARD */
+/* also prevents any inner element breaking */
+.page-list .list .rank * {
+    white-space: nowrap;
+}
+
+/* =========================
+   LEVEL BUTTON CARD
+========================= */
+
 .page-list .list .level button {
     width: 100%;
 
@@ -48,7 +70,10 @@
     color: var(--color-on-primary);
 }
 
-/* thumbnail */
+/* =========================
+   THUMBNAIL
+========================= */
+
 .page-list .thumb {
     width: 80px;
     height: 45px;
@@ -56,10 +81,12 @@
     border-radius: 0.5rem;
 }
 
-/* centre empty state properly */
+/* =========================
+   EMPTY STATE CENTERING
+========================= */
+
 .page-list .level-container {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
