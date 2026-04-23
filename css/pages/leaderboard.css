@@ -66,7 +66,6 @@
     white-space: nowrap;
 }
 
-/* rank column alignment */
 .page-leaderboard .rank {
     text-align: right;
     padding-block: 1rem;
@@ -140,7 +139,6 @@
 
 /* =========================
    RIGHT PANEL TYPOGRAPHY
-   (clean shared system with left side)
 ========================= */
 
 .player-container h1 {
@@ -163,14 +161,14 @@
     font-weight: 600;
 }
 
-/* level links match leaderboard feel */
+/* level links */
 .player-container .level a {
     text-decoration: none;
     color: var(--color-on-background);
 }
 
 /* =========================
-   PACK CHIPS (FIXED + STABLE)
+   PACK CHIPS (FULLY FIXED)
 ========================= */
 
 .pack-badges {
@@ -179,13 +177,13 @@
     gap: 0.4rem;
 }
 
+/* base chip */
 .pack-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    padding: 0.7rem 1.1rem;
-
+    padding: 0.75rem 1.15rem;
     border-radius: 999px;
 
     font-size: 1rem;
@@ -194,12 +192,11 @@
     background: var(--panel-bg);
     color: var(--color-on-background);
 
-    border: 1px solid transparent;
+    border: 1px solid rgba(255,255,255,0.08);
 
-    opacity: 0.8;
+    opacity: 0.85;
 
     transition: all 0.15s ease;
-
     user-select: none;
 }
 
@@ -207,10 +204,10 @@
 .pack-badge.complete {
     opacity: 1;
     background: rgba(255, 215, 0, 0.22);
-    border: 1px solid rgba(255, 215, 0, 0.55);
+    border: 1px solid rgba(255, 215, 0, 0.6);
 }
 
-/* hover effect */
+/* hover */
 .pack-badge:hover {
     transform: translateY(-2px);
     opacity: 1;
