@@ -104,7 +104,7 @@ export async function fetchEditors() {
 ========================= */
 export async function fetchPacks() {
     try {
-        const res = await fetch(`${dir}/_packs.json`);
+        const res = await fetch(`${dir}/_packs.json?cache=${Date.now()}`);
         if (!res.ok) return [];
         return await res.json();
     } catch {
