@@ -18,6 +18,11 @@
   transition: all 0.15s ease;
 }
 
+
+.app-shell { display: grid; grid-template-columns: 320px 1fr 360px; }
+.app-sidebar, .app-main, .app-right { overflow-y: auto; }
+
+
 main.dark,
 header.dark {
     color-scheme: dark;
