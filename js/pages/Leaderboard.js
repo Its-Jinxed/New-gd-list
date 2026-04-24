@@ -90,15 +90,13 @@ export default {
                         }} pts
                     </h1>
 
-                    <!-- =========================
-                         PACK CHIPS (FIXED: ONLY COMPLETED)
-                    ========================== -->
+                    <!-- PACK CHIPS -->
                     <div
                         class="pack-badges"
                         v-if="mode === 'total' && entry.packs?.length"
                     >
                         <span
-                            v-for="pack in entry.packs.filter(p => p.complete)"
+                            v-for="pack in entry.packs"
                             :key="pack.id"
                             class="pack-badge"
                             :style="{ background: pack.color || 'gold' }"
@@ -136,7 +134,7 @@ export default {
                             </tr>
                         </table>
 
-                        <p v-else class="type-label-lg">No verified levels.</p>
+                        <!-- removed "No verified levels" -->
 
                         <h2 v-if="entry.victories?.length">
                             Completed ({{ entry.victories.length }})
@@ -164,7 +162,7 @@ export default {
                             </tr>
                         </table>
 
-                        <p v-else class="type-label-lg">No completed levels yet.</p>
+                        <!-- removed "No completed levels yet" -->
 
                     </template>
 
@@ -207,9 +205,7 @@ export default {
 
                         </div>
 
-                        <p v-else class="type-label-lg">
-                            No created levels yet.
-                        </p>
+                        <!-- removed "No created levels yet" -->
 
                     </template>
 
