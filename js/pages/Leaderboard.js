@@ -90,6 +90,21 @@ export default {
                         }} pts
                     </h1>
 
+                    <!-- ✅ PACKS (ONLY LIST POINTS MODE) -->
+                    <div
+                        class="pack-badges"
+                        v-if="mode === 'total' && entry.packs?.length"
+                    >
+                        <span
+                            v-for="pack in completedPacks(entry)"
+                            :key="pack.name"
+                            class="pack-badge complete"
+                            :style="{ background: pack.color || 'gold' }"
+                        >
+                            {{ pack.name }}
+                        </span>
+                    </div>
+
                     <!-- =========================
                          LIST POINTS VIEW
                     ========================== -->
@@ -208,7 +223,6 @@ export default {
 `,
 
     computed: {
-        // ✅ SORT BASED ON MODE
         sortedLeaderboard() {
             const list = [...this.leaderboard];
 
@@ -219,7 +233,6 @@ export default {
             return list.sort((a, b) => (b.total || 0) - (a.total || 0));
         },
 
-        // ✅ USE SORTED LIST FOR SELECTION
         entry() {
             return this.sortedLeaderboard?.[this.selected] || {
                 user: '',
@@ -228,10 +241,10 @@ export default {
                 victories: [],
                 verified: [],
                 created: [],
+                packs: [],
             };
         },
 
-        // ✅ GROUP CREATOR LEVELS
         groupedCreated() {
             if (!this.entry?.created) return {};
 
@@ -254,6 +267,10 @@ export default {
 
     methods: {
         localize,
+
+        completedPacks(entry) {
+            return (entry.packs || []).filter(p => p.complete);
+        }
     },
 
     async mounted() {
