@@ -13,7 +13,7 @@
 }
 
 /* =========================
-   RANK COLUMN (TIGHT + FIXED)
+   RANK COLUMN
 ========================= */
 
 .page-list .list .rank {
@@ -91,7 +91,7 @@
 }
 
 /* =========================================================
-   NEW: SEARCH / FILTER / SORT CONTROLS (ADDED ONLY)
+   CONTROLS
 ========================================================= */
 
 .page-list .list-controls {
@@ -102,7 +102,6 @@
     flex-wrap: wrap;
 }
 
-/* search input */
 .page-list .list-search {
     flex: 1;
     min-width: 180px;
@@ -118,7 +117,6 @@
     outline: none;
 }
 
-/* dropdowns */
 .page-list .list-filter {
     padding: 0.6rem 0.8rem;
 
@@ -131,15 +129,50 @@
     cursor: pointer;
 }
 
-/* hover feel (subtle, not too dark) */
 .page-list .list-search:hover,
 .page-list .list-filter:hover {
     background: var(--panel-bg-hover);
 }
 
-/* focus state */
 .page-list .list-search:focus,
 .page-list .list-filter:focus {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
+}
+
+/* =========================================================
+   PACK CHIPS (LEVEL PAGE)
+========================================================= */
+
+.page-list .pack-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+}
+
+.page-list .pack-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+
+    color: var(--color-on-background);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    opacity: 0.9;
+
+    transition: all 0.15s ease;
+}
+
+.page-list .pack-badge:hover {
+    transform: translateY(-2px);
+    color: white; /* ✅ your requested hover text change */
 }
