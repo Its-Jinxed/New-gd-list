@@ -150,6 +150,7 @@ export async function fetchLeaderboard() {
             victories: [],
             created: [],
             creatorScore: 0,
+            packScore: 0,
         };
 
         scoreMap[verifiedUser].verified.push({
@@ -161,7 +162,7 @@ export async function fetchLeaderboard() {
         });
 
         // =========================
-        // VICTORIES (beaten players)
+        // VICTORIES
         // =========================
         victors.forEach((name) => {
             if (!name || name.toLowerCase() === verifier?.toLowerCase()) return;
@@ -176,6 +177,7 @@ export async function fetchLeaderboard() {
                 victories: [],
                 created: [],
                 creatorScore: 0,
+                packScore: 0,
             };
 
             scoreMap[user].victories.push({
@@ -188,7 +190,7 @@ export async function fetchLeaderboard() {
         });
 
         // =========================
-        // CREATOR TRACKING (FIXED)
+        // CREATOR TRACKING
         // =========================
         creators.forEach((creator) => {
             const user =
@@ -201,6 +203,7 @@ export async function fetchLeaderboard() {
                 victories: [],
                 created: [],
                 creatorScore: 0,
+                packScore: 0,
             };
 
             scoreMap[user].created.push({
@@ -215,30 +218,41 @@ export async function fetchLeaderboard() {
         });
     });
 
+    // =========================
+    // PACK PROCESSING (NEW + IMPORTANT)
+    // =========================
     const res = Object.entries(scoreMap).map(([user, scores]) => {
-        const total = [...scores.verified, ...scores.victories]
-            .reduce((sum, s) => sum + (s.score || 0), 0);
-
         const beaten = new Set([
             ...scores.verified.map(v => v.path),
             ...scores.victories.map(v => v.path),
         ]);
 
+        let packBonus = 0;
+
         const packsList = packs.map(pack => {
             const completed = pack.levels.filter(l => beaten.has(l)).length;
+            const isComplete = completed === pack.levels.length;
+
+            if (isComplete) {
+                packBonus += pack.points || 0;
+            }
 
             return {
                 ...pack,
                 progress: completed,
                 total: pack.levels.length,
-                complete: completed === pack.levels.length,
+                complete: isComplete,
             };
         });
 
+        const baseTotal = [...scores.verified, ...scores.victories]
+            .reduce((sum, s) => sum + (s.score || 0), 0);
+
         return {
             user,
-            total: Math.round(total),
+            total: Math.round(baseTotal + packBonus),
             creatorScore: scores.creatorScore || 0,
+            packScore: packBonus,
             verified: scores.verified,
             victories: scores.victories,
             created: scores.created || [],
