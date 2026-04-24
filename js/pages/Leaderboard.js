@@ -90,13 +90,13 @@ export default {
                         }} pts
                     </h1>
 
-                    <!-- PACK CHIPS -->
+                    <!-- PACK CHIPS (SORTED BY POINTS DESC) -->
                     <div
                         class="pack-badges"
                         v-if="mode === 'total' && entry.packs?.length"
                     >
                         <span
-                            v-for="pack in entry.packs"
+                            v-for="pack in [...entry.packs].sort((a, b) => (b.points || 0) - (a.points || 0))"
                             :key="pack.id"
                             class="pack-badge"
                             :style="{ background: pack.color || 'gold' }"
@@ -134,8 +134,6 @@ export default {
                             </tr>
                         </table>
 
-                        <!-- removed "No verified levels" -->
-
                         <h2 v-if="entry.victories?.length">
                             Completed ({{ entry.victories.length }})
                         </h2>
@@ -161,8 +159,6 @@ export default {
                                 </td>
                             </tr>
                         </table>
-
-                        <!-- removed "No completed levels yet" -->
 
                     </template>
 
@@ -204,8 +200,6 @@ export default {
                             </div>
 
                         </div>
-
-                        <!-- removed "No created levels yet" -->
 
                     </template>
 
