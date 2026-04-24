@@ -152,7 +152,7 @@
 }
 
 /* =========================
-   PACK CHIPS (FIXED TYPOGRAPHY)
+   PACK CHIPS (FIXED TYPOGRAPHY MATCH)
 ========================= */
 
 .pack-badges {
@@ -169,10 +169,11 @@
     padding: 0.75rem 1.15rem;
     border-radius: 999px;
 
-    /* ✅ match global typography instead of overriding it */
+    /* ✅ MATCH APP TEXT SYSTEM EXACTLY */
+    font-size: 1rem;
+    font-weight: 600;
     font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
+    line-height: 1;
 
     color: var(--color-on-background);
     border: 1px solid rgba(255,255,255,0.08);
