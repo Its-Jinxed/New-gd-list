@@ -59,6 +59,7 @@ export default {
                     <select v-model="sortMode" class="list-filter">
                         <option value="difficulty">Difficulty</option>
                         <option value="length">Length</option>
+                        <option value="date">Date</option>
                     </select>
 
                 </div>
@@ -249,6 +250,10 @@ export default {
             if (this.sortMode === "length") {
                 arr.sort((a, b) =>
                     (b[0]?.length || 0) - (a[0]?.length || 0)
+                );
+            } else if (this.sortMode === "date") {
+                arr.sort((a, b) =>
+                    (b[0]?.id || 0) - (a[0]?.id || 0) // ✅ newest first
                 );
             }
 
