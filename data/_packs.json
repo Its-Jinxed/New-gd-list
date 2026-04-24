@@ -18,9 +18,9 @@
     "levels": ["Killing In The Name", "Ghostin", "Fabricator Caverns"]
   },
   {
-    "id": "bard-pack",
-    "name": "Bard Pack",
-    "color": "#ae21d1",
-    "levels": ["Wobble Wobble"]
+    "id": "Wave Pack 1",
+    "name": "Wave Pack 1",
+    "color": "#3A86FF",
+    "levels": ["Worship", "Untitled", "Based"]
   }  
 ]
