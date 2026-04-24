@@ -6,10 +6,10 @@
     "levels": ["Serenity", "Daydream", "Beneath"]
   },
   {
-    "id": "hard-pack",
-    "name": "Hard Pack",
-    "color": "#ae21d1",
-    "levels": ["Wobble Wobble"]
+    "id": "Vibes Pack",
+    "name":"Vibes Pack",
+    "color": "#E76F51",
+    "levels": ["Serenity", "Cold Green Eyes", "Daydream"]
   },
   {
     "id": "harb-pack",
