@@ -4,7 +4,7 @@
     "name": "Entry Pack 1",
     "color": "#2ecc71",
     "levels": ["Serenity", "Daydream", "Beneath"],
-    "points": 10
+    "points": 20
   },
   {
     "id": "Vibes Pack",
@@ -18,20 +18,20 @@
     "name": "Almost Memory Pack",
     "color": "#023047",
     "levels": ["Killing In The Name", "Ghostin", "Fabricator Caverns"],
-    "points": 10
+    "points": 100
   },
   {
     "id": "Wave Pack 1",
     "name": "Wave Pack 1",
     "color": "#3A86FF",
     "levels": ["WORSHIP", "Untitled", "Based"],
-    "points": 10
+    "points": 90
   },
   {
     "id": "Unbalanced Pack",
     "name": "Unbalanced Pack",
     "color": "#FF006E",
     "levels": ["Forbidden Fruit", "Fabricator Caverns", "Wobble Wobble"],
-    "points": 10
+    "points": 150
   }  
 ]
