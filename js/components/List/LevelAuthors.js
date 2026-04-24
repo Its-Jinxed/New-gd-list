@@ -13,37 +13,44 @@ export default {
             required: true,
         },
     },
+
     template: `
         <div class="level-authors">
-            <template v-if="selfVerified">
-                <div class="type-title-sm">Creator & Verifier</div>
+
+            <!-- CREATOR COLUMN -->
+            <div class="author-col">
+                <div class="type-title-sm">
+                    {{ creators.length === 0 ? 'Creator' : 'Creator(s)' }}
+                </div>
+
                 <p class="type-body">
-                    <span>{{ author }}</span>
-                </p>
-            </template>
-            <template v-else-if="creators.length === 0">
-                <div class="type-title-sm">Creator</div>
-                <p class="type-body">
-                    <span>{{ author }}</span>
-                </p>
-                <div class="type-title-sm">Verifier</div>
-                <p class="type-body">
-                    <span>{{ verifier }}</span>
-                </p>
-            </template>
-            <template v-else>
-                <div class="type-title-sm">Creator(s)</div>
-                <p class="type-body">
-                    <template v-for="(creator, index) in creators" :key="\`creator-\$\{creator\}\`">
-                        <span >{{ creator }}</span
-                        ><span v-if="index < creators.length - 1">, </span>
+                    <template v-if="creators.length">
+                        <template
+                            v-for="(creator, index) in creators"
+                            :key="\`creator-\${creator}\`"
+                        >
+                            <span>{{ creator }}</span>
+                            <span v-if="index < creators.length - 1">, </span>
+                        </template>
+                    </template>
+
+                    <template v-else>
+                        <span>{{ author }}</span>
                     </template>
                 </p>
-                <div class="type-title-sm">Verifier</div>
+            </div>
+
+            <!-- VERIFIER COLUMN -->
+            <div class="author-col">
+                <div class="type-title-sm">
+                    {{ selfVerified ? 'Creator & Verifier' : 'Verifier' }}
+                </div>
+
                 <p class="type-body">
                     <span>{{ verifier }}</span>
                 </p>
-            </template>
+            </div>
+
         </div>
     `,
 
