@@ -91,14 +91,14 @@ export default {
                     </h1>
 
                     <!-- =========================
-                         PACK CHIPS (FIXED)
+                         PACK CHIPS (FIXED: ONLY COMPLETED)
                     ========================== -->
                     <div
                         class="pack-badges"
                         v-if="mode === 'total' && entry.packs?.length"
                     >
                         <span
-                            v-for="pack in entry.packs"
+                            v-for="pack in entry.packs.filter(p => p.complete)"
                             :key="pack.id"
                             class="pack-badge"
                             :style="{ background: pack.color || 'gold' }"
@@ -107,9 +107,7 @@ export default {
                         </span>
                     </div>
 
-                    <!-- =========================
-                         LIST POINTS VIEW
-                    ========================== -->
+                    <!-- LIST POINTS VIEW -->
                     <template v-if="mode === 'total'">
 
                         <h2 v-if="entry.verified?.length">
@@ -170,9 +168,7 @@ export default {
 
                     </template>
 
-                    <!-- =========================
-                         CREATOR VIEW
-                    ========================== -->
+                    <!-- CREATOR VIEW -->
                     <template v-else>
 
                         <h2 v-if="entry.created?.length">
