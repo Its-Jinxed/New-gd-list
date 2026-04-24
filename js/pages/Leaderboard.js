@@ -32,7 +32,7 @@ export default {
                 <button
                     class="lb-tab"
                     :class="{ active: mode === 'total' }"
-                    @click="mode = 'total'"
+                    @click="mode = 'total'; selected = 0"
                 >
                     List Points
                 </button>
@@ -40,7 +40,7 @@ export default {
                 <button
                     class="lb-tab"
                     :class="{ active: mode === 'creator' }"
-                    @click="mode = 'creator'"
+                    @click="mode = 'creator'; selected = 0"
                 >
                     Creator Points
                 </button>
@@ -50,7 +50,7 @@ export default {
             <div class="board-container">
                 <table class="board">
                     <tr
-                        v-for="(entry, i) in leaderboard"
+                        v-for="(entry, i) in sortedLeaderboard"
                         :key="entry.user || i"
                     >
 
@@ -164,7 +164,6 @@ export default {
 
                         <div v-if="entry.created?.length">
 
-                            <!-- LOOP GROUPS -->
                             <div v-for="(levels, rating) in groupedCreated" :key="rating">
 
                                 <h3 class="type-title-sm">{{ rating }}</h3>
@@ -209,8 +208,20 @@ export default {
 `,
 
     computed: {
+        // ✅ SORT BASED ON MODE
+        sortedLeaderboard() {
+            const list = [...this.leaderboard];
+
+            if (this.mode === 'creator') {
+                return list.sort((a, b) => (b.creatorScore || 0) - (a.creatorScore || 0));
+            }
+
+            return list.sort((a, b) => (b.total || 0) - (a.total || 0));
+        },
+
+        // ✅ USE SORTED LIST FOR SELECTION
         entry() {
-            return this.leaderboard?.[this.selected] || {
+            return this.sortedLeaderboard?.[this.selected] || {
                 user: '',
                 total: 0,
                 creatorScore: 0,
@@ -220,17 +231,14 @@ export default {
             };
         },
 
-        // ✅ GROUP + SORT CREATOR LEVELS
+        // ✅ GROUP CREATOR LEVELS
         groupedCreated() {
             if (!this.entry?.created) return {};
 
             const order = ['Epic', 'Featured', 'Standard', 'Joke'];
-
             const groups = {};
 
-            order.forEach(r => {
-                groups[r] = [];
-            });
+            order.forEach(r => groups[r] = []);
 
             this.entry.created.forEach(lvl => {
                 const rating = lvl.rating || 'Other';
@@ -238,7 +246,6 @@ export default {
                 groups[rating].push(lvl);
             });
 
-            // remove empty groups
             return Object.fromEntries(
                 Object.entries(groups).filter(([_, v]) => v.length)
             );
