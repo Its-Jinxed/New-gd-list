@@ -1,7 +1,7 @@
 import { store } from "../main.js";
 import { embed } from "../util.js";
 import { score } from "../score.js";
-import { fetchEditors, fetchList } from "../content.js";
+import { fetchEditors, fetchList, fetchPacks } from "../content.js";
 
 import Spinner from "../components/Spinner.js";
 import LevelAuthors from "../components/List/LevelAuthors.js";
@@ -20,6 +20,8 @@ export default {
     data: () => ({
         list: [],
         editors: [],
+        packs: [],
+
         loading: true,
         selected: 0,
         errors: [],
@@ -120,11 +122,9 @@ export default {
                                 />
 
                                 <div class="level-text">
-
                                     <span class="type-label-lg">
                                         {{ level?.name || 'Error (' + err + '.json)' }}
                                     </span>
-
                                 </div>
 
                             </button>
@@ -147,16 +147,27 @@ export default {
                         :verifier="level.verifier"
                     />
 
+                    <!-- ✅ PACK CHIPS -->
+                    <div class="pack-badges" v-if="levelPacks.length">
+                        <span
+                            v-for="pack in levelPacks"
+                            :key="pack.id"
+                            class="pack-badge"
+                            :style="{ background: pack.color || 'gold' }"
+                        >
+                            {{ pack.name }}
+                        </span>
+                    </div>
+
                     <iframe
                         class="video"
                         :src="video"
                         frameborder="0"
                     ></iframe>
 
-                    <!-- ✅ FIXED POINTS SYSTEM -->
+                    <!-- POINTS -->
                     <div class="level-meta-main">
 
-                        <!-- POINTS -->
                         <div class="type-title-sm">Points</div>
                         <p class="type-body">
                             <span>
@@ -164,7 +175,6 @@ export default {
                             </span>
                         </p>
 
-                        <!-- DETAILS -->
                         <div class="type-title-sm">Details</div>
                         <div class="meta-row">
 
@@ -253,17 +263,27 @@ export default {
                 );
             } else if (this.sortMode === "date") {
                 arr.sort((a, b) =>
-                    (b[0]?.id || 0) - (a[0]?.id || 0) // ✅ newest first
+                    (b[0]?.id || 0) - (a[0]?.id || 0)
                 );
             }
 
             return arr;
+        },
+
+        // ✅ NEW: packs for current level
+        levelPacks() {
+            if (!this.level?.path || !this.packs.length) return [];
+
+            return this.packs
+                .filter(pack => (pack.levels || []).includes(this.level.path))
+                .sort((a, b) => (b.points || 0) - (a.points || 0));
         }
     },
 
     async mounted() {
         this.list = await fetchList();
         this.editors = await fetchEditors();
+        this.packs = await fetchPacks();
         this.loading = false;
     },
 
