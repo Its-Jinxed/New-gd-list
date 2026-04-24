@@ -91,35 +91,20 @@ export default {
                     </h1>
 
                     <!-- =========================
-                         PACK BREAKDOWN (TOTAL MODE ONLY)
+                         PACK CHIPS (FIXED)
                     ========================== -->
-                    <div v-if="mode === 'total' && entry.packs?.length" class="pack-breakdown">
-
-                        <h2>Packs</h2>
-
-                        <div
+                    <div
+                        class="pack-badges"
+                        v-if="mode === 'total' && entry.packs?.length"
+                    >
+                        <span
                             v-for="pack in entry.packs"
                             :key="pack.id"
-                            class="pack-line"
+                            class="pack-badge"
+                            :style="{ background: pack.color || 'gold' }"
                         >
-                            <span
-                                class="pack-dot"
-                                :style="{ background: pack.color || 'gold' }"
-                            ></span>
-
-                            <span class="pack-name">
-                                {{ pack.name }}
-                            </span>
-
-                            <span class="pack-points">
-                                +{{ localize(pack.points || 0) }}
-                            </span>
-
-                            <span v-if="pack.complete" class="pack-tag">
-                                COMPLETE
-                            </span>
-                        </div>
-
+                            {{ pack.name }} +{{ pack.points || 0 }}
+                        </span>
                     </div>
 
                     <!-- =========================
@@ -186,7 +171,7 @@ export default {
                     </template>
 
                     <!-- =========================
-                         CREATOR VIEW (UNCHANGED)
+                         CREATOR VIEW
                     ========================== -->
                     <template v-else>
 
