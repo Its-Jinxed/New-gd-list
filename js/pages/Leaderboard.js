@@ -90,19 +90,36 @@ export default {
                         }} pts
                     </h1>
 
-                    <!-- ✅ PACKS (ONLY LIST POINTS MODE) -->
-                    <div
-                        class="pack-badges"
-                        v-if="mode === 'total' && entry.packs?.length"
-                    >
-                        <span
-                            v-for="pack in completedPacks(entry)"
-                            :key="pack.name"
-                            class="pack-badge complete"
-                            :style="{ background: pack.color || 'gold' }"
+                    <!-- =========================
+                         PACK BREAKDOWN (TOTAL MODE ONLY)
+                    ========================== -->
+                    <div v-if="mode === 'total' && entry.packs?.length" class="pack-breakdown">
+
+                        <h2>Packs</h2>
+
+                        <div
+                            v-for="pack in entry.packs"
+                            :key="pack.id"
+                            class="pack-line"
                         >
-                            {{ pack.name }}
-                        </span>
+                            <span
+                                class="pack-dot"
+                                :style="{ background: pack.color || 'gold' }"
+                            ></span>
+
+                            <span class="pack-name">
+                                {{ pack.name }}
+                            </span>
+
+                            <span class="pack-points">
+                                +{{ localize(pack.points || 0) }}
+                            </span>
+
+                            <span v-if="pack.complete" class="pack-tag">
+                                COMPLETE
+                            </span>
+                        </div>
+
                     </div>
 
                     <!-- =========================
@@ -169,7 +186,7 @@ export default {
                     </template>
 
                     <!-- =========================
-                         CREATOR VIEW (GROUPED)
+                         CREATOR VIEW (UNCHANGED)
                     ========================== -->
                     <template v-else>
 
@@ -266,11 +283,7 @@ export default {
     },
 
     methods: {
-        localize,
-
-        completedPacks(entry) {
-            return (entry.packs || []).filter(p => p.complete);
-        }
+        localize
     },
 
     async mounted() {
