@@ -90,13 +90,13 @@ export default {
                         }} pts
                     </h1>
 
-                    <!-- PACK CHIPS (SORTED BY POINTS DESC) -->
+                    <!-- ✅ PACK CHIPS (FIXED) -->
                     <div
                         class="pack-badges"
-                        v-if="mode === 'total' && entry.packs?.length"
+                        v-if="mode === 'total' && sortedPacks.length"
                     >
                         <span
-                            v-for="pack in [...entry.packs].sort((a, b) => (b.points || 0) - (a.points || 0))"
+                            v-for="pack in sortedPacks"
                             :key="pack.id"
                             class="pack-badge"
                             :style="{ background: pack.color || 'gold' }"
@@ -231,6 +231,15 @@ export default {
                 created: [],
                 packs: [],
             };
+        },
+
+        // ✅ NEW FIX
+        sortedPacks() {
+            if (!this.entry?.packs) return [];
+
+            return this.entry.packs
+                .filter(p => p.complete) // ONLY completed packs
+                .sort((a, b) => (b.points || 0) - (a.points || 0)); // highest first
         },
 
         groupedCreated() {
