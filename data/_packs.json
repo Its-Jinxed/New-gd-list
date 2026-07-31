@@ -33,5 +33,12 @@
     "color": "#FF006E",
     "levels": ["Forbidden Fruit", "Fabricator Caverns", "Wobble Wobble"],
     "points": 150
+  },
+  {
+    "id": "Revival Pack 1",
+    "name": "Revival Pack 1",
+    "color": "#2B2536",
+    "levels": ["Cove", "Untitled", "Sonic Blaster"],
+    "points": 100
   }  
 ]
