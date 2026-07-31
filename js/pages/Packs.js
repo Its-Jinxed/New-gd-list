@@ -240,17 +240,26 @@ export default {
 
         selectPlayer(player) {
             this.selectedPlayer = player;
-            this.playerSearch = player;
+            this.playerSearch = "";
             this.showPlayerList = false;
         },
 
         isComplete(levelPath) {
             const level = this.getLevel(levelPath);
 
-            if (!level)
-                return false;
+            if (!level || !this.selectedPlayer) return false;
 
-            return (level.victors || []).includes(this.selectedPlayer);
+            const player = this.selectedPlayer.toLowerCase();
+
+            const isVerifier =
+                (level.verifier || "").toLowerCase() === player;
+
+            const isVictor =
+                (level.victors || []).some(
+                    victor => victor.toLowerCase() === player
+                );
+
+            return isVerifier || isVictor;
         },
 
         completedCount() {
@@ -304,11 +313,16 @@ export default {
         const players = new Set();
 
         this.levels.forEach(level => {
+
+            if (level.verifier) {
+                players.add(level.verifier);
+            }
+
             (level.victors || []).forEach(player => {
                 players.add(player);
             });
-        });
 
+        });
         this.players = [...players].sort();
 
         if (this.players.length) {
