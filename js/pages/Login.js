@@ -1,21 +1,43 @@
-import { login } from "../auth.js";
+import { login, register } from "../auth.js";
 
 export default {
     data() {
         return {
             email: "",
             password: "",
-            error: ""
+            confirmPassword: "",
+            error: "",
+            signup: false
         };
     },
 
     methods: {
-        async signIn() {
+        async submit() {
             this.error = "";
 
             try {
-                await login(this.email, this.password);
-                alert("Logged in!");
+                if (this.signup) {
+
+                    if (this.password !== this.confirmPassword) {
+                        this.error = "Passwords do not match.";
+                        return;
+                    }
+
+                    await register(this.email, this.password);
+
+                    alert("Account created!");
+
+                } else {
+
+                    await login(this.email, this.password);
+
+                    alert("Logged in!");
+
+                }
+
+                // Redirect to the home page
+                this.$router.push("/");
+
             } catch (err) {
                 this.error = err.message;
             }
@@ -24,7 +46,8 @@ export default {
 
     template: `
         <main class="page">
-            <h1>Login</h1>
+
+            <h1>{{ signup ? "Create Account" : "Login" }}</h1>
 
             <input
                 v-model="email"
@@ -42,13 +65,38 @@ export default {
 
             <br><br>
 
-            <button @click="signIn">
-                Login
+            <input
+                v-if="signup"
+                v-model="confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+            />
+
+            <br v-if="signup"><br v-if="signup">
+
+            <button @click="submit">
+                {{ signup ? "Create Account" : "Login" }}
             </button>
 
-            <p v-if="error" style="color:red;">
+            <br><br>
+
+            <a
+                href="#"
+                @click.prevent="signup = !signup"
+            >
+                {{ signup
+                    ? "Already have an account? Login"
+                    : "Don't have an account? Create one"
+                }}
+            </a>
+
+            <p
+                v-if="error"
+                style="color:red; margin-top:20px;"
+            >
                 {{ error }}
             </p>
+
         </main>
     `
 };
