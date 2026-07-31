@@ -1,12 +1,5 @@
-:root {
-    --color-background: white;
-    --color-on-background: black;
-    --color-primary: #0066ff;
-    --color-on-primary: white;
-}
-
 /* =========================
-   HEADER LAYOUT FIX (3 ZONES)
+   HEADER
 ========================= */
 
 header {
@@ -15,79 +8,107 @@ header {
     align-items: center;
 
     height: 4.5rem;
-    padding-inline: 6rem;
+    min-height: 4.5rem;
+    max-height: 4.5rem;
 
-    background-color: var(--color-primary);
+    padding: 0 6rem;
+    box-sizing: border-box;
+    flex-shrink: 0;
+
+    background: var(--color-primary);
     color: var(--color-on-primary);
 }
 
-/* LEFT: LOGO */
-header .logo {
-    justify-self: start;
+/* =========================
+   LOGO
+========================= */
+
+.logo {
     display: flex;
     align-items: baseline;
     gap: 1rem;
+
+    justify-self: start;
 }
 
-/* CENTER: NAV TABS */
+.logo h3,
+.logo p {
+    margin: 0;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
 .nav {
+    display: flex;
+    align-items: stretch;
     justify-self: center;
-    display: flex;
-    column-gap: 2rem;
-    align-items: center;
+
+    height: 100%;
+    gap: 0.5rem;
 }
 
-/* TAB STYLE */
-.nav .nav__tab {
-    padding-top: 4px;
-    border-bottom: 4px solid transparent;
-    display: flex;
-    align-items: center;
-    padding-inline: 0.5rem;
-    transition: border-color 100ms ease;
-}
-
-.nav .nav__tab.router-link-active {
-    border-color: var(--color-on-primary);
-}
-
-.nav .nav__tab:hover {
-    border-color: var(--color-on-primary);
-}
-
-/* RIGHT: ACTIONS */
-.nav .nav__actions {
-    justify-self: end;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-/* ICON BUTTONS */
-.nav .nav__actions .nav__icon {
-    height: 3rem;
-    width: 3rem;
-    border: none;
-    background-color: transparent;
-    border-radius: 50%;
-    cursor: pointer;
-
+.nav__tab {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    transition: background-color 100ms ease;
+    height: 100%;
+
+    padding: 0 1rem;
+
+    border-bottom: 4px solid transparent;
+
+    color: inherit;
+    text-decoration: none;
+
+    box-sizing: border-box;
+    transition: border-color .15s ease;
 }
 
-.nav .nav__actions .nav__icon:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+.nav__tab:hover,
+.nav__tab.router-link-active {
+    border-bottom-color: var(--color-on-primary);
 }
 
-.nav .nav__actions .nav__icon img {
+/* =========================
+   ACTIONS
+========================= */
+
+.nav__actions {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+
+    margin-left: 1rem;
+}
+
+.nav__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 3rem;
+    height: 3rem;
+
+    border-radius: 50%;
+    text-decoration: none;
+
+    transition: background-color .15s ease;
+}
+
+.nav__icon:hover {
+    background: rgba(255,255,255,.15);
+}
+
+.nav__icon img {
+    width: 1.5rem;
     height: 1.5rem;
 }
 
-/* REMOVE CTA STYLING EFFECTIVELY (since you're deleting it anyway) */
-.nav .nav__actions .nav__cta {
+/* Hide unused CTA */
+
+.nav__cta {
     display: none;
 }
