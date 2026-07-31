@@ -326,7 +326,7 @@ export default {
         );
         
         // Build player list from leaderboard order
-        const [leaderboard] = await fetchLeaderboard();
+        const [leaderboard] = await fetchLeaderboard(list, packs);
 
         this.players = leaderboard.map(entry => entry.user);
 
