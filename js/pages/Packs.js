@@ -127,7 +127,7 @@ export default {
 
                                 <div class="type-label-lg">
 
-                                    #{{ i+1 }}
+                                    #{{ getRank(levelPath) }}
                                     {{ getLevel(levelPath)?.name || levelPath }}
 
                                 </div>
@@ -236,6 +236,10 @@ export default {
 
         getLevel(path) {
             return this.levelMap[path];
+        },
+
+        getRank(path) {
+            return this.levelMap[path]?.trueRank ?? "?";
         },
 
         selectPlayer(player) {
