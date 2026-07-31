@@ -113,9 +113,9 @@ export async function fetchPacks() {
 /* =========================
    LEADERBOARD
 ========================= */
-export async function fetchLeaderboard() {
-    const list = await fetchList();
-    const packs = await fetchPacks();
+export async function fetchLeaderboard(list = null, packs = null) {
+    list ??= await fetchList();
+    packs ??= await fetchPacks();
 
     const scoreMap = {};
     const errs = [];
