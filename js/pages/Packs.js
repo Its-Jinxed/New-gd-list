@@ -161,6 +161,7 @@ export default {
                 <h2>Player</h2>
 
                 <input
+                    class="list-search"
                     v-model="playerSearch"
                     @focus="showPlayerList = true"
                     placeholder="Search player..."
