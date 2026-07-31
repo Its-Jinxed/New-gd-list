@@ -249,6 +249,10 @@ export default {
         },
 
         isComplete(levelPath) {
+            if (!this.selectedPlayer) {
+                return false;
+            }
+            
             const level = this.getLevel(levelPath);
 
             if (!level || !this.selectedPlayer) return false;
@@ -318,8 +322,8 @@ export default {
 
         this.players = leaderboard.map(entry => entry.user);
 
-        if (this.players.length) {
-            this.selectPlayer(this.players[0]);
+        this.selectedPlayer = "";
+        this.playerSearch = "";
         }
 
         this.packs = packs.sort((a, b) => {
