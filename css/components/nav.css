@@ -42,14 +42,16 @@ header {
 
 .nav {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-self: center;
 
     height: 100%;
-    gap: 0.5rem;
+    gap: .5rem;
 }
 
 .nav__tab {
+    position: relative;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -58,18 +60,33 @@ header {
 
     padding: 0 1rem;
 
-    border-bottom: 4px solid transparent;
-
     color: inherit;
     text-decoration: none;
-
-    box-sizing: border-box;
-    transition: border-color .15s ease;
 }
 
-.nav__tab:hover,
-.nav__tab.router-link-active {
-    border-bottom-color: var(--color-on-primary);
+.nav__tab::after {
+    content: "";
+
+    position: absolute;
+
+    left: 18%;
+    right: 18%;
+    bottom: 10px;
+
+    height: 4px;
+
+    border-radius: 999px;
+
+    background: var(--color-on-primary);
+
+    opacity: 0;
+
+    transition: opacity .15s ease;
+}
+
+.nav__tab:hover::after,
+.nav__tab.router-link-active::after {
+    opacity: 1;
 }
 
 /* =========================
@@ -79,6 +96,8 @@ header {
 .nav__actions {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+
     gap: .75rem;
 
     margin-left: 1rem;
@@ -93,6 +112,8 @@ header {
     height: 3rem;
 
     border-radius: 50%;
+
+    color: inherit;
     text-decoration: none;
 
     transition: background-color .15s ease;
@@ -107,7 +128,9 @@ header {
     height: 1.5rem;
 }
 
-/* Hide unused CTA */
+/* =========================
+   UNUSED CTA
+========================= */
 
 .nav__cta {
     display: none;
