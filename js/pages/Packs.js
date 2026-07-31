@@ -1,4 +1,4 @@
-import { fetchPacks, fetchList } from '../content.js';
+import { fetchPacks, fetchList, fetchLeaderboard } from '../content.js';
 
 export default {
     data: () => ({
@@ -312,22 +312,11 @@ export default {
         this.levelMap = Object.fromEntries(
             this.levels.map(level => [level.path, level])
         );
+        
+        // Build player list from leaderboard order
+        const [leaderboard] = await fetchLeaderboard();
 
-        // Build player list
-        const players = new Set();
-
-        this.levels.forEach(level => {
-
-            if (level.verifier) {
-                players.add(level.verifier);
-            }
-
-            (level.victors || []).forEach(player => {
-                players.add(player);
-            });
-
-        });
-        this.players = [...players].sort();
+        this.players = leaderboard.map(entry => entry.user);
 
         if (this.players.length) {
             this.selectPlayer(this.players[0]);
@@ -340,6 +329,7 @@ export default {
 
             return a.name.localeCompare(b.name);
         });
+
         this.loading = false;
 
         // Hide the player list when clicking elsewhere
