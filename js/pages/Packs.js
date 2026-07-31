@@ -333,7 +333,13 @@ export default {
             this.selectPlayer(this.players[0]);
         }
 
-        this.packs = packs;
+        this.packs = packs.sort((a, b) => {
+            if (a.points !== b.points) {
+                return a.points - b.points;
+            }
+
+            return a.name.localeCompare(b.name);
+        });
         this.loading = false;
 
         // Hide the player list when clicking elsewhere
