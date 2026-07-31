@@ -7,7 +7,9 @@ export default {
         levelMap: {},
         selectedPack: 0,
         selectedPlayer: "",
+        playerSearch: "",
         players: [],
+        showPlayerList: false,
         loading: true,
     }),
 
@@ -16,28 +18,47 @@ export default {
             <p class="type-label-lg">Loading packs...</p>
         </main>
 
-        <main v-else class="page">
+        <main v-else class="page page-packs">
 
             <!-- LEFT SIDEBAR -->
-            <div class="page-sidebar">
+
+            <div class="packs-sidebar">
 
                 <div
                     v-for="(pack, i) in packs"
                     :key="pack.id"
-                    class="ui-row"
+                    class="pack-card"
                     :class="{ active: selectedPack === i }"
                     @click="selectedPack = i"
                 >
-                    <div>
-                        <div class="type-label-lg">{{ pack.name }}</div>
-                        <div class="ui-muted">{{ pack.levels.length }} Levels</div>
+
+                    <div class="pack-title">
+                        {{ pack.name }}
                     </div>
+
+                    <div class="pack-meta">
+                        {{ completedCountFor(pack) }} / {{ pack.levels.length }}
+                    </div>
+
+                    <div class="pack-progress">
+
+                        <div
+                            class="pack-progress-fill"
+                            :style="{
+                                width: progressFor(pack) + '%',
+                                background: pack.color
+                            }"
+                        ></div>
+
+                    </div>
+
                 </div>
 
             </div>
 
-            <!-- CENTRE PANEL -->
-            <div class="page-content">
+            <!-- MIDDLE -->
+
+            <div class="pack-content">
 
                 <div
                     v-if="currentPack"
@@ -45,16 +66,12 @@ export default {
                 >
 
                     <div
-                        style="
-                            display:flex;
-                            align-items:center;
-                            gap:1rem;
-                        "
+                        style="display:flex;align-items:center;gap:1rem;"
                     >
 
                         <div
-                            style="width:8px;height:60px;border-radius:6px;"
-                            :style="{ background: currentPack.color || '#888' }"
+                            style="width:8px;height:70px;border-radius:6px;"
+                            :style="{background: currentPack.color}"
                         ></div>
 
                         <div>
@@ -63,8 +80,28 @@ export default {
 
                             <div class="ui-muted">
 
-                                {{ currentPack.points }} Points •
-                                {{ currentPack.levels.length }} Levels
+                                {{ currentPack.points }} Points
+
+                            </div>
+
+                            <div style="margin-top:.75rem;">
+
+                                {{ completedCount() }}
+                                /
+                                {{ currentPack.levels.length }}
+                                Complete
+
+                            </div>
+
+                            <div class="pack-progress">
+
+                                <div
+                                    class="pack-progress-fill"
+                                    :style="{
+                                        width: progressFor(currentPack)+'%',
+                                        background: currentPack.color
+                                    }"
+                                ></div>
 
                             </div>
 
@@ -72,62 +109,42 @@ export default {
 
                     </div>
 
-                    <div
-                        style="
-                            margin-top:1.5rem;
-                            padding:1rem;
-                            border-radius:10px;
-                            background:#222;
-                        "
-                    >
-
-                        <div class="type-label-lg">
-                            Progress for {{ selectedPlayer }}
-                        </div>
-
-                        <div style="margin-top:8px;">
-                            {{ completedCount() }} / {{ currentPack.levels.length }}
-                            Complete
-                        </div>
-
-                        <progress
-                            :value="completedCount()"
-                            :max="currentPack.levels.length"
-                            style="width:100%;margin-top:10px;"
-                        ></progress>
-
-                    </div>
-
-                    <div
-                        style="
-                            margin-top:1.5rem;
-                            display:flex;
-                            flex-direction:column;
-                            gap:0.75rem;
-                        "
-                    >
+                    <div class="level-list">
 
                         <div
-                            v-for="(levelPath, i) in currentPack.levels"
+                            v-for="(levelPath,i) in currentPack.levels"
                             :key="levelPath"
-                            class="ui-row"
+                            class="level-card"
                         >
 
-                            <span style="font-size:1.2rem;">
+                            <div class="level-status">
+
                                 {{ isComplete(levelPath) ? "✅" : "⬜" }}
-                            </span>
 
-                            <span>#{{ i + 1 }}</span>
+                            </div>
 
-                            <span class="type-label-lg">
-                                {{ getLevel(levelPath)?.name || levelPath }}
-                            </span>
+                            <div>
+
+                                <div class="type-label-lg">
+
+                                    #{{ i+1 }}
+                                    {{ getLevel(levelPath)?.name || levelPath }}
+
+                                </div>
+
+                                <div class="ui-muted">
+
+                                    {{ getLevel(levelPath)?.creators?.join(", ") }}
+
+                                </div>
+
+                            </div>
 
                             <img
                                 v-if="getLevel(levelPath)?.youtubeId"
+                                class="level-thumb"
                                 :src="'https://img.youtube.com/vi/' + getLevel(levelPath).youtubeId + '/mqdefault.jpg'"
-                                style="width:120px;border-radius:8px;margin-left:auto;"
-                            />
+                            >
 
                         </div>
 
@@ -137,33 +154,57 @@ export default {
 
             </div>
 
-            <!-- RIGHT SIDEBAR -->
+            <!-- RIGHT -->
 
-            <div
-                class="page-sidebar"
-                style="min-width:220px;"
-            >
+            <div class="pack-player">
 
-                <h2>Progress</h2>
+                <h2>Player</h2>
 
-                <select
-                    v-model="selectedPlayer"
-                    style="
-                        width:100%;
-                        margin-top:1rem;
-                        padding:0.6rem;
-                    "
+                <input
+                    v-model="playerSearch"
+                    @focus="showPlayerList = true"
+                    placeholder="Search player..."
                 >
 
-                    <option
-                        v-for="player in players"
-                        :key="player"
-                        :value="player"
-                    >
-                        {{ player }}
-                    </option>
+                <div
+                    v-if="showPlayerList"
+                    class="player-results"
+                >
 
-                </select>
+                    <div
+                        v-for="player in filteredPlayers"
+                        :key="player"
+                        class="player-result"
+                        @click="selectPlayer(player)"
+                    >
+
+                        {{ player }}
+
+                    </div>
+
+                </div>
+
+                <div
+                    v-if="selectedPlayer"
+                    style="margin-top:1rem;"
+                >
+
+                    <div class="ui-muted">
+
+                        Selected Player
+
+                    </div>
+
+                    <div
+                        class="type-label-lg"
+                        style="margin-top:.5rem;"
+                    >
+
+                        {{ selectedPlayer }}
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -174,33 +215,72 @@ export default {
 
         currentPack() {
             return this.packs[this.selectedPack];
+        },
+
+        filteredPlayers() {
+
+            if (!this.playerSearch)
+                return this.players;
+
+            return this.players.filter(player =>
+                player.toLowerCase().includes(
+                    this.playerSearch.toLowerCase()
+                )
+            );
+
         }
 
     },
 
-    methods: {
+        methods: {
 
         getLevel(path) {
             return this.levelMap[path];
         },
 
-        isComplete(levelPath) {
+        selectPlayer(player) {
+            this.selectedPlayer = player;
+            this.playerSearch = player;
+            this.showPlayerList = false;
+        },
 
+        isComplete(levelPath) {
             const level = this.getLevel(levelPath);
 
-            if (!level) return false;
+            if (!level)
+                return false;
 
             return (level.victors || []).includes(this.selectedPlayer);
-
         },
 
         completedCount() {
 
-            if (!this.currentPack) return 0;
+            if (!this.currentPack)
+                return 0;
 
             return this.currentPack.levels.filter(levelPath =>
                 this.isComplete(levelPath)
             ).length;
+
+        },
+
+        completedCountFor(pack) {
+
+            return pack.levels.filter(levelPath =>
+                this.isComplete(levelPath)
+            ).length;
+
+        },
+
+        progressFor(pack) {
+
+            if (!pack || !pack.levels.length)
+                return 0;
+
+            return (
+                this.completedCountFor(pack)
+                / pack.levels.length
+            ) * 100;
 
         }
 
@@ -215,7 +295,7 @@ export default {
             .filter(([lvl]) => lvl)
             .map(([lvl]) => lvl);
 
-        // Build a fast lookup table
+        // Fast lookup table
         this.levelMap = Object.fromEntries(
             this.levels.map(level => [level.path, level])
         );
@@ -224,20 +304,30 @@ export default {
         const players = new Set();
 
         this.levels.forEach(level => {
-
             (level.victors || []).forEach(player => {
                 players.add(player);
             });
-
         });
 
         this.players = [...players].sort();
 
-        this.selectedPlayer = this.players[0] || "";
+        if (this.players.length) {
+            this.selectPlayer(this.players[0]);
+        }
 
         this.packs = packs;
-
         this.loading = false;
+
+        // Hide the player list when clicking elsewhere
+        document.addEventListener("click", (event) => {
+
+            const picker = document.querySelector(".pack-player");
+
+            if (picker && !picker.contains(event.target)) {
+                this.showPlayerList = false;
+            }
+
+        });
 
     }
 
