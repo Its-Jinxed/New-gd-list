@@ -324,7 +324,7 @@ export default {
 
         this.selectedPlayer = "";
         this.playerSearch = "";
-        }
+        
 
         this.packs = packs.sort((a, b) => {
             if (a.points !== b.points) {
