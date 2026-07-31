@@ -242,6 +242,14 @@ export default {
             return this.levelMap[path]?.trueRank ?? "?";
         },
 
+        handleDocumentClick(event) {
+            const picker = document.querySelector(".pack-player");
+
+            if (picker && !picker.contains(event.target)) {
+                this.showPlayerList = false;
+            }
+        },
+
         selectPlayer(player) {
             this.selectedPlayer = player;
             this.playerSearch = "";
@@ -337,16 +345,19 @@ export default {
         this.loading = false;
 
         // Hide the player list when clicking elsewhere
-        document.addEventListener("click", (event) => {
+        document.addEventListener(
+            "click",
+            this.handleDocumentClick
+        );
+    },
 
-            const picker = document.querySelector(".pack-player");
+    unmounted() {
 
-            if (picker && !picker.contains(event.target)) {
-                this.showPlayerList = false;
-            }
+        document.removeEventListener(
+            "click",
+            this.handleDocumentClick
+    );
 
-        });
-
-    }
+}
 
 };
