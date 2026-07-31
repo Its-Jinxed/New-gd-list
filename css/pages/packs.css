@@ -5,28 +5,42 @@
     height: calc(100vh - 180px);
 }
 
-/* ALL PANELS */
+/* =========================
+   PANELS
+========================= */
 
 .packs-sidebar,
 .pack-content,
 .pack-player {
-    height: 100%;
+    background: var(--panel-bg);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
     overflow-y: auto;
+    box-sizing: border-box;
+    height: 100%;
 }
 
-/* LEFT PANEL */
+.packs-sidebar h2,
+.pack-player h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* =========================
+   LEFT SIDEBAR
+========================= */
 
 .packs-sidebar {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    padding: 1rem;
 }
 
 .pack-card {
     padding: 1rem;
-    border-radius: 12px;
-    background: var(--color-surface);
+    border-radius: 0.75rem;
+    background: var(--color-background-hover);
     cursor: pointer;
     transition: 0.15s;
     border-left: 5px solid transparent;
@@ -34,28 +48,29 @@
 
 .pack-card:hover {
     transform: translateY(-2px);
+    background: var(--panel-bg-hover);
 }
 
 .pack-card.active {
-    outline: 2px solid rgba(255,255,255,0.2);
+    background: var(--panel-bg-hover);
 }
 
 .pack-title {
-    font-size: 1rem;
     font-weight: 700;
+    font-size: 1rem;
 }
 
 .pack-meta {
     margin-top: 0.35rem;
-    opacity: 0.7;
     font-size: 0.9rem;
+    opacity: 0.75;
 }
 
 .pack-progress {
     width: 100%;
     height: 8px;
     margin-top: 0.75rem;
-    background: rgba(255,255,255,0.12);
+    background: rgba(128,128,128,0.25);
     border-radius: 999px;
     overflow: hidden;
 }
@@ -63,13 +78,16 @@
 .pack-progress-fill {
     height: 100%;
     border-radius: 999px;
-    transition: width 0.25s ease;
+    transition: width .2s ease;
 }
 
-/* CENTRE PANEL */
+/* =========================
+   CENTRE
+========================= */
 
 .pack-content {
-    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .level-list {
@@ -84,72 +102,77 @@
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    border-radius: 12px;
-    background: var(--color-surface);
-    transition: 0.15s;
+    border-radius: 0.75rem;
+    background: var(--color-background-hover);
+    transition: .15s;
 }
 
 .level-card:hover {
     transform: translateY(-2px);
+    background: var(--panel-bg-hover);
 }
 
 .level-status {
-    font-size: 1.5rem;
     width: 32px;
     text-align: center;
+    font-size: 1.5rem;
 }
 
 .level-thumb {
     width: 140px;
-    border-radius: 10px;
+    border-radius: 0.5rem;
     margin-left: auto;
 }
 
-/* RIGHT PANEL */
+/* =========================
+   PLAYER
+========================= */
 
 .pack-player {
-    padding: 1rem;
-    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .pack-player input {
     width: 100%;
     padding: 0.75rem;
     border: none;
-    border-radius: 10px;
-    background: var(--color-surface);
+    border-radius: 0.5rem;
+    background: var(--color-background-hover);
     color: inherit;
     font: inherit;
     box-sizing: border-box;
 }
 
 .pack-player input:focus {
-    outline: 2px solid rgba(255,255,255,0.2);
+    outline: none;
 }
 
 .player-results {
     margin-top: 0.5rem;
-    max-height: 350px;
+    background: var(--color-background-hover);
+    border-radius: 0.5rem;
     overflow-y: auto;
-    border-radius: 10px;
-    background: var(--color-surface);
+    max-height: 350px;
 }
 
 .player-result {
     padding: 0.75rem 1rem;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: .15s;
 }
 
 .player-result:hover {
-    background: rgba(255,255,255,0.08);
+    background: var(--panel-bg-hover);
 }
 
 .player-result + .player-result {
-    border-top: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid rgba(128,128,128,0.15);
 }
 
-/* SCROLLBARS */
+/* =========================
+   SCROLLBARS
+========================= */
 
 .packs-sidebar::-webkit-scrollbar,
 .pack-content::-webkit-scrollbar,
@@ -160,6 +183,6 @@
 .packs-sidebar::-webkit-scrollbar-thumb,
 .pack-content::-webkit-scrollbar-thumb,
 .player-results::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.15);
+    background: rgba(128,128,128,0.35);
     border-radius: 999px;
 }
