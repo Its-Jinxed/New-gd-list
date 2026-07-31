@@ -22,7 +22,7 @@ export default {
 
             <!-- LEFT SIDEBAR -->
 
-            <div class="packs-sidebar">
+            <div class="ui-card packs-sidebar">
 
                 <div
                     v-for="(pack, i) in packs"
@@ -156,7 +156,7 @@ export default {
 
             <!-- RIGHT -->
 
-            <div class="pack-player">
+            <div class="ui-card pack-player">
 
                 <h2>Player</h2>
 
