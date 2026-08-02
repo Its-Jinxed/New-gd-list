@@ -40,5 +40,12 @@
     "color": "#2B2536",
     "levels": ["Cove", "Untitled", "Sonic Blaster"],
     "points": 100
-  }  
+  },    
+  {
+    "id": "Epic Pack 1",
+    "name": "Epic Pack 1",
+    "color": "#DEB933",
+    "levels": ["Daydream", "Forbidden Fruit", "Skyline"],
+    "points": 50
+  }
 ]
