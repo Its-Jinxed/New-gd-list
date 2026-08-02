@@ -205,11 +205,26 @@ export default {
 
                     <h2>Victors</h2>
 
-                    <table v-if="level.victors?.length">
-                        <tr v-for="victor in level.victors" :key="victor">
-                            <td>{{ victor }}</td>
-                        </tr>
-                    </table>
+                    <div class="victor-list" v-if="level.victors?.length">
+
+                        <div
+                            class="victor"
+                            v-for="(victor, index) in level.victors"
+                            :key="victor"
+                        >
+                            <span
+                                v-if="index < 3"
+                                class="victor-medal"
+                            >
+                                {{ ["🥇", "🥈", "🥉"][index] }}
+                            </span>
+
+                            <span class="victor-name">
+                                 {{ victor }}
+                            </span>
+                        </div>
+
+                    </div>
 
                 </div>
 
