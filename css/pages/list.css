@@ -209,3 +209,36 @@
     align-items: center;
     text-align: center;
 }
+
+/* =========================================================
+   VICTORS
+========================================================= */
+
+.page-list .victor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.page-list .victor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+
+    padding: 0.8rem 1rem;
+
+    border-radius: var(--border-radius);
+
+    background: var(--panel-bg);
+}
+
+.page-list .victor-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.page-list .victor-medal {
+    font-size: 1.4rem;
+}
