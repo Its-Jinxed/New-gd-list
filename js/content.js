@@ -276,7 +276,9 @@ export async function fetchLeaderboard(list = null, packs = null) {
         const creatorPoints = getCreatorPoints(level);
 
         const verifier = level.verifier;
-        const victors = new Set(level.victors ?? []);
+        const victors = new Set(
+            (level.victors ?? []).map(v => v.name)
+        );
         const creators = new Set(level.creators ?? []);
 
         const verifiedUser =
