@@ -202,8 +202,12 @@ export default {
 
                         <div class="type-title-sm">Points</div>
                         <p class="type-body">
-                            <span>
+                            <span v-if="!selectedLegacy">
                                 {{ score(level.trueRank, 100, level?.percentToQualify) }}
+                            </span>
+
+                            <span v-else>
+                                Legacy
                             </span>
                         </p>
 
@@ -333,6 +337,7 @@ export default {
 
     async mounted() {
         this.list = await fetchList();
+        this.legacyList = await fetchLegacyList();
         this.editors = await fetchEditors();
         this.packs = await fetchPacks();
         this.loading = false;
