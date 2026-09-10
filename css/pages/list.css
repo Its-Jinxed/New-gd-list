@@ -300,3 +300,28 @@
     color: var(--color-on-primary);
     opacity: 1;
 }
+
+/* =========================================================
+   ENJOYMENT
+========================================================= */
+
+.page-list .enjoyment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.page-list .enjoyment-value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.page-list .enjoyment-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
