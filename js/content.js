@@ -3,6 +3,7 @@ import { round, score } from './score.js';
 const dir = 'data';
 
 let listCache = null;
+let legacyCache = null;
 let packsCache = null;
 let editorsCache = null;
 let leaderboardCache = null;
@@ -104,6 +105,82 @@ export async function fetchList() {
     } catch (err) {
 
         console.error("Critical list load failure:", err);
+
+        return [];
+
+    }
+
+}
+
+/* =========================
+   LEGACY LIST
+========================= */
+export async function fetchLegacyList() {
+
+    if (legacyCache) {
+        return legacyCache;
+    }
+
+    try {
+
+        const legacyResult = await fetch(`${dir}/_legacy.json`);
+
+        if (!legacyResult.ok) {
+            console.error("Failed to fetch _legacy.json");
+            return [];
+        }
+
+        const legacyList = await legacyResult.json();
+
+        if (!Array.isArray(legacyList)) {
+            console.error("_legacy.json is not an array:", legacyList);
+            return [];
+        }
+
+        legacyCache = await Promise.all(
+            legacyList.map(async path => {
+
+                try {
+
+                    const levelResult =
+                        await fetch(`${dir}/${path}.json`);
+
+                    if (!levelResult.ok) {
+                        throw new Error("Missing level file");
+                    }
+
+                    const level = await levelResult.json();
+
+                    level.creators = Array.isArray(level.creators)
+                        ? level.creators
+                        : [level.creators];
+
+                    return {
+                        ...level,
+                        path,
+                        youtubeId: getYouTubeId(level.verification),
+                        victors: level.victors ?? [],
+                    };
+
+                } catch (err) {
+
+                    console.error(
+                        `Failed to load legacy level ${path}.`,
+                        err
+                    );
+
+                    return null;
+
+                }
+
+            })
+        );
+
+        return legacyCache;
+
+    } catch (err) {
+
+        console.error("Critical legacy list load failure:", err);
 
         return [];
 
