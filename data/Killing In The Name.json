@@ -7,5 +7,10 @@
   "rating": "Featured",
   "length": 54,
   "lengthDisplay": "0:54",
-  "victors": ["ItsJinxed"]
+  "victors": [
+      {
+            "name": "ItsJinxed",
+            "enjoyment": 75
+      }
+  ]
 }
