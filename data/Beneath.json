@@ -8,4 +8,18 @@
   "length": 61,
   "lengthDisplay": "1:01",
   "victors": ["Tahm Kench", "Aycers", "CChubz"]
+  "victors": [
+      {
+            "name": "Tahm Kench",
+            "enjoyment": 50
+      },
+      {
+            "name": "Aycers",
+            "enjoyment": 50
+      },
+      {
+            "name": "CChubz",
+            "enjoyment": 50
+      }
+  ]
 }
