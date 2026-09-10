@@ -241,6 +241,11 @@ export default {
 
                     <h2>Victors</h2>
 
+                    <div class="enjoyment">
+                        <span class="enjoyment-value">{{ enjoyment }}</span>
+                        <span class="enjoyment-label">Enjoyment</span>
+                    </div>
+
                     <div class="victor-list" v-if="level.victors?.length">
 
                         <div
