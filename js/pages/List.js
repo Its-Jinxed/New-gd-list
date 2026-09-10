@@ -62,6 +62,7 @@ export default {
 
                     <select v-model="sortMode" class="list-filter">
                         <option value="difficulty">Difficulty</option>
+                        <option value="enjoyment">Enjoyment</option>
                         <option value="length">Length</option>
                         <option value="date">Date</option>
                     </select>
@@ -336,10 +337,35 @@ export default {
                 );
             }
 
-            if (this.sortMode === "length") {
+            if (this.sortMode === "enjoyment") {
+                arr.sort((a, b) => {
+
+                    const getEnjoyment = (level) => {
+                        const victors = level?.victors ?? [];
+
+                        if (!victors.length) {
+                            return 50;
+                        }
+
+                        const ratings = victors
+                            .map(v => Number(v.enjoyment))
+                            .filter(v => Number.isFinite(v));
+
+                        if (!ratings.length) {
+                            return 50;
+                        }
+
+                        return ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
+                    };
+
+                    return getEnjoyment(b[0]) - getEnjoyment(a[0]);
+                });
+
+            } else if (this.sortMode === "length") {
                 arr.sort((a, b) =>
                     (b[0]?.length || 0) - (a[0]?.length || 0)
                 );
+
             } else if (this.sortMode === "date") {
                 arr.sort((a, b) =>
                     (b[0]?.id || 0) - (a[0]?.id || 0)
