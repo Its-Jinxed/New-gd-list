@@ -115,7 +115,7 @@ export default {
                         </td>
 
                         <td class="level" :class="{ active: selected === i, error: !level }">
-                            <button @click="selected = i">
+                            <button @click="selected = i; selectedLegacy = null">
 
                                 <img
                                     v-if="level?.youtubeId"
@@ -146,7 +146,7 @@ export default {
                         :key="level.path"
                         class="legacy-level"
                         :class="{ active: selectedLegacy === level }"
-                        @click="selectedLegacy = level"
+                        @click="selectedLegacy = level; selected = -1"
                     >
 
                         <img
