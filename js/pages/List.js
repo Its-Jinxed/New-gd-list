@@ -246,7 +246,7 @@ export default {
                         <div
                             class="victor"
                             v-for="(victor, index) in level.victors"
-                            :key="victor"
+                            :key="victor.name"
                         >
                             <span
                                 v-if="index < 3"
@@ -256,7 +256,7 @@ export default {
                             </span>
 
                             <span class="victor-name">
-                                 {{ victor }}
+                                 {{ victor.name }}
                             </span>
                         </div>
 
@@ -282,6 +282,25 @@ export default {
             if (!this.level) return "";
             return embed(this.level.showcase || this.level.verification);
         },
+
+        enjoyment() {
+            if (!this.level?.victors?.length) {
+                return "50.00";
+            }
+
+            const ratings = this.level.victors
+                .map(v => Number(v.enjoyment))
+                .filter(v => Number.isFinite(v));
+
+            if (!ratings.length) {
+                return "50.00";
+            }
+
+            const average =
+                ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
+
+            return average.toFixed(2);
+        },        
 
         uniqueCreators() {
             const set = new Set();
