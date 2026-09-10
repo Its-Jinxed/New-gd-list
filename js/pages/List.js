@@ -267,6 +267,10 @@ export default {
 
     computed: {
         level() {
+             if (this.selectedLegacy) {
+                return this.selectedLegacy;
+            }
+
             return this.filteredList[this.selected]?.[0];
         },
 
