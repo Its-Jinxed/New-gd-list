@@ -7,5 +7,10 @@
   "rating": "Standard",
   "length": 65,
   "lengthDisplay": "1:05",
-  "victors": ["Aycers"]
+  "victors": [
+      {
+            "name": "Aycers",
+            "enjoyment": 50
+      }
+  ]
 }
