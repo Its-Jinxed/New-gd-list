@@ -7,5 +7,18 @@
   "rating": "Featured",
   "length": 8,
   "lengthDisplay": "0:08",
-  "victors": ["Tahm Kench", "CChubz", "11KRD11"]
+  "victors": [
+      {
+            "name": "Tahm Kench",
+            "enjoyment": 50
+      },
+      {
+            "name": "CChubz",
+            "enjoyment": 50
+      },
+      {
+            "name": "11KRD11",
+            "enjoyment": 50
+      }
+  ]
 }
