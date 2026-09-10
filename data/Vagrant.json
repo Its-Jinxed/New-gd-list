@@ -7,5 +7,10 @@
   "rating": "Featured",
   "length": 46,
   "lengthDisplay": "0:46",
-  "victors": ["Tahm Kench"]
+  "victors": [
+      {
+            "name": "Tahm Kench",
+            "enjoyment": 50
+      }
+  ]
 }
