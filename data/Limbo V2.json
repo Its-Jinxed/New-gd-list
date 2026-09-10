@@ -7,5 +7,14 @@
   "rating": "Joke",
   "length": 18,
   "lengthDisplay": "0:18",
-  "victors": ["CChubz", "Tahm Kench"]
+  "victors": [
+      {
+            "name": "CChubz",
+            "enjoyment": 50
+      },
+      {
+            "name": "Tahm Kench",
+            "enjoyment": 50
+      }
+  ]
 }
