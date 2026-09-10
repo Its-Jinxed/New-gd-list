@@ -1,7 +1,7 @@
 import { store } from "../main.js";
 import { embed } from "../util.js";
 import { score } from "../score.js";
-import { fetchEditors, fetchList, fetchPacks } from "../content.js";
+import { fetchEditors, fetchList, fetchPacks, fetchLegacyList } from "../content.js";
 
 import Spinner from "../components/Spinner.js";
 import LevelAuthors from "../components/List/LevelAuthors.js";
@@ -19,11 +19,13 @@ export default {
 
     data: () => ({
         list: [],
+        legacyList: [],
         editors: [],
         packs: [],
 
         loading: true,
         selected: 0,
+        selectedLegacy: null,
         errors: [],
         roleIconMap,
         store,
@@ -132,6 +134,36 @@ export default {
 
                     </tr>
                 </table>
+
+                <div v-if="legacyList.length" class="legacy-list">
+
+                    <div class="legacy-title">
+                        Legacy Levels
+                    </div>
+
+                    <div
+                        v-for="level in legacyList"
+                        :key="level.path"
+                        class="legacy-level"
+                        :class="{ active: selectedLegacy === level }"
+                        @click="selectedLegacy = level"
+                    >
+
+                        <img
+                            v-if="level.youtubeId"
+                            class="thumb"
+                            :src="'https://img.youtube.com/vi/' + level.youtubeId + '/mqdefault.jpg'"
+                        />
+
+                        <div class="level-text">
+                            <span class="type-label-lg">
+                                {{ level.name }}
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
 
             </aside>
 
