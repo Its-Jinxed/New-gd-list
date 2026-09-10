@@ -242,3 +242,57 @@
 .page-list .victor-medal {
     font-size: 1.4rem;
 }
+
+
+/* =========================================================
+   LEGACY LEVELS
+========================================================= */
+
+.page-list .legacy-list {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--panel-bg-hover);
+}
+
+.page-list .legacy-title {
+    padding: 0.5rem 1rem 0.75rem;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    opacity: 0.5;
+}
+
+.page-list .legacy-level {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 1rem;
+
+    border-radius: var(--border-radius);
+
+    background: var(--panel-bg);
+    color: var(--color-on-background);
+
+    cursor: pointer;
+
+    opacity: 0.5;
+
+    transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.page-list .legacy-level:hover {
+    background: var(--panel-bg-hover);
+    opacity: 0.75;
+}
+
+.page-list .legacy-level.active {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    opacity: 1;
+}
