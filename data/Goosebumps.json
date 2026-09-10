@@ -8,6 +8,9 @@
     "length": 48,
     "lengthDisplay": "0:48",
     "victors": [
-          "Aycers"
-        ]
+      {
+            "name": "Aycers",
+            "enjoyment": 50
+      }
+  ]
 }
