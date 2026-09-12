@@ -7,5 +7,15 @@
   "rating": "Featured",
   "length": 81,
   "lengthDisplay": "1:21",
-  "victors": []
+  "victors": [
+      {
+            "name": "EnsEntium",
+            "enjoyment": 55
+      },
+      {
+            "name": "Faazie",
+            "enjoyment": 30
+      }
+  ]
+  ]
 }
