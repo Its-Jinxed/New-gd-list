@@ -10,7 +10,7 @@
   "victors": [
       {
             "name": "CChubz",
-            "enjoyment": 50
+            "enjoyment": 100
       },
       {
             "name": "11KRD11",
@@ -27,6 +27,10 @@
       {
             "name": "alexzii",
             "enjoyment": 80
+      },
+      {
+            "name": "EnsEntium",
+            "enjoyment": 100
       }
   ]
 }
