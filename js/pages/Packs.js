@@ -273,7 +273,7 @@ export default {
 
             const isVictor =
                 (level.victors || []).some(
-                    victor => victor.toLowerCase() === player
+                    victor => (victor.name || "").toLowerCase() === player
                 );
 
             return isVerifier || isVictor;
