@@ -7,5 +7,10 @@
   "rating": "Standard",
   "length": 30,
   "lengthDisplay": "0:30",
-  "victors": []
+  "victors": [
+      {
+            "name": "EnsEntium",
+            "enjoyment": 80
+      }
+  ]
 }
