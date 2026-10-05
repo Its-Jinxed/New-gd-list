@@ -1,0 +1,16 @@
+{
+  "id": 149879120,
+  "name": "Lust",
+  "creators": ["Moonziigd"],
+  "verifier": "Moonziigd",
+  "verification": "https://www.youtube.com/watch?v=4FbmcLgTxJU",
+  "rating": "Standard",
+  "length": 20,
+  "lengthDisplay": "0:20",
+  "victors": [
+      {
+            "name": "ItsJinxed",
+            "enjoyment": 50
+      }
+  ]
+}
