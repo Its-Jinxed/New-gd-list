@@ -248,5 +248,11 @@ table {
 ========================= */
 
 .nav__theme-toggle {
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font: inherit;
     cursor: pointer;
 }
