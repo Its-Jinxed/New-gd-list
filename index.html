@@ -54,14 +54,26 @@
                 </router-link>
                 
                 <div class="nav__actions">
+                    
                     <button
                         class="nav__theme-toggle"
                         type="button"
                         @click="store.toggleDark()"
                         :aria-label="store.dark ? 'Switch to light mode' : 'Switch to dark mode'"
+                        :title="store.dark ? 'Switch to light mode' : 'Switch to dark mode'"
                     >
-                        {{ store.dark ? '☀ Light mode' : '☾ Dark mode' }}
+                        <img
+                            v-if="!store.dark"
+                            src="assets/dark.svg"
+                            alt="dark mode"
+                        />
+                        <img
+                            v-else
+                            src="assets/light.svg"
+                            alt="light mode"
+                        />
                     </button>
+
 
                     <a
                         class="nav__icon"
