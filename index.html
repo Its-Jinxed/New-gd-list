@@ -55,24 +55,26 @@
                 
                 <div class="nav__actions">
                     
+                    
                     <button
-                        class="nav__theme-toggle"
+                        class="nav__icon nav__theme-toggle"
                         type="button"
                         @click="store.toggleDark()"
                         :aria-label="store.dark ? 'Switch to light mode' : 'Switch to dark mode'"
                         :title="store.dark ? 'Switch to light mode' : 'Switch to dark mode'"
                     >
-                        <img
+                            <img
                             v-if="!store.dark"
                             src="assets/dark.svg"
                             alt="dark mode"
                         />
                         <img
                             v-else
-                            src="assets/light.svg"
+                             src="assets/light.svg"
                             alt="light mode"
                         />
                     </button>
+
 
 
                     <a
