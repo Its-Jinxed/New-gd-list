@@ -52,8 +52,17 @@
                 <router-link class="nav__tab" to="/roulette">
                     <span class="type-label-lg">Roulette</span>
                 </router-link>
-
+                
                 <div class="nav__actions">
+                    <button
+                        class="nav__theme-toggle"
+                        type="button"
+                        @click="store.toggleDark()"
+                        :aria-label="store.dark ? 'Switch to light mode' : 'Switch to dark mode'"
+                    >
+                        {{ store.dark ? '☀ Light mode' : '☾ Dark mode' }}
+                    </button>
+
                     <a
                         class="nav__icon"
                         href="https://discord.gg/fQNVw5xSgg"
@@ -63,6 +72,7 @@
                         <img src="assets/discord.svg" alt="Discord Logo" />
                     </a>
                 </div>
+
             </nav>
         </header>
 
