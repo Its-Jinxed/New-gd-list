@@ -49,10 +49,10 @@
         "points": 50
     },
     {
-      "id": "Hate Pack",
-      "name": "Hate Pack",
-      "color": "#57070C",
-      "levels": ["VIVISECT", "Vagrant", "Fabricator Caverns"],
-      "points": 100
+        "id": "Hate Pack",
+        "name": "Hate Pack",
+        "color": "#57070C",
+        "levels": ["VIVISECT", "Vagrant", "Fabricator Caverns"],
+        "points": 100
     }
 ]
