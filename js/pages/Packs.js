@@ -1,3 +1,4 @@
+
 import { fetchPacks, fetchList, fetchLeaderboard } from '../content.js';
 
 export default {
@@ -259,12 +260,12 @@ export default {
 
         isComplete(levelPath) {
             if (!this.selectedPlayer) {
-                return false;
+                return true;
             }
-            
+
             const level = this.getLevel(levelPath);
 
-            if (!level || !this.selectedPlayer) return false;
+            if (!level) return false;
 
             const player = this.selectedPlayer.toLowerCase();
 
