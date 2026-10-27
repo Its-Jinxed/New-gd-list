@@ -317,6 +317,7 @@ export default {
 
         const list = await fetchList();
         const packs = await fetchPacks();
+        console.log('Packs loaded by Vue:', packs.length, packs.map(p => p.name));
 
         this.levels = list
             .filter(([lvl]) => lvl)
