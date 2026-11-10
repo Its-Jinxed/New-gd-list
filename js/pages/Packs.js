@@ -84,10 +84,6 @@ export default {
 
                             <h1>{{ currentPack.name }}</h1>
 
-                            <div class="ui-muted">
-                                {{ currentPack.points }} Points
-                            </div>
-
                             <!-- PACK STATISTICS -->
 
                             <div
@@ -105,7 +101,7 @@ export default {
                                     </div>
 
                                     <div class="type-label-lg">
-                                        {{ currentPack.averagePoints.toFixed(2) }}
+                                        {{ currentPack.averagePoints }}
                                     </div>
                                 </div>
 
@@ -359,7 +355,7 @@ export default {
         this.selectedPlayer = "";
         this.playerSearch = "";
 
-        // Calculate pack statistics
+        // Calculate pack statistics and sort by average points
         this.packs = packs
             .map(pack => ({
                 ...pack,
@@ -367,8 +363,8 @@ export default {
             }))
             .sort((a, b) => {
 
-                if (a.points !== b.points) {
-                    return a.points - b.points;
+                if (a.averagePoints !== b.averagePoints) {
+                    return a.averagePoints - b.averagePoints;
                 }
 
                 return a.name.localeCompare(b.name);
