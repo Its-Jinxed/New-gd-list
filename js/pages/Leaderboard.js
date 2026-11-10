@@ -106,7 +106,7 @@ export default {
                             }"
                             :to="{ path: '/packs', query: { pack: pack.id } }"
                         >
-                            {{ pack.name }} +{{ pack.points || 0 }}
+                            {{ pack.name }} +{{ pack.averagePoints || 0 }}
                         </router-link>
                     </div>
 
@@ -243,7 +243,7 @@ export default {
 
             return this.entry.packs
                 .filter(p => p.complete)
-                .sort((a, b) => (b.points || 0) - (a.points || 0));
+                .sort((a, b) => (b.averagePoints || 0) - (a.averagePoints || 0));
         },
 
         groupedCreated() {
