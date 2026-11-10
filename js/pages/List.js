@@ -1,3 +1,4 @@
+
 import { store } from "../main.js";
 import { embed } from "../util.js";
 import { score } from "../score.js";
@@ -180,7 +181,7 @@ export default {
                         :verifier="level.verifier"
                     />
 
-                    <!-- ✅ PACK CHIPS -->
+                    <!-- PACK CHIPS -->
                     <div class="pack-badges" v-if="levelPacks.length">
                         <span
                             v-for="pack in levelPacks"
@@ -261,9 +262,13 @@ export default {
                                 {{ ["🥇", "🥈", "🥉"][index] }}
                             </span>
 
-                            <span class="victor-name">
-                                 {{ victor.name }}
-                            </span>
+                            <router-link
+                                class="victor-name"
+                                :to="{ path: '/leaderboard', query: { player: victor.name } }"
+                                style="color: inherit; text-decoration: none; cursor: pointer;"
+                            >
+                                {{ victor.name }}
+                            </router-link>
                         </div>
 
                     </div>
@@ -277,7 +282,7 @@ export default {
 
     computed: {
         level() {
-             if (this.selectedLegacy) {
+            if (this.selectedLegacy) {
                 return this.selectedLegacy;
             }
 
@@ -306,7 +311,7 @@ export default {
                 ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
 
             return average.toFixed(2);
-        },        
+        },
 
         uniqueCreators() {
             const set = new Set();
@@ -375,7 +380,6 @@ export default {
             return arr;
         },
 
-        // ✅ NEW: packs for current level
         levelPacks() {
             if (!this.level?.path || !this.packs.length) return [];
 
