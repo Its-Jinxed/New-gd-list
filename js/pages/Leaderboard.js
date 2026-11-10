@@ -1,3 +1,4 @@
+
 import { fetchLeaderboard } from '../content.js';
 import { localize } from '../util.js';
 import Spinner from '../components/Spinner.js';
@@ -90,19 +91,23 @@ export default {
                         }} pts
                     </h1>
 
-                    <!-- ✅ PACK CHIPS (FIXED) -->
+                    <!-- PACK CHIPS -->
                     <div
                         class="pack-badges"
                         v-if="mode === 'total' && sortedPacks.length"
                     >
-                        <span
+                        <router-link
                             v-for="pack in sortedPacks"
                             :key="pack.id"
                             class="pack-badge"
-                            :style="{ background: pack.color || 'gold' }"
+                            :style="{
+                                background: pack.color || 'gold',
+                                textDecoration: 'none'
+                            }"
+                            :to="{ path: '/packs', query: { pack: pack.id } }"
                         >
                             {{ pack.name }} +{{ pack.points || 0 }}
-                        </span>
+                        </router-link>
                     </div>
 
                     <!-- LIST POINTS VIEW -->
@@ -233,13 +238,12 @@ export default {
             };
         },
 
-        // ✅ NEW FIX
         sortedPacks() {
             if (!this.entry?.packs) return [];
 
             return this.entry.packs
-                .filter(p => p.complete) // ONLY completed packs
-                .sort((a, b) => (b.points || 0) - (a.points || 0)); // highest first
+                .filter(p => p.complete)
+                .sort((a, b) => (b.points || 0) - (a.points || 0));
         },
 
         groupedCreated() {
@@ -278,6 +282,22 @@ export default {
                     : [];
 
                 this.err = Array.isArray(err) ? err : [];
+
+                // Select a player passed through the URL
+                const requestedPlayer = this.$route.query.player;
+
+                if (requestedPlayer) {
+                    const requestedName = String(requestedPlayer).toLowerCase();
+
+                    const index = this.sortedLeaderboard.findIndex(
+                        entry => (entry.user || '').toLowerCase() === requestedName
+                    );
+
+                    if (index !== -1) {
+                        this.selected = index;
+                    }
+                }
+
             } else {
                 this.leaderboard = [];
                 this.err = ['invalid_response'];
