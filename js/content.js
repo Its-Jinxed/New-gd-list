@@ -1,5 +1,5 @@
 
-import { round, score } from './score.js';
+import { score } from './score.js';
 
 const dir = 'data';
 
@@ -45,6 +45,7 @@ export function getCreatorPoints(level) {
  *
  * Every level has equal weighting for enjoyment.
  * Levels without enjoyment ratings default to 50.
+ * Average points are rounded to the nearest 5.
  */
 export function getPackStats(pack, levels = []) {
 
@@ -56,15 +57,18 @@ export function getPackStats(pack, levels = []) {
         .map(path => levelMap.get(path))
         .filter(Boolean);
 
-    // Average points based on actual list positions
+    // Calculate average points using each level's list score
     const pointValues = packLevels
         .map(level => score(level.trueRank))
         .filter(Number.isFinite);
 
-    const averagePoints = pointValues.length
+    const rawAveragePoints = pointValues.length
         ? pointValues.reduce((sum, value) => sum + value, 0)
             / pointValues.length
         : 0;
+
+    // Round to the nearest multiple of 5
+    const averagePoints = Math.round(rawAveragePoints / 5) * 5;
 
     // Calculate each level's individual enjoyment average
     const levelEnjoyment = packLevels.map(level => {
@@ -88,14 +92,14 @@ export function getPackStats(pack, levels = []) {
 
     });
 
-    // Average the level averages so every level is weighted equally
+    // Average the level averages so every level has equal weighting
     const averageEnjoyment = levelEnjoyment.length
         ? levelEnjoyment.reduce((sum, value) => sum + value, 0)
             / levelEnjoyment.length
         : 50;
 
     return {
-        averagePoints: Math.round(averagePoints * 100) / 100,
+        averagePoints,
         averageEnjoyment: Math.round(averageEnjoyment * 100) / 100,
     };
 
@@ -331,6 +335,11 @@ export async function fetchLeaderboard(list = null, packs = null) {
         return [[], ["List failed to load"]];
     }
 
+    // Extract successfully loaded levels for pack statistics
+    const validLevels = list
+        .filter(([level, err]) => level && !err)
+        .map(([level]) => level);
+
     list.forEach(([level, err], rank) => {
 
         if (err || !level) {
@@ -437,6 +446,8 @@ export async function fetchLeaderboard(list = null, packs = null) {
 
         const packsList = packs.map(pack => {
 
+            const packStats = getPackStats(pack, validLevels);
+
             const completed = pack.levels.filter(
                 level => beaten.has(level)
             ).length;
@@ -444,11 +455,12 @@ export async function fetchLeaderboard(list = null, packs = null) {
             const complete = completed === pack.levels.length;
 
             if (complete) {
-                packBonus += pack.points || 0;
+                packBonus += packStats.averagePoints;
             }
 
             return {
                 ...pack,
+                ...packStats,
                 progress: completed,
                 total: pack.levels.length,
                 complete,
