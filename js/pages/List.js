@@ -181,16 +181,21 @@ export default {
                         :verifier="level.verifier"
                     />
 
-                    <!-- PACK CHIPS -->
+                    <!-- CLICKABLE PACK CHIPS -->
                     <div class="pack-badges" v-if="levelPacks.length">
-                        <span
+                        <router-link
                             v-for="pack in levelPacks"
                             :key="pack.id"
                             class="pack-badge"
-                            :style="{ background: pack.color || 'gold' }"
+                            :style="{
+                                background: pack.color || 'gold',
+                                textDecoration: 'none',
+                                cursor: 'pointer'
+                            }"
+                            :to="{ path: '/packs', query: { pack: pack.id } }"
                         >
                             {{ pack.name }}
-                        </span>
+                        </router-link>
                     </div>
 
                     <iframe
@@ -282,7 +287,7 @@ export default {
 
     computed: {
         level() {
-            if (this.selectedLegacy) {
+             if (this.selectedLegacy) {
                 return this.selectedLegacy;
             }
 
@@ -380,6 +385,7 @@ export default {
             return arr;
         },
 
+        // Packs for current level
         levelPacks() {
             if (!this.level?.path || !this.packs.length) return [];
 
