@@ -1,3 +1,4 @@
+
 import { round, score } from './score.js';
 
 const dir = 'data';
@@ -33,6 +34,71 @@ export function creatorScore(rating) {
 
 export function getCreatorPoints(level) {
     return creatorScore(level?.rating);
+}
+
+/* =========================
+   PACK STATISTICS
+========================= */
+
+/**
+ * Calculate average points and enjoyment for a pack.
+ *
+ * Every level has equal weighting for enjoyment.
+ * Levels without enjoyment ratings default to 50.
+ */
+export function getPackStats(pack, levels = []) {
+
+    const levelMap = new Map(
+        levels.map(level => [level.path, level])
+    );
+
+    const packLevels = (pack?.levels ?? [])
+        .map(path => levelMap.get(path))
+        .filter(Boolean);
+
+    // Average points based on actual list positions
+    const pointValues = packLevels
+        .map(level => score(level.trueRank))
+        .filter(Number.isFinite);
+
+    const averagePoints = pointValues.length
+        ? pointValues.reduce((sum, value) => sum + value, 0)
+            / pointValues.length
+        : 0;
+
+    // Calculate each level's individual enjoyment average
+    const levelEnjoyment = packLevels.map(level => {
+
+        const ratings = (level.victors ?? [])
+            .map(victor => victor?.enjoyment)
+            .filter(value =>
+                value !== null &&
+                value !== undefined &&
+                value !== '' &&
+                Number.isFinite(Number(value))
+            )
+            .map(Number);
+
+        if (ratings.length === 0) {
+            return 50;
+        }
+
+        return ratings.reduce((sum, value) => sum + value, 0)
+            / ratings.length;
+
+    });
+
+    // Average the level averages so every level is weighted equally
+    const averageEnjoyment = levelEnjoyment.length
+        ? levelEnjoyment.reduce((sum, value) => sum + value, 0)
+            / levelEnjoyment.length
+        : 50;
+
+    return {
+        averagePoints: Math.round(averagePoints * 100) / 100,
+        averageEnjoyment: Math.round(averageEnjoyment * 100) / 100,
+    };
+
 }
 
 /* =========================
@@ -180,7 +246,7 @@ export async function fetchLegacyList() {
 
     } catch (err) {
 
-        console.error("Critical legacy list load failure:", err);
+        console.error("Critical legacy load failure:", err);
 
         return [];
 
