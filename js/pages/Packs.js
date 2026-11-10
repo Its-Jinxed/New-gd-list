@@ -97,7 +97,7 @@ export default {
 
                                 <div>
                                     <div class="ui-muted">
-                                        Average Points
+                                        Points
                                     </div>
 
                                     <div class="type-label-lg">
