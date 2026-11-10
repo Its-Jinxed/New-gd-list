@@ -1,5 +1,10 @@
 
-import { fetchPacks, fetchList, fetchLeaderboard } from '../content.js';
+import {
+    fetchPacks,
+    fetchList,
+    fetchLeaderboard,
+    getPackStats
+} from '../content.js';
 
 export default {
     data: () => ({
@@ -81,6 +86,39 @@ export default {
 
                             <div class="ui-muted">
                                 {{ currentPack.points }} Points
+                            </div>
+
+                            <!-- PACK STATISTICS -->
+
+                            <div
+                                style="
+                                    display:flex;
+                                    flex-wrap:wrap;
+                                    gap:1.5rem;
+                                    margin-top:.75rem;
+                                "
+                            >
+
+                                <div>
+                                    <div class="ui-muted">
+                                        Average Points
+                                    </div>
+
+                                    <div class="type-label-lg">
+                                        {{ currentPack.averagePoints.toFixed(2) }}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="ui-muted">
+                                        Average Enjoyment
+                                    </div>
+
+                                    <div class="type-label-lg">
+                                        {{ currentPack.averageEnjoyment.toFixed(2) }}
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div style="margin-top:.75rem;">
@@ -321,13 +359,21 @@ export default {
         this.selectedPlayer = "";
         this.playerSearch = "";
 
-        this.packs = packs.sort((a, b) => {
-            if (a.points !== b.points) {
-                return a.points - b.points;
-            }
+        // Calculate pack statistics
+        this.packs = packs
+            .map(pack => ({
+                ...pack,
+                ...getPackStats(pack, this.levels),
+            }))
+            .sort((a, b) => {
 
-            return a.name.localeCompare(b.name);
-        });
+                if (a.points !== b.points) {
+                    return a.points - b.points;
+                }
+
+                return a.name.localeCompare(b.name);
+
+            });
 
         // Select a pack passed through the URL
         const requestedPack = this.$route.query.pack;
