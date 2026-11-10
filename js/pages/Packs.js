@@ -80,18 +80,14 @@ export default {
                             <h1>{{ currentPack.name }}</h1>
 
                             <div class="ui-muted">
-
                                 {{ currentPack.points }} Points
-
                             </div>
 
                             <div style="margin-top:.75rem;">
-
                                 {{ completedCount() }}
                                 /
                                 {{ currentPack.levels.length }}
                                 Complete
-
                             </div>
 
                             <div class="pack-progress">
@@ -119,24 +115,18 @@ export default {
                         >
 
                             <div class="level-status">
-
                                 {{ isComplete(levelPath) ? "✅" : "⬜" }}
-
                             </div>
 
                             <div>
 
                                 <div class="type-label-lg">
-
                                     #{{ getRank(levelPath) }}
                                     {{ getLevel(levelPath)?.name || levelPath }}
-
                                 </div>
 
                                 <div class="ui-muted">
-
                                     {{ getLevel(levelPath)?.creators?.join(", ") }}
-
                                 </div>
 
                             </div>
@@ -179,9 +169,7 @@ export default {
                         class="player-result"
                         @click="selectPlayer(player)"
                     >
-
                         {{ player }}
-
                     </div>
 
                 </div>
@@ -192,18 +180,14 @@ export default {
                 >
 
                     <div class="ui-muted">
-
                         Selected Player
-
                     </div>
 
                     <div
                         class="type-label-lg"
                         style="margin-top:.5rem;"
                     >
-
                         {{ selectedPlayer }}
-
                     </div>
 
                 </div>
@@ -234,7 +218,7 @@ export default {
 
     },
 
-        methods: {
+    methods: {
 
         getLevel(path) {
             return this.levelMap[path];
@@ -317,6 +301,7 @@ export default {
 
         const list = await fetchList();
         const packs = await fetchPacks();
+
         console.log('Packs loaded by Vue:', packs.length, packs.map(p => p.name));
 
         this.levels = list
@@ -327,7 +312,7 @@ export default {
         this.levelMap = Object.fromEntries(
             this.levels.map(level => [level.path, level])
         );
-        
+
         // Build player list from leaderboard order
         const [leaderboard] = await fetchLeaderboard(list, packs);
 
@@ -335,7 +320,6 @@ export default {
 
         this.selectedPlayer = "";
         this.playerSearch = "";
-        
 
         this.packs = packs.sort((a, b) => {
             if (a.points !== b.points) {
@@ -344,6 +328,19 @@ export default {
 
             return a.name.localeCompare(b.name);
         });
+
+        // Select a pack passed through the URL
+        const requestedPack = this.$route.query.pack;
+
+        if (requestedPack) {
+            const index = this.packs.findIndex(
+                pack => String(pack.id) === String(requestedPack)
+            );
+
+            if (index !== -1) {
+                this.selectedPack = index;
+            }
+        }
 
         this.loading = false;
 
@@ -359,8 +356,8 @@ export default {
         document.removeEventListener(
             "click",
             this.handleDocumentClick
-    );
+        );
 
-}
+    }
 
 };
