@@ -1,4 +1,3 @@
-
 import { store } from "../main.js";
 import { embed } from "../util.js";
 import { score } from "../score.js";
@@ -166,12 +165,7 @@ export default {
                     </div>
 
                 </div>
-                <!-- SIDEBAR FAN ART -->
-                <img
-                    class="sidebar-fan-art"
-                    src="./assets/ItsJinxedListFanArt1.png"
-                    alt="ItsJinxed List Fan Art"
-                />
+
             </aside>
 
             <!-- MIDDLE -->
@@ -292,7 +286,7 @@ export default {
 
     computed: {
         level() {
-             if (this.selectedLegacy) {
+            if (this.selectedLegacy) {
                 return this.selectedLegacy;
             }
 
@@ -400,16 +394,46 @@ export default {
         }
     },
 
+    watch: {
+        '$route.query.level'() {
+            this.applyRequestedLevel();
+        },
+    },
+
     async mounted() {
         this.list = await fetchList();
         this.legacyList = await fetchLegacyList();
         this.editors = await fetchEditors();
         this.packs = await fetchPacks();
+
+        this.applyRequestedLevel();
+
         this.loading = false;
     },
 
     methods: {
         embed,
         score,
+
+        applyRequestedLevel() {
+            const requestedLevel = this.$route.query.level;
+
+            if (!requestedLevel) return;
+
+            // Clear filters so the requested level is visible
+            this.search = "";
+            this.selectedCreators = [];
+            this.selectedRatings = [];
+            this.sortMode = "difficulty";
+            this.selectedLegacy = null;
+
+            const index = this.filteredList.findIndex(
+                ([level]) => level?.path === String(requestedLevel)
+            );
+
+            if (index !== -1) {
+                this.selected = index;
+            }
+        },
     },
 };
