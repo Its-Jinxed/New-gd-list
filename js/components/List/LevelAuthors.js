@@ -1,3 +1,4 @@
+
 export default {
     props: {
         author: {
@@ -27,15 +28,39 @@ export default {
                     <template v-if="creators.length">
                         <template
                             v-for="(creator, index) in creators"
-                            :key="\`creator-\${creator}\`"
+                            :key="creator"
                         >
-                            <span>{{ creator }}</span>
+                            <router-link
+                                :to="{
+                                    path: '/leaderboard',
+                                    query: {
+                                        player: creator,
+                                        mode: 'creator'
+                                    }
+                                }"
+                                class="author-link"
+                            >
+                                {{ creator }}
+                            </router-link>
+
                             <span v-if="index < creators.length - 1">, </span>
                         </template>
                     </template>
 
                     <template v-else>
-                        <span>{{ author }}</span>
+                        <router-link
+                            v-if="author"
+                            :to="{
+                                path: '/leaderboard',
+                                query: {
+                                    player: author,
+                                    mode: 'creator'
+                                }
+                            }"
+                            class="author-link"
+                        >
+                            {{ author }}
+                        </router-link>
                     </template>
                 </p>
             </div>
@@ -47,7 +72,18 @@ export default {
                 </div>
 
                 <p class="type-body">
-                    <span>{{ verifier }}</span>
+                    <router-link
+                        :to="{
+                            path: '/leaderboard',
+                            query: {
+                                player: verifier,
+                                mode: 'total'
+                            }
+                        }"
+                        class="author-link"
+                    >
+                        {{ verifier }}
+                    </router-link>
                 </p>
             </div>
 
