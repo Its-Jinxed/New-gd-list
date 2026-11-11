@@ -166,7 +166,12 @@ export default {
                     </div>
 
                 </div>
-
+                <!-- SIDEBAR FAN ART -->
+                <img
+                    class="sidebar-fan-art"
+                    src="./assets/ItsJinxedListFanArt1.png"
+                    alt="ItsJinxed List Fan Art"
+                />
             </aside>
 
             <!-- MIDDLE -->
