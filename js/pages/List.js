@@ -183,7 +183,11 @@ export default {
                     </div>
 
                 </div>
-
+                <img
+                    class="sidebar-fan-art"
+                    src="./assets/ItsJinxedListFanArt1.png"
+                    alt="ItsJinxed List Fan Art"
+                />
             </aside>
 
             <!-- MIDDLE -->
