@@ -1,4 +1,3 @@
-
 import { fetchLeaderboard } from '../content.js';
 import { localize } from '../util.js';
 import Spinner from '../components/Spinner.js';
@@ -109,6 +108,30 @@ export default {
                             {{ pack.name }} +{{ pack.averagePoints || 0 }}
                         </router-link>
                     </div>
+
+                    <!-- VIEW PACK PROGRESS -->
+                    <router-link
+                        v-if="entry.user"
+                        :to="{
+                            path: '/packs',
+                            query: { player: entry.user }
+                        }"
+                        :style="{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            width: 'fit-content',
+                            marginTop: '.75rem',
+                            padding: '.5rem .75rem',
+                            borderRadius: '.5rem',
+                            background: 'var(--color-background-hover)',
+                            color: 'inherit',
+                            textDecoration: 'none',
+                            fontSize: '.9rem',
+                            fontWeight: 600
+                        }"
+                    >
+                        View Pack Progress →
+                    </router-link>
 
                     <!-- LIST POINTS VIEW -->
                     <template v-if="mode === 'total'">
