@@ -47,7 +47,6 @@ export default {
                     </div>
 
                     <div class="pack-progress">
-
                         <div
                             class="pack-progress-fill"
                             :style="{
@@ -55,7 +54,6 @@ export default {
                                 background: pack.color
                             }"
                         ></div>
-
                     </div>
 
                 </div>
@@ -66,50 +64,30 @@ export default {
 
             <div class="pack-content">
 
-                <div
-                    v-if="currentPack"
-                    class="ui-card"
-                >
+                <div v-if="currentPack" class="pack-detail">
 
-                    <div
-                        style="display:flex;align-items:center;gap:1rem;"
-                    >
+                    <div class="pack-heading">
 
                         <div
-                            style="width:8px;height:70px;border-radius:6px;"
-                            :style="{background: currentPack.color}"
+                            class="pack-heading-accent"
+                            :style="{ background: currentPack.color }"
                         ></div>
 
-                        <div>
+                        <div class="pack-heading-info">
 
                             <h1>{{ currentPack.name }}</h1>
 
-                            <!-- PACK STATISTICS -->
-
-                            <div
-                                style="
-                                    display:flex;
-                                    flex-wrap:wrap;
-                                    gap:1.5rem;
-                                    margin-top:.75rem;
-                                "
-                            >
+                            <div class="pack-statistics">
 
                                 <div>
-                                    <div class="ui-muted">
-                                        Points
-                                    </div>
-
+                                    <div class="ui-muted">Points</div>
                                     <div class="type-label-lg">
                                         {{ currentPack.averagePoints }}
                                     </div>
                                 </div>
 
                                 <div>
-                                    <div class="ui-muted">
-                                        Average Enjoyment
-                                    </div>
-
+                                    <div class="ui-muted">Average Enjoyment</div>
                                     <div class="type-label-lg">
                                         {{ currentPack.averageEnjoyment.toFixed(2) }}
                                     </div>
@@ -117,42 +95,48 @@ export default {
 
                             </div>
 
-                            <div style="margin-top:.75rem;">
+                            <div class="pack-completion">
                                 {{ completedCount() }}
                                 /
                                 {{ currentPack.levels.length }}
                                 Complete
                             </div>
 
-                            <div class="pack-progress">
-
-                                <div
-                                    class="pack-progress-fill"
-                                    :style="{
-                                        width: progressFor(currentPack)+'%',
-                                        background: currentPack.color
-                                    }"
-                                ></div>
-
-                            </div>
-
                         </div>
 
                     </div>
 
+                    <!-- FULL-WIDTH PACK PROGRESS -->
+
+                    <div class="pack-progress">
+                        <div
+                            class="pack-progress-fill"
+                            :style="{
+                                width: progressFor(currentPack) + '%',
+                                background: currentPack.color
+                            }"
+                        ></div>
+                    </div>
+
+                    <!-- LEVELS -->
+
                     <div class="level-list">
 
-                        <div
-                            v-for="(levelPath,i) in currentPack.levels"
+                        <router-link
+                            v-for="levelPath in currentPack.levels"
                             :key="levelPath"
                             class="level-card"
+                            :to="{
+                                path: '/',
+                                query: { level: levelPath }
+                            }"
                         >
 
                             <div class="level-status">
                                 {{ isComplete(levelPath) ? "✅" : "⬜" }}
                             </div>
 
-                            <div>
+                            <div class="level-info">
 
                                 <div class="type-label-lg">
                                     #{{ getRank(levelPath) }}
@@ -171,7 +155,7 @@ export default {
                                 :src="'https://img.youtube.com/vi/' + getLevel(levelPath).youtubeId + '/mqdefault.jpg'"
                             >
 
-                        </div>
+                        </router-link>
 
                     </div>
 
@@ -336,24 +320,17 @@ export default {
         const list = await fetchList();
         const packs = await fetchPacks();
 
-        console.log('Packs loaded by Vue:', packs.length, packs.map(p => p.name));
-
         this.levels = list
             .filter(([lvl]) => lvl)
             .map(([lvl]) => lvl);
 
-        // Fast lookup table
         this.levelMap = Object.fromEntries(
             this.levels.map(level => [level.path, level])
         );
 
-        // Build player list from leaderboard order
         const [leaderboard] = await fetchLeaderboard(list, packs);
 
         this.players = leaderboard.map(entry => entry.user);
-
-        this.selectedPlayer = "";
-        this.playerSearch = "";
 
         // Calculate pack statistics and sort by average points
         this.packs = packs
@@ -384,9 +361,23 @@ export default {
             }
         }
 
+        // Select a player passed through the URL
+        const requestedPlayer = this.$route.query.player;
+
+        if (requestedPlayer) {
+            const match = this.players.find(
+                player =>
+                    player.toLowerCase() ===
+                    String(requestedPlayer).toLowerCase()
+            );
+
+            if (match) {
+                this.selectPlayer(match);
+            }
+        }
+
         this.loading = false;
 
-        // Hide the player list when clicking elsewhere
         document.addEventListener(
             "click",
             this.handleDocumentClick
