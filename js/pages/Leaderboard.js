@@ -111,7 +111,7 @@ export default {
 
                     <!-- VIEW PACK PROGRESS -->
                     <router-link
-                        v-if="entry.user"
+                        v-if="mode === 'total' && entry.user"
                         :to="{
                             path: '/packs',
                             query: { player: entry.user }
