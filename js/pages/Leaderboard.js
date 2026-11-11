@@ -266,8 +266,43 @@ export default {
         }
     },
 
+    watch: {
+        '$route.query': {
+            handler() {
+                this.applyRouteSelection();
+            },
+            deep: true,
+        },
+    },
+
     methods: {
-        localize
+        localize,
+
+        applyRouteSelection() {
+            const requestedMode = this.$route.query.mode;
+
+            this.mode = requestedMode === 'creator'
+                ? 'creator'
+                : 'total';
+
+            const requestedPlayer = this.$route.query.player;
+
+            if (requestedPlayer) {
+                const requestedName = String(requestedPlayer).toLowerCase();
+
+                const index = this.sortedLeaderboard.findIndex(
+                    entry => (entry.user || '').toLowerCase() === requestedName
+                );
+
+                if (index !== -1) {
+                    this.selected = index;
+                } else {
+                    this.selected = 0;
+                }
+            } else {
+                this.selected = 0;
+            }
+        },
     },
 
     async mounted() {
@@ -283,20 +318,7 @@ export default {
 
                 this.err = Array.isArray(err) ? err : [];
 
-                // Select a player passed through the URL
-                const requestedPlayer = this.$route.query.player;
-
-                if (requestedPlayer) {
-                    const requestedName = String(requestedPlayer).toLowerCase();
-
-                    const index = this.sortedLeaderboard.findIndex(
-                        entry => (entry.user || '').toLowerCase() === requestedName
-                    );
-
-                    if (index !== -1) {
-                        this.selected = index;
-                    }
-                }
+                this.applyRouteSelection();
 
             } else {
                 this.leaderboard = [];
