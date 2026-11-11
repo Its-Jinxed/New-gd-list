@@ -1,4 +1,3 @@
-
 import {
     fetchPacks,
     fetchList,
