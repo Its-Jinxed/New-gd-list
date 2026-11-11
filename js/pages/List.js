@@ -1,3 +1,4 @@
+
 import { store } from "../main.js";
 import { embed } from "../util.js";
 import { score } from "../score.js";
@@ -25,6 +26,7 @@ export default {
 
         loading: true,
         selected: 0,
+        selectedPath: null,
         selectedLegacy: null,
         errors: [],
         roleIconMap,
@@ -115,8 +117,20 @@ export default {
                             </p>
                         </td>
 
-                        <td class="level" :class="{ active: selected === i, error: !level }">
-                            <button @click="selected = i; selectedLegacy = null">
+                        <td
+                            class="level"
+                            :class="{
+                                active: selectedPath === level?.path,
+                                error: !level
+                            }"
+                        >
+                            <button
+                                @click="
+                                    selected = i;
+                                    selectedPath = level?.path || null;
+                                    selectedLegacy = null;
+                                "
+                            >
 
                                 <img
                                     v-if="level?.youtubeId"
@@ -147,7 +161,11 @@ export default {
                         :key="level.path"
                         class="legacy-level"
                         :class="{ active: selectedLegacy === level }"
-                        @click="selectedLegacy = level; selected = -1"
+                        @click="
+                            selectedLegacy = level;
+                            selectedPath = null;
+                            selected = -1;
+                        "
                     >
 
                         <img
@@ -290,7 +308,13 @@ export default {
                 return this.selectedLegacy;
             }
 
-            return this.filteredList[this.selected]?.[0];
+            if (this.selectedPath) {
+                return this.list.find(
+                    ([level]) => level?.path === this.selectedPath
+                )?.[0] || null;
+            }
+
+            return this.filteredList[this.selected]?.[0] || null;
         },
 
         video() {
@@ -319,9 +343,11 @@ export default {
 
         uniqueCreators() {
             const set = new Set();
+
             this.list.forEach(([lvl]) => {
                 (lvl?.creators || []).forEach(c => set.add(c));
             });
+
             return [...set].sort();
         },
 
@@ -384,7 +410,6 @@ export default {
             return arr;
         },
 
-        // Packs for current level
         levelPacks() {
             if (!this.level?.path || !this.packs.length) return [];
 
@@ -406,6 +431,15 @@ export default {
         this.editors = await fetchEditors();
         this.packs = await fetchPacks();
 
+        // Default selection
+        const firstLevel = this.list.find(([level]) => level)?.[0];
+
+        if (firstLevel) {
+            this.selectedPath = firstLevel.path;
+            this.selected = 0;
+        }
+
+        // Override default selection if a level was requested
         this.applyRequestedLevel();
 
         this.loading = false;
@@ -420,19 +454,39 @@ export default {
 
             if (!requestedLevel) return;
 
-            // Clear filters so the requested level is visible
+            const path = String(requestedLevel);
+
+            // Clear filters to ensure the requested level is accessible
             this.search = "";
             this.selectedCreators = [];
             this.selectedRatings = [];
             this.sortMode = "difficulty";
+
             this.selectedLegacy = null;
 
-            const index = this.filteredList.findIndex(
-                ([level]) => level?.path === String(requestedLevel)
+            // Search the main list
+            const index = this.list.findIndex(
+                ([level]) => level?.path === path
             );
 
             if (index !== -1) {
-                this.selected = index;
+                this.selectedPath = path;
+                this.selected = this.filteredList.findIndex(
+                    ([level]) => level?.path === path
+                );
+
+                return;
+            }
+
+            // Also support legacy levels
+            const legacyLevel = this.legacyList.find(
+                level => level.path === path
+            );
+
+            if (legacyLevel) {
+                this.selectedLegacy = legacyLevel;
+                this.selectedPath = null;
+                this.selected = -1;
             }
         },
     },
