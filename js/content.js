@@ -116,7 +116,9 @@ export async function fetchList() {
 
     try {
 
-        const listResult = await fetch(`${dir}/_list.json`);
+        const listResult = await fetch(`${dir}/_list.json`, {
+            cache: "no-cache"
+        });
 
         if (!listResult.ok) {
             console.error("Failed to fetch _list.json");
@@ -134,7 +136,9 @@ export async function fetchList() {
             list.map(async (path, rank) => {
                 try {
 
-                    const levelResult = await fetch(`${dir}/${path}.json`);
+                    const levelResult = await fetch(`${dir}/${path}.json`, {
+                        cache: "no-cache"
+                    });
 
                     if (!levelResult.ok) {
                         throw new Error("Missing level file");
@@ -193,7 +197,9 @@ export async function fetchLegacyList() {
 
     try {
 
-        const legacyResult = await fetch(`${dir}/_legacy.json`);
+        const legacyResult = await fetch(`${dir}/_legacy.json`, {
+            cache: "no-cache"
+        });
 
         if (!legacyResult.ok) {
             console.error("Failed to fetch _legacy.json");
@@ -213,7 +219,9 @@ export async function fetchLegacyList() {
                 try {
 
                     const levelResult =
-                        await fetch(`${dir}/${path}.json`);
+                        await fetch(`${dir}/${path}.json`, {
+                            cache: "no-cache"
+                        });
 
                     if (!levelResult.ok) {
                         throw new Error("Missing level file");
@@ -269,7 +277,9 @@ export async function fetchEditors() {
 
     try {
 
-        const res = await fetch(`${dir}/_editors.json`);
+        const res = await fetch(`${dir}/_editors.json`, {
+            cache: "no-cache"
+        });
 
         if (!res.ok) {
             return null;
@@ -298,7 +308,9 @@ export async function fetchPacks() {
 
     try {
 
-        const res = await fetch(`${dir}/_packs.json`);
+        const res = await fetch(`${dir}/_packs.json`, {
+            cache: "no-cache"
+        });
 
         if (!res.ok) {
             return [];
