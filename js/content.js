@@ -508,4 +508,165 @@ export async function fetchLeaderboard(list = null, packs = null) {
 
     return leaderboardCache;
 
+
+
+    
+// =========================================================
+// POSITION HISTORY
+// =========================================================
+
+let positionHistoryCache = null;
+
+const historicalLevelCache = new Map();
+
+export async function fetchPositionHistory() {
+
+    if (positionHistoryCache) {
+        return positionHistoryCache;
+    }
+
+    const response = await fetch(
+        "./data/_positionHistory.json",
+        { cache: "no-cache" }
+    );
+
+    if (!response.ok) {
+        throw new Error("Could not load position history.");
+    }
+
+    const history = await response.json();
+
+    positionHistoryCache = history
+        .filter(snapshot =>
+            Number.isFinite(Date.parse(snapshot.date)) &&
+            Array.isArray(snapshot.levels)
+        )
+        .sort((a, b) =>
+            Date.parse(a.date) - Date.parse(b.date)
+        );
+
+    return positionHistoryCache;
+}
+
+
+// =========================================================
+// GET SNAPSHOT BY DATE
+// =========================================================
+
+export function getHistoricalSnapshot(history, date) {
+
+    const target = Date.parse(
+        date + "T23:59:59.999Z"
+    );
+
+    return [...history].reverse().find(snapshot =>
+        Date.parse(snapshot.date) <= target
+    ) || null;
+}
+
+
+// =========================================================
+// FETCH HISTORICAL LEVEL
+// =========================================================
+
+export async function fetchHistoricalLevel(path) {
+
+    if (historicalLevelCache.has(path)) {
+        return historicalLevelCache.get(path);
+    }
+
+    const promise = (async () => {
+
+        try {
+
+            const response = await fetch(
+                "./data/" + encodeURIComponent(path) + ".json",
+                { cache: "no-cache" }
+            );
+
+            if (!response.ok) {
+                throw new Error("Level unavailable");
+            }
+
+            const level = await response.json();
+
+            return {
+                ...level,
+                path,
+                youtubeId: getYouTubeId(
+                    level.showcase || level.verification || ""
+                )
+            };
+
+        } catch {
+
+            return {
+                name: path,
+                path,
+                creators: [],
+                victors: [],
+                unavailable: true
+            };
+
+        }
+
+    })();
+
+    historicalLevelCache.set(path, promise);
+
+    return promise;
+}
+
+
+// =========================================================
+// INDIVIDUAL LEVEL HISTORY
+// =========================================================
+
+export function getLevelHistory(history, path) {
+
+    const result = [];
+
+    let previousRank;
+    let previousStatus;
+
+    for (const snapshot of history) {
+
+        const index = snapshot.levels.indexOf(path);
+
+        const rank = index === -1
+            ? null
+            : index + 1;
+
+        const status = rank !== null
+            ? "ranked"
+            : (snapshot.legacy || []).includes(path)
+                ? "legacy"
+                : "unlisted";
+
+        if (!result.length && status === "unlisted") {
+            continue;
+        }
+
+        if (
+            rank === previousRank &&
+            status === previousStatus
+        ) {
+            continue;
+        }
+
+        result.push({
+            date: snapshot.date,
+            rank,
+            status
+        });
+
+        previousRank = rank;
+        previousStatus = status;
+
+    }
+
+    return result;
+}
+
+    
 }
