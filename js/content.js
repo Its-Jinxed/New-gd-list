@@ -108,6 +108,7 @@ export function getPackStats(pack, levels = []) {
 /* =========================
    SAFE LIST FETCH
 ========================= */
+
 export async function fetchList() {
 
     if (listCache) {
@@ -134,6 +135,7 @@ export async function fetchList() {
 
         listCache = await Promise.all(
             list.map(async (path, rank) => {
+
                 try {
 
                     const levelResult = await fetch(`${dir}/${path}.json`, {
@@ -171,6 +173,7 @@ export async function fetchList() {
                     return [null, path];
 
                 }
+
             })
         );
 
@@ -189,6 +192,7 @@ export async function fetchList() {
 /* =========================
    LEGACY LIST
 ========================= */
+
 export async function fetchLegacyList() {
 
     if (legacyCache) {
@@ -269,6 +273,7 @@ export async function fetchLegacyList() {
 /* =========================
    EDITORS
 ========================= */
+
 export async function fetchEditors() {
 
     if (editorsCache) {
@@ -300,6 +305,7 @@ export async function fetchEditors() {
 /* =========================
    PACKS
 ========================= */
+
 export async function fetchPacks() {
 
     if (packsCache) {
@@ -331,6 +337,7 @@ export async function fetchPacks() {
 /* =========================
    LEADERBOARD
 ========================= */
+
 export async function fetchLeaderboard(list = null, packs = null) {
 
     if (leaderboardCache) {
@@ -363,9 +370,11 @@ export async function fetchLeaderboard(list = null, packs = null) {
         const creatorPoints = getCreatorPoints(level);
 
         const verifier = level.verifier;
+
         const victors = new Set(
             (level.victors ?? []).map(v => v.name)
         );
+
         const creators = new Set(level.creators ?? []);
 
         const verifiedUser =
@@ -508,9 +517,8 @@ export async function fetchLeaderboard(list = null, packs = null) {
 
     return leaderboardCache;
 
+}
 
-
-    
 // =========================================================
 // POSITION HISTORY
 // =========================================================
@@ -546,8 +554,8 @@ export async function fetchPositionHistory() {
         );
 
     return positionHistoryCache;
-}
 
+}
 
 // =========================================================
 // GET SNAPSHOT BY DATE
@@ -562,8 +570,8 @@ export function getHistoricalSnapshot(history, date) {
     return [...history].reverse().find(snapshot =>
         Date.parse(snapshot.date) <= target
     ) || null;
-}
 
+}
 
 // =========================================================
 // FETCH HISTORICAL LEVEL
@@ -615,8 +623,8 @@ export async function fetchHistoricalLevel(path) {
     historicalLevelCache.set(path, promise);
 
     return promise;
-}
 
+}
 
 // =========================================================
 // INDIVIDUAL LEVEL HISTORY
@@ -666,7 +674,5 @@ export function getLevelHistory(history, path) {
     }
 
     return result;
-}
 
-    
 }
