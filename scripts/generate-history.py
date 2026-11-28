@@ -6,6 +6,9 @@ LIST_FILE = "data/_list.json"
 LEGACY_FILE = "data/_legacy.json"
 OUTPUT_FILE = "data/_positionHistory.json"
 
+# First official historical snapshot
+START_COMMIT = "490ae9f58d9d48e2fd9a2a4ad1df405cfbb12187"
+
 
 def git(*args):
     return subprocess.check_output(
@@ -41,6 +44,13 @@ commits = git(
     "HEAD"
 ).splitlines()
 
+if START_COMMIT not in commits:
+    raise RuntimeError(
+        "Starting commit not found in production history."
+    )
+
+commits = commits[commits.index(START_COMMIT):]
+
 history = []
 previous_state = None
 
@@ -54,10 +64,6 @@ for commit in commits:
         "legacy": legacy
     }
 
-    if previous_state is None and not levels and not legacy:
-        continue
-
-    # Ignore commits that did not change rankings
     if state == previous_state:
         continue
 
