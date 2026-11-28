@@ -1,0 +1,413 @@
+
+/* =========================================================
+   TIME MACHINE
+========================================================= */
+
+.page-timemachine .app-sidebar h2 {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+
+/* =========================================================
+   DATE CONTROLS
+========================================================= */
+
+.tm-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.tm-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.tm-date {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 0.8rem;
+
+    border: none;
+    border-radius: 0.6rem;
+
+    background: var(--panel-bg);
+    color: var(--color-on-background);
+
+    font: inherit;
+    cursor: pointer;
+}
+
+.tm-date:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.tm-navigation {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tm-navigation .tm-button {
+    flex: 1;
+}
+
+.tm-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.75rem;
+
+    border: none;
+    border-radius: 0.6rem;
+
+    background: var(--panel-bg);
+    color: var(--color-on-background);
+
+    font: inherit;
+    font-size: 0.85rem;
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.tm-button:hover {
+    background: var(--panel-bg-hover);
+}
+
+.tm-button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.tm-latest {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.tm-latest:hover {
+    background: var(--color-primary);
+    opacity: 0.85;
+}
+
+.tm-slider {
+    width: 100%;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+.tm-update-counter {
+    text-align: center;
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+
+/* =========================================================
+   DATE BANNER
+========================================================= */
+
+.tm-date-banner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    background: var(--panel-bg);
+    border-radius: var(--border-radius);
+
+    text-align: center;
+}
+
+.tm-date-banner strong {
+    font-size: 0.9rem;
+}
+
+.tm-search {
+    width: 100%;
+    min-width: 0 !important;
+    flex: none !important;
+    box-sizing: border-box;
+    margin-bottom: 0.5rem;
+}
+
+
+/* =========================================================
+   HISTORICAL LIST
+========================================================= */
+
+.page-timemachine .list .level button {
+    gap: 0.6rem;
+    padding: 0.8rem;
+}
+
+.page-timemachine .thumb {
+    width: 64px;
+    height: 36px;
+    flex-shrink: 0;
+}
+
+.tm-level-name {
+    flex: 1;
+    min-width: 0;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.tm-movement {
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tm-up {
+    color: #219653;
+}
+
+.tm-down {
+    color: #e05252;
+}
+
+.tm-new {
+    color: #b18425;
+}
+
+.tm-unchanged {
+    opacity: 0.4;
+}
+
+.dark .tm-up {
+    color: #4ade80;
+}
+
+.dark .tm-down {
+    color: #f87171;
+}
+
+.dark .tm-new {
+    color: #facc15;
+}
+
+.page-timemachine .list .level.active .tm-movement {
+    color: var(--color-on-primary);
+}
+
+
+/* =========================================================
+   HISTORICAL LEVEL DETAILS
+========================================================= */
+
+.tm-historical-banner {
+    padding: 0.8rem;
+    margin-bottom: 1.25rem;
+
+    border-radius: 0.6rem;
+
+    background: rgba(210, 155, 40, 0.12);
+    color: #9a711b;
+
+    font-size: 0.85rem;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+.dark .tm-historical-banner {
+    color: #facc15;
+}
+
+.tm-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    width: 100%;
+    gap: 0.75rem;
+}
+
+.tm-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.5rem;
+    padding: 1rem 0.5rem;
+
+    border-radius: var(--border-radius);
+    background: var(--panel-bg);
+
+    text-align: center;
+}
+
+.tm-stat strong {
+    font-size: 1.6rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.tm-stat small {
+    font-size: 0.75rem;
+    opacity: 0.6;
+}
+
+.tm-notice {
+    padding: 1rem;
+
+    background: var(--panel-bg);
+    border-radius: 0.6rem;
+
+    font-size: 0.8rem;
+    line-height: 1.6;
+
+    opacity: 0.7;
+}
+
+
+/* =========================================================
+   RANKING HISTORY GRAPH
+========================================================= */
+
+.tm-graph {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    padding: 1rem;
+
+    background: var(--panel-bg);
+    border-radius: var(--border-radius);
+}
+
+.tm-graph h2 {
+    margin: 0;
+    text-align: center;
+}
+
+.tm-graph-container {
+    width: 100%;
+}
+
+.tm-graph-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.tm-graph-svg * {
+    transition: none;
+}
+
+.tm-grid-line {
+    stroke: currentColor;
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+    opacity: 0.12;
+}
+
+.tm-axis-label {
+    fill: currentColor;
+    font-size: 11px;
+    opacity: 0.65;
+}
+
+.tm-graph-line {
+    fill: none;
+    stroke: #0066ff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.tm-graph-point {
+    fill: #0066ff;
+    stroke: var(--color-background);
+    stroke-width: 1.5;
+}
+
+.dark .tm-graph-line {
+    stroke: #8195ff;
+}
+
+.dark .tm-graph-point {
+    fill: #8195ff;
+}
+
+.tm-graph-point:hover {
+    r: 6;
+    cursor: pointer;
+}
+
+.tm-graph .tm-stat strong {
+    font-size: 1.25rem;
+}
+
+
+/* =========================================================
+   RIGHT SIDEBAR
+========================================================= */
+
+.page-timemachine .app-right {
+    gap: 0.75rem;
+}
+
+.page-timemachine .app-right h2 {
+    margin-bottom: 0.5rem;
+}
+
+.tm-level-history {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    margin-top: 1rem;
+    padding-top: 1rem;
+
+    border-top: 1px solid var(--panel-bg-hover);
+}
+
+.tm-history-events {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.tm-history-event {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+
+    padding: 0.75rem;
+
+    background: var(--panel-bg);
+    border-radius: 0.5rem;
+
+    font-size: 0.75rem;
+}
+
+.tm-history-event strong {
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   ERROR STATE
+========================================================= */
+
+.tm-error {
+    padding: 3rem;
+    text-align: center;
+}
