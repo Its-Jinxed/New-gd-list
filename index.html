@@ -13,16 +13,17 @@
             rel="stylesheet"
         />
 
-        <link rel="stylesheet" type="text/css" href="css/reset.css" />
-        <link rel="stylesheet" type="text/css" href="css/typography.css" />
-        <link rel="stylesheet" type="text/css" href="css/main.css" />
-        <link rel="stylesheet" type="text/css" href="css/pages/list.css" />
-        <link rel="stylesheet" type="text/css" href="css/pages/leaderboard.css" />
-        <link rel="stylesheet" type="text/css" href="css/pages/roulette.css" />
-        <link rel="stylesheet" type="text/css" href="css/components/nav.css" />
-        <link rel="stylesheet" type="text/css" href="css/components/btn.css" />
-        <link rel="stylesheet" type="text/css" href="css/components/tabs.css" />
-        <link rel="stylesheet" type="text/css" href="css/pages/packs.css" />
+        <link rel="stylesheet" href="css/reset.css" />
+        <link rel="stylesheet" href="css/typography.css" />
+        <link rel="stylesheet" href="css/main.css" />
+        <link rel="stylesheet" href="css/pages/list.css" />
+        <link rel="stylesheet" href="css/pages/leaderboard.css" />
+        <link rel="stylesheet" href="css/pages/roulette.css" />
+        <link rel="stylesheet" href="css/pages/packs.css" />
+        <link rel="stylesheet" href="css/pages/timemachine.css" />
+        <link rel="stylesheet" href="css/components/nav.css" />
+        <link rel="stylesheet" href="css/components/btn.css" />
+        <link rel="stylesheet" href="css/components/tabs.css" />
 
         <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
         <script src="https://unpkg.com/vue-router@4.0.14/dist/vue-router.global.prod.js"></script>
@@ -37,6 +38,7 @@
             </div>
 
             <nav class="nav">
+
                 <router-link class="nav__tab" to="/">
                     <span class="type-label-lg">List</span>
                 </router-link>
@@ -52,9 +54,13 @@
                 <router-link class="nav__tab" to="/roulette">
                     <span class="type-label-lg">Roulette</span>
                 </router-link>
-                
+
+                <router-link class="nav__tab" to="/timemachine">
+                    <span class="type-label-lg">Time Machine</span>
+                </router-link>
+
                 <div class="nav__actions">
-                    
+
                     <button
                         class="nav__icon nav__theme-toggle"
                         type="button"
@@ -65,7 +71,7 @@
                         <img v-if="!store.dark" src="assets/dark.svg" alt="dark mode" />
                         <img v-else src="assets/light.svg" alt="light mode" />
                     </button>
-                    
+
                     <a
                         class="nav__icon"
                         href="https://discord.gg/fQNVw5xSgg"
@@ -74,6 +80,7 @@
                     >
                         <img src="assets/discord.svg" alt="Discord Logo" />
                     </a>
+
                 </div>
 
             </nav>
